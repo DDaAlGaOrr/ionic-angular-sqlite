@@ -1,3 +1,5 @@
+import { MbscModule } from '@mobiscroll/angular';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from './services/authentication.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -11,7 +13,7 @@ import { Platform } from '@ionic/angular';
     templateUrl: 'app.component.html',
     styleUrls: ['app.component.scss'],
     standalone: true,
-    imports: [IonicModule, CommonModule],
+    imports: [MbscModule, FormsModule, IonicModule, CommonModule],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppComponent {

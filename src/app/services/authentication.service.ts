@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 import { HttpService } from './http.service';
 import { ToastService } from './toast.service';
-import { Auth } from '../models/auth';
+import { Auth } from '../interfaces/Auth';
 
 const TOKEN_KEY = 'userData';
 
@@ -39,6 +39,7 @@ export class AuthenticationService {
     (await this.httpService.post('login/auth', postData, true)).subscribe(
       async (response: any) => {
         if (response.status) {
+          console.log(response)
           this.toastService.presentToast('Bienvenido')
           await this.storage.set(TOKEN_KEY, response.result.data);
           this.authenticationState.next(true);
@@ -63,4 +64,7 @@ export class AuthenticationService {
     return this.authenticationState.value;
   }
 
+  async getLoggedData(){
+    return await this.storage.get(TOKEN_KEY)
+  }
 }
