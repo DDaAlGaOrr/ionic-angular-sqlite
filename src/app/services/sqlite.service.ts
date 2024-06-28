@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Capacitor } from '@capacitor/core';
+import { Storage } from '@ionic/storage-angular';
 import {
     CapacitorSQLite, SQLiteConnection, SQLiteDBConnection, CapacitorSQLitePlugin,
     capSQLiteUpgradeOptions, capSQLiteResult, capSQLiteValues
@@ -14,7 +15,11 @@ export class SqliteService {
     platform!: string;
     sqlitePlugin!: CapacitorSQLitePlugin;
     native: boolean = false;
-    constructor() {
+    constructor(private storage: Storage) {
+        this.init()
+    }
+    private async init() {
+        await this.storage.create();
     }
     /**
      * Plugin Initialization
