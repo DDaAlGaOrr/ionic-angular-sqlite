@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { ProjectsService } from './../../services/projects.service';
 import { AuthenticationService } from './../../services/authentication.service';
-
 import { LoggedData } from './../../interfaces/Auth';
 
 

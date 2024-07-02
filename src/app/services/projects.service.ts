@@ -14,12 +14,12 @@ import {
   DataJsonEvents,
   TopLevel,
 } from '../interfaces/Calendar';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectsService {
-
   myEvents: TopLevel[] = [];
   view = 'month';
   calView: MbscEventcalendarView = {
@@ -32,7 +32,7 @@ export class ProjectsService {
     agenda: { type: 'month' },
   };
 
-  constructor(private httpService: HttpService, private authenticationService: AuthenticationService) { }
+  constructor(private httpService: HttpService, private authenticationService: AuthenticationService,private toastService:ToastService) { }
 
   async getProjects(userid: number): Promise<any[]> {
     const observableResult = await this.httpService.get(`tasks/${userid}/tasks`, true);
@@ -40,7 +40,6 @@ export class ProjectsService {
       observableResult.subscribe(
         (response: any) => {
           let tasksEvents = [];
-
           if (response.tasks) {
             tasksEvents = response.tasks.map((apiEvent: any) => {
               const localDate = new Date(apiEvent.start_date);
@@ -98,12 +97,14 @@ export class ProjectsService {
           resolve(this.myEvents);
         },
         (error: any) => {
+          this.toastService.presentToast('No se pudieron obtener los planes')
           console.error('Error al enviar datos:', error);
           reject(error);
         }
       );
     });
   } catch(error:any) {
+    this.toastService.presentToast('Error al realizar la solicitud de calendar')
     console.error('Error al realizar la solicitud de calendar:', error);
     throw error;
   }
