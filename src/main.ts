@@ -16,6 +16,11 @@ import { StorageService } from './app/services/storage.service';
 import { DbnameVersionService } from './app/services/dbname-version.service';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { HttpClientModule } from '@angular/common/http';
+import { registerLocaleData } from '@angular/common';
+import localeEsMX from '@angular/common/locales/es-MX';
+
+
+registerLocaleData(localeEsMX, 'es-MX');
 
 
 if (environment.production) {
