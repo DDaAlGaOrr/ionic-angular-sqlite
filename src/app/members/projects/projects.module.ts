@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
+import { MbscModule } from '@mobiscroll/angular';
 
 import { ProjectsPageRoutingModule } from './projects-routing.module';
 
@@ -15,8 +16,9 @@ import { HeaderModule } from './../../components/header/header.module';
     FormsModule,
     IonicModule,
     ProjectsPageRoutingModule,
-    HeaderModule
+    HeaderModule,
+    MbscModule
   ],
   declarations: [ProjectsPage]
 })
-export class ProjectsPageModule {}
+export class ProjectsPageModule { }

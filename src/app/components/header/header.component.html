@@ -1,6 +1,5 @@
 <ion-header>
   <ion-toolbar>
-    <!-- User name and Date -->
     <ion-buttons slot="start">
       <ion-label class="ion-text-center ion-text-wrap">
         <p class="ion-text-start">
@@ -8,7 +7,6 @@
         </p>
         <p class="ion-text-start">del {{ fechaActual | date:'y' : 'local' : 'es-MX' }}</p>
       </ion-label>
-      <!-- <ion-back-button default-href="tabs/tab2"></ion-back-button> -->
     </ion-buttons>
     <ion-row  slot="end">
       <div class="d-flex flex-row ion-align-items-center ion-justify-content-end" style="display: flex;">
@@ -27,11 +25,6 @@
             </div>
           </div>
         </ion-col>
-        <!-- <ion-buttons (click)="syncData()">
-          <ion-col size="auto">
-            <ion-icon style="--ion-color: #ff9f4b" name="sync-circle" size="large"></ion-icon>
-          </ion-col>
-        </ion-buttons> -->
         <ion-buttons slot="start">
           <ion-button (click)="logout()">
             <ion-icon slot="icon-only" name="log-out"></ion-icon>

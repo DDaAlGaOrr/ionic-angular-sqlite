@@ -1,9 +1,20 @@
 <app-header></app-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">projects</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ng-container *ngIf="selectedSegment === 'agenda'">
+    <mbsc-eventcalendar [data]="myEvents" [view]="calView" [headerTemplate]="customTemplate"
+      (onEventClick)="presentAlert($event)">
+      <ng-template #customTemplate>
+        <mbsc-calendar-nav class="cal-header-nav"></mbsc-calendar-nav>
+        <div class="mbsc-flex mbsc-flex-1-0 mbsc-justify-content-center">
+          <mbsc-segmented-group [(ngModel)]="view" (change)="changeView()">
+            <mbsc-segmented value="month" icon="material-event-note"></mbsc-segmented>
+            <mbsc-segmented value="week" icon="material-date-range"></mbsc-segmented>
+          </mbsc-segmented-group>
+        </div>
+        <mbsc-calendar-prev class="cal-header-prev"></mbsc-calendar-prev>
+        <mbsc-calendar-next class="cal-header-next"></mbsc-calendar-next>
+      </ng-template>
+    </mbsc-eventcalendar>
+  </ng-container>
 </ion-content>

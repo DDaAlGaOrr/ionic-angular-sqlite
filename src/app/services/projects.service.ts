@@ -20,17 +20,8 @@ import { ToastService } from './toast.service';
   providedIn: 'root'
 })
 export class ProjectsService {
-  myEvents: TopLevel[] = [];
   view = 'month';
-  calView: MbscEventcalendarView = {
-    calendar: {
-      type: 'month',
-      labels: false,
-      popover: true,
-      popoverClass: 'custom-event-popover',
-    },
-    agenda: { type: 'month' },
-  };
+ 
 
   constructor(private httpService: HttpService, private authenticationService: AuthenticationService,private toastService:ToastService) { }
 
@@ -93,8 +84,8 @@ export class ProjectsService {
             tasksEvents = tasksEvents.concat(tasksSup);
           }
 
-          this.myEvents = tasksEvents;
-          resolve(this.myEvents);
+          
+          resolve(tasksEvents);
         },
         (error: any) => {
           this.toastService.presentToast('No se pudieron obtener los planes')
