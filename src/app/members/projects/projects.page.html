@@ -1,7 +1,7 @@
 <app-header></app-header>
-<app-loader></app-loader>
 
 <ion-content>
+  <app-loader></app-loader>
   <ng-container *ngIf="selectedSegment === 'agenda'">
     <mbsc-eventcalendar [data]="myEvents" [view]="calView" [headerTemplate]="customTemplate"
       (onEventClick)="presentAlert($event)">
@@ -18,4 +18,5 @@
       </ng-template>
     </mbsc-eventcalendar>
   </ng-container>
+
 </ion-content>

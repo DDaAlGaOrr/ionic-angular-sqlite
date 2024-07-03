@@ -38,16 +38,16 @@ export class UsersComponent implements OnInit {
       throw new Error(`Error: ${err}`);
     }
   }
-  async createUser() {
-    await this.storage.addUser(this.newUserName)
-    this.newUserName = ''
-    console.log(this.userList, '#users')
-  }
+  // async createUser() {
+  //   await this.storage.addUser(this.newUserName)
+  //   this.newUserName = ''
+  //   console.log(this.userList, '#users')
+  // }
 
-  updateUser(user: User) {
-    const active = user.active === 0 ? 1 : 0
-    this.storage.updateUserById(user.id.toString(), active)
-  }
+  // updateUser(user: User) {
+  //   const active = user.active === 0 ? 1 : 0
+  //   this.storage.updateUserById(user.id.toString(), active)
+  // }
 
   deleteUser(user: User) {
     this.storage.deleteUserById(user.id.toString())

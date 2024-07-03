@@ -52,6 +52,7 @@ export class StorageService {
 
     async loadUsers() {
         const users: User[] = (await this.db.query('SELECT * FROM users;')).values as User[];
+        console.log(users)
         this.userList.next(users);
     }
     // CRUD Operations
@@ -59,9 +60,9 @@ export class StorageService {
         await this.loadUsers();
         this.isUserReady.next(true);
     }
-    async addUser(name: string) {
-        const sql = `INSERT INTO users (name) VALUES (?);`;
-        await this.db.run(sql, [name]);
+    async addUser(id: number, email: string, firstname: string, lastname: string, password: string) {
+        const sql = `INSERT INTO users (name,email,firstname,lastname,password,id_sipoc) VALUES (?,?,?,?,?,?);`;
+        await this.db.run(sql, [firstname, email, firstname, lastname, password,id]);
         await this.getUsers();
     }
 
@@ -70,7 +71,7 @@ export class StorageService {
         await this.db.run(sql);
         await this.getUsers();
     }
-    async deleteUserById(id: string) {
+    async deleteUserById(id: number) {
         const sql = `DELETE FROM users WHERE id=${id}`;
         await this.db.run(sql);
         await this.getUsers();

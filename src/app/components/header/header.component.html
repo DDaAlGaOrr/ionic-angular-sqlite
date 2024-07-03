@@ -8,7 +8,7 @@
         <p class="ion-text-start">del {{ fechaActual | date:'y' : 'local' : 'es-MX' }}</p>
       </ion-label>
     </ion-buttons>
-    <ion-row  slot="end">
+    <ion-row slot="end">
       <div class="d-flex flex-row ion-align-items-center ion-justify-content-end" style="display: flex;">
         <ion-col size="auto">
           <div class="d-flex flex-row-reverse ion-align-items-center ion-justify-content-center" style="display: flex;">
@@ -25,6 +25,11 @@
             </div>
           </div>
         </ion-col>
+        <ion-buttons>
+          <ion-button (click)="syncDataUser()">
+            <ion-icon style="--ion-color: #ff9f4b" name="sync-circle" size="large"></ion-icon>
+          </ion-button>
+        </ion-buttons>
         <ion-buttons slot="start">
           <ion-button (click)="logout()">
             <ion-icon slot="icon-only" name="log-out"></ion-icon>
