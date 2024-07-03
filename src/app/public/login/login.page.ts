@@ -1,5 +1,6 @@
-import { AuthenticationService } from './../../services/authentication.service';
 import { Component, OnInit } from '@angular/core';
+
+import { AuthenticationService } from './../../services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,9 @@ export class LoginPage implements OnInit {
   passwordFieldType: string = 'password';
   showPassword: boolean = false;
 
-  constructor(private authService: AuthenticationService) { }
+  constructor(
+    private authService: AuthenticationService,
+  ) { }
 
   ngOnInit() {
   }
@@ -27,7 +30,6 @@ export class LoginPage implements OnInit {
         username: this.postData.username,
         password: this.postData.password,
       };
-      console.log(body)
       await this.authService.login(body);
     }
   }

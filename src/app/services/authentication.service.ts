@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
 import { HttpService } from './http.service';
 import { ToastService } from './toast.service';
 import { Auth } from '../interfaces/Auth';
+import { NetworkService } from './../services/network.service';
+import { StorageService } from './../services/storage.service';
+
 
 const TOKEN_KEY = 'userData';
 
@@ -16,7 +19,15 @@ const TOKEN_KEY = 'userData';
 export class AuthenticationService {
   authenticationState = new BehaviorSubject(false);
 
-  constructor(private storage: Storage, private plt: Platform, private httpService: HttpService, private toastService: ToastService, private router: Router) {
+  constructor(
+    private storage: Storage,
+    private plt: Platform,
+    private httpService: HttpService,
+    private toastService: ToastService,
+    private router: Router,
+    private networkService: NetworkService,
+    private storageService: StorageService,
+  ) {
     this.plt.ready().then(() => {
       this.checkToken();
     });
@@ -36,22 +47,33 @@ export class AuthenticationService {
   }
 
   async login(postData: Auth) {
-    (await this.httpService.post('login/auth', postData, true)).subscribe(
-      async (response: any) => {
-        if (response.status) {
-          console.log(response)
-          this.toastService.presentToast('Bienvenido')
-          await this.storage.set(TOKEN_KEY, response.result.data);
-          this.authenticationState.next(true);
-          this.router.navigate(['members', 'projects']);
-        }else{
-          this.toastService.presentToast('Usuario o contraseña incorrectos')
+    if (this.networkService.getNetworkStatus()) {
+      (await this.httpService.post('login/auth', postData, true)).subscribe(
+        async (response: any) => {
+          if (response.status) {
+            this.toastService.presentToast('Bienvenido')
+            await this.storage.set(TOKEN_KEY, response.result.data);
+            this.authenticationState.next(true);
+            this.router.navigate(['members', 'projects']);
+          } else {
+            this.toastService.presentToast('Usuario o contraseña incorrectos')
+          }
+        },
+        (error) => {
+          console.error('Error en la solicitud:', error);
         }
-      },
-      (error) => {
-        console.error('Error en la solicitud:', error);
+      );
+    } else {
+      const auth = await this.storageService.authUser(postData)
+      if (auth) {
+        this.toastService.presentToast('Bienvenido')
+        await this.storage.set(TOKEN_KEY, auth);
+        this.authenticationState.next(true);
+        this.router.navigate(['members', 'projects']);
+      } else {
+        this.toastService.presentToast('Usuario o contraseña incorrectos')
       }
-    );
+    }
   }
 
   async logout() {
@@ -64,7 +86,9 @@ export class AuthenticationService {
     return this.authenticationState.value;
   }
 
-  async getLoggedData(){
+  async getLoggedData() {
     return await this.storage.get(TOKEN_KEY)
   }
+
+
 }

@@ -32,11 +32,15 @@ export class HeaderComponent implements OnInit {
   }
 
   async syncDataUser() {
+    await this.syncUserTable()
+    this.loaderService.hide();
+  }
+  
+  async syncUserTable() {
     const users = await this.generalService.getUsersTable(this.userdata.staffid)
     for (const user of users) {
       await this.storageService.addUser(user.staffid, user.email, user.firstname, user.lastname, 'sipoc');
     }
-    this.loaderService.hide();
     // await this.storageService.deleteUserById(7)
   }
 }
