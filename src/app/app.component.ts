@@ -8,6 +8,8 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { Platform } from '@ionic/angular';
 
+import { LoaderService } from './services/loader.service';
+
 @Component({
     selector: 'app-root',
     templateUrl: 'app.component.html',

@@ -71,7 +71,6 @@ export class ProjectsPage implements OnInit {
   async ngOnInit() {
     this.userdata = await this.authenticationService.getLoggedData()
     this.myEvents = await this.projectsService.getProjects(this.userdata.staffid)
-    console.log(await this.projectsService.getProjects(this.userdata.staffid))
   }
 
   async presentAlert(event: any) {
@@ -83,8 +82,6 @@ export class ProjectsPage implements OnInit {
 
     await alert.present();
   }
-
-  linkIncident(event: any) { }
 
   changeView(): void {
     setTimeout(() => {
@@ -104,4 +101,9 @@ export class ProjectsPage implements OnInit {
       }
     });
   }
+
+  async linkIncident(event: any) {
+    const isEnable = await this.projectsService.verifyIfActivityIsEnable(event, event.event.rel_type, event.event.project_id)
+  }
+
 }

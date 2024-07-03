@@ -9,6 +9,7 @@ import { ProjectsPageRoutingModule } from './projects-routing.module';
 
 import { ProjectsPage } from './projects.page';
 import { HeaderModule } from './../../components/header/header.module';
+import { LoaderModule } from 'src/app/components/loader/loader.module';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { HeaderModule } from './../../components/header/header.module';
     IonicModule,
     ProjectsPageRoutingModule,
     HeaderModule,
-    MbscModule
+    MbscModule,
+    LoaderModule
   ],
   declarations: [ProjectsPage]
 })
