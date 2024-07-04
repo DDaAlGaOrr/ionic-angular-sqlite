@@ -54,8 +54,8 @@ export class StorageService {
 
     async loadUsers() {
         const users: User[] = (await this.db.query('SELECT * FROM users;')).values as User[];
-        console.log(users)
         this.userList.next(users);
+        console.log(users)
     }
     // CRUD Operations
     async getUsers() {
@@ -94,5 +94,9 @@ export class StorageService {
             console.error("Error en la autenticación del usuario:", error);
             throw error;
         }
+    }
+    async clearUserTable(){
+        const sql = `DELETE FROM users`;
+        await this.db.run(sql);
     }
 }

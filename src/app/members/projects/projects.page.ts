@@ -28,6 +28,7 @@ setOptions({
   selector: 'app-projects',
   templateUrl: './projects.page.html',
   styleUrls: ['./projects.page.scss'],
+  
 })
 export class ProjectsPage implements OnInit {
   userdata: LoggedData = { email: '', firstname: '', lastname: '', staffid: 0 }
@@ -64,9 +65,7 @@ export class ProjectsPage implements OnInit {
     },
   ];
 
-
   constructor(private projectsService: ProjectsService, private authenticationService: AuthenticationService, private alertController: AlertController,) { }
-
 
   async ngOnInit() {
     this.userdata = await this.authenticationService.getLoggedData()
@@ -103,7 +102,7 @@ export class ProjectsPage implements OnInit {
   }
 
   async linkIncident(event: any) {
-    const isEnable = await this.projectsService.verifyIfActivityIsEnable(event, event.event.rel_type, event.event.project_id)
+    await this.projectsService.verifyIfActivityIsEnable(event, event.event.rel_type, event.event.project_id)
   }
 
 }
