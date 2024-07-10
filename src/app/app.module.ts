@@ -15,8 +15,10 @@ import { LoaderComponent } from './components/loader/loader.component';
 registerLocaleData(localeEsMX, 'es-MX');
 
 @NgModule({
-  declarations: [AppComponent,LoaderComponent,],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, IonicStorageModule.forRoot(), HttpClientModule],
+  declarations: [AppComponent, LoaderComponent,],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, IonicStorageModule.forRoot({
+    driverOrder: ['sqlite', 'indexeddb', 'localstorage', 'websql']
+  }), HttpClientModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

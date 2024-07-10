@@ -28,7 +28,6 @@ setOptions({
   selector: 'app-projects',
   templateUrl: './projects.page.html',
   styleUrls: ['./projects.page.scss'],
-  
 })
 export class ProjectsPage implements OnInit {
   userdata: LoggedData = { email: '', firstname: '', lastname: '', staffid: 0 }
@@ -74,7 +73,7 @@ export class ProjectsPage implements OnInit {
 
   async presentAlert(event: any) {
     const alert = await this.alertController.create({
-      header: `Desea iniciar el plan de trabajo ?`,
+      header: `Desea iniciar el plan de trabajo?`,
       buttons: this.alertButtons,
     });
     this.currentEvent = event;

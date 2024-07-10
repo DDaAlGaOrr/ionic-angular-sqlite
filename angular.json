@@ -39,7 +39,9 @@
               "src/global.scss",
               "src/theme/variables.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/@mobiscroll/angular/dist/js/mobiscroll.angular.min.js"
+            ]
           },
           "configurations": {
             "production": {

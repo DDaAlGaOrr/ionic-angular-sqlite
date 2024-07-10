@@ -7,6 +7,13 @@ import { Component, EnvironmentInjector, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { Platform } from '@ionic/angular';
+import { Capacitor } from '@capacitor/core';
+import { Filesystem } from '@capacitor/filesystem';
+import { Plugins } from '@capacitor/core';
+
+const { Permissions } = Plugins;
+// import { Permissions, PermissionType } from '@capacitor/permissions';
+
 
 import { LoaderService } from './services/loader.service';
 
@@ -24,4 +31,19 @@ export class AppComponent {
         private authenticationService: AuthenticationService,
         private router: Router) {
     }
+    async checkPermissions() {
+        if (Capacitor.isNativePlatform()) {
+            const storagePermissions = await Permissions['query']({ name: 'files' });
+
+            if (storagePermissions.state !== 'granted') {
+                const permissionRequestResult = await Permissions['request']({ name: 'files' });
+                if (permissionRequestResult.state !== 'granted') {
+                    throw new Error('Permission to access storage is required');
+                }
+            }
+        }
+    } catch(err: any) {
+        console.error('Unable to initialize database', err);
+    }
 }
+

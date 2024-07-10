@@ -33,9 +33,7 @@ export class HeaderComponent implements OnInit {
 
   async ngOnInit() {
     this.userdata = await this.authenticationService.getLoggedData()
-    console.log(await this.storage.get('projects'))
-    console.log(await this.storage.get('projectData'))
-    console.log(await this.storage.get('taskData'))
+    
   }
 
   logout() {
@@ -45,7 +43,7 @@ export class HeaderComponent implements OnInit {
   async syncDataUser() {
     this.loaderService.show();
     await this.syncUserTable()
-    // await this.syncActivities()
+    await this.syncActivities()
     this.loaderService.hide();
   }
   async syncUserTable() {

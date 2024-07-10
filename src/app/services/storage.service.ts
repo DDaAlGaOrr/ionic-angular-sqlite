@@ -63,8 +63,8 @@ export class StorageService {
         this.isUserReady.next(true);
     }
     async addUser(id: number, email: string, firstname: string, lastname: string, password: string) {
-        const sql = `INSERT INTO users (name,email,firstname,lastname,password,id_sipoc) VALUES (?,?,?,?,?,?);`;
-        await this.db.run(sql, [firstname, email, firstname, lastname, password, id]);
+        const sql = `INSERT INTO users (name,email,firstname,lastname,id_sipoc,password) VALUES (?,?,?,?,?,?);`;
+        await this.db.run(sql, [firstname, email, firstname, lastname, id, password]);
         await this.getUsers();
     }
 
@@ -85,17 +85,17 @@ export class StorageService {
             const result = await this.db.query(query, params);
             const users = result.values;
             if (users && users.length > 0) {
-                return users[0]; 
+                return users[0];
             } else {
-                return false; 
+                return false;
             }
-            
+
         } catch (error) {
             console.error("Error en la autenticación del usuario:", error);
             throw error;
         }
     }
-    async clearUserTable(){
+    async clearUserTable() {
         const sql = `DELETE FROM users`;
         await this.db.run(sql);
     }

@@ -27,14 +27,19 @@ export class UserUpgradeStatements {
         {
             toVersion: 4,
             statements: [
-                `ALTER TABLE users ADD COLUMN lastname TEXT;
-                ALTER TABLE users ADD COLUMN password TEXT;`,
+                `ALTER TABLE users ADD COLUMN lastname TEXT;`,
             ]
         },
         {
             toVersion: 5,
             statements: [
                 `ALTER TABLE users ADD COLUMN id_sipoc INTEGER;`,
+            ]
+        },
+        {
+            toVersion: 6,
+            statements: [
+                `ALTER TABLE users ADD COLUMN password TEXT;`,
             ]
         },
         // {
