@@ -66,7 +66,7 @@ export class ProjectsPage implements OnInit {
       cssClass: 'alert-button-confirm',
       role: 'confirm',
       handler: () => {
-        this.linkIncident(this.currentEvent);
+        this.handleEventClick(this.currentEvent);
       },
     },
   ];
@@ -78,7 +78,7 @@ export class ProjectsPage implements OnInit {
       center: 'title',
       right: 'dayGridMonth,listMonth'
     },
-    dateClick: this.handleDateClick.bind(this),
+    eventClick: this.presentAlert.bind(this),
     events: [] as Event[]
   };
   constructor(private projectsService: ProjectsService, private authenticationService: AuthenticationService, private alertController: AlertController,) { }
@@ -94,36 +94,13 @@ export class ProjectsPage implements OnInit {
       header: `Desea iniciar el plan de trabajo?`,
       buttons: this.alertButtons,
     });
-    this.currentEvent = event;
+    this.currentEvent = event.event;
 
     await alert.present();
   }
 
-  changeView(): void {
-    setTimeout(() => {
-      switch (this.view) {
-        case 'month':
-          this.calView = {
-            calendar: { type: 'month' },
-            agenda: { type: 'month' },
-          };
-          break;
-        case 'week':
-          this.calView = {
-            calendar: { type: 'week' },
-            agenda: { type: 'week' },
-          };
-          break;
-      }
-    });
-  }
-
-  async linkIncident(event: any) {
-    await this.projectsService.verifyIfActivityIsEnable(event, event.event.rel_type, event.event.project_id)
-  }
-
-  handleDateClick(arg: any) {
-    alert('date click! ' + arg.dateStr)
+  async handleEventClick(event: any) {
+    await this.projectsService.verifyIfActivityIsEnable(event.extendedProps.rel_type, event.extendedProps.project_id)
   }
 
 }

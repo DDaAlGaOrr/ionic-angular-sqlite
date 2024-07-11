@@ -172,7 +172,7 @@ export class ProjectsService {
     return tasksEvents;
   }
 
-  async verifyIfActivityIsEnable(event: any, type: string, project_id: number): Promise<any> {
+  async verifyIfActivityIsEnable(type: string, project_id: number): Promise<any> {
     if (type === 'project') {
       try {
         const observableResult = await this.httpService.get(`staffs/${project_id}/documentalChecklist`, true);
