@@ -11,8 +11,8 @@ import { Capacitor } from '@capacitor/core';
 import { Filesystem } from '@capacitor/filesystem';
 import { Plugins } from '@capacitor/core';
 
+
 const { Permissions } = Plugins;
-// import { Permissions, PermissionType } from '@capacitor/permissions';
 
 
 import { LoaderService } from './services/loader.service';
@@ -45,5 +45,6 @@ export class AppComponent {
     } catch(err: any) {
         console.error('Unable to initialize database', err);
     }
+    
 }
 

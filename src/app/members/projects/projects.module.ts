@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
-import { MbscModule } from '@mobiscroll/angular';
+// import { MbscModule } from '@mobiscroll/angular';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 import { ProjectsPageRoutingModule } from './projects-routing.module';
 
@@ -18,8 +19,9 @@ import { LoaderModule } from 'src/app/components/loader/loader.module';
     IonicModule,
     ProjectsPageRoutingModule,
     HeaderModule,
-    MbscModule,
-    LoaderModule
+    // MbscModule,
+    LoaderModule,
+    FullCalendarModule
   ],
   declarations: [ProjectsPage]
 })

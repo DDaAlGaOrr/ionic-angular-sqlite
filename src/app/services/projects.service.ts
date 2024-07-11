@@ -5,6 +5,7 @@ import { Storage } from '@ionic/storage-angular';
 
 import { HttpService } from './http.service';
 import { AuthenticationService } from './authentication.service';
+import { Event } from '../interfaces/Projects';
 
 
 import { ToastService } from './toast.service';
@@ -30,7 +31,7 @@ export class ProjectsService {
     private storage: Storage
   ) { }
 
-  async getProjects(userid: number): Promise<any[]> {
+  async getProjects(userid: number): Promise<Event[]> {
     if (this.networkService.getNetworkStatus()) {
       return await this.getNetworkProjects(userid)
     } else {
@@ -38,7 +39,7 @@ export class ProjectsService {
     }
   }
 
-  async getNetworkProjects(userid: number): Promise<any[]> {
+  async getNetworkProjects(userid: number): Promise<Event[]> {
     try {
       this.loaderService.show();
       const observableResult = await this.httpService.get(`tasks/${userid}/tasks`, true);

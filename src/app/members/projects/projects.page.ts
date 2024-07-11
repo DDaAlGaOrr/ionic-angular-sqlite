@@ -7,11 +7,18 @@ import {
   MbscEventcalendarOptions,
 } from '@mobiscroll/angular';
 import { AlertController } from '@ionic/angular';
+import { CalendarOptions } from '@fullcalendar/core'; // useful for typechecking
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import listPlugin from '@fullcalendar/list';
 
 import { ProjectsService } from './../../services/projects.service';
 import { AuthenticationService } from './../../services/authentication.service';
 import { LoggedData } from './../../interfaces/Auth';
 import { TopLevel } from './../../interfaces/Calendar';
+import { Event } from 'src/app/interfaces/Projects';
+
+
 
 setOptions({
   locale: localeEs,
@@ -32,7 +39,7 @@ setOptions({
 export class ProjectsPage implements OnInit {
   userdata: LoggedData = { email: '', firstname: '', lastname: '', staffid: 0 }
   selectedSegment: 'agenda' | 'incidencia' = 'agenda';
-  myEvents: TopLevel[] = [];
+  myEvents: Event[] = [];
   currentEvent: any[] = [];
   view = 'month';
 
@@ -63,12 +70,23 @@ export class ProjectsPage implements OnInit {
       },
     },
   ];
-
+  calendarOptions = {
+    plugins: [dayGridPlugin, interactionPlugin, listPlugin],
+    initialView: 'dayGridMonth',
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,listMonth'
+    },
+    dateClick: this.handleDateClick.bind(this),
+    events: [] as Event[]
+  };
   constructor(private projectsService: ProjectsService, private authenticationService: AuthenticationService, private alertController: AlertController,) { }
 
   async ngOnInit() {
     this.userdata = await this.authenticationService.getLoggedData()
     this.myEvents = await this.projectsService.getProjects(this.userdata.staffid)
+    this.calendarOptions.events = this.myEvents;
   }
 
   async presentAlert(event: any) {
@@ -102,6 +120,10 @@ export class ProjectsPage implements OnInit {
 
   async linkIncident(event: any) {
     await this.projectsService.verifyIfActivityIsEnable(event, event.event.rel_type, event.event.project_id)
+  }
+
+  handleDateClick(arg: any) {
+    alert('date click! ' + arg.dateStr)
   }
 
 }

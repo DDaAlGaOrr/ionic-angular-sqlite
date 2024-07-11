@@ -4,6 +4,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
 import localeEsMX from '@angular/common/locales/es-MX';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
@@ -16,9 +17,15 @@ registerLocaleData(localeEsMX, 'es-MX');
 
 @NgModule({
   declarations: [AppComponent, LoaderComponent,],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, IonicStorageModule.forRoot({
-    driverOrder: ['sqlite', 'indexeddb', 'localstorage', 'websql']
-  }), HttpClientModule],
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(),
+    AppRoutingModule,
+    IonicStorageModule.forRoot({
+      driverOrder: ['sqlite', 'indexeddb', 'localstorage', 'websql']
+    }),
+    HttpClientModule,
+    FullCalendarModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
