@@ -1,4 +1,3 @@
-import { MbscModule } from '@mobiscroll/angular';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from './services/authentication.service';
@@ -8,21 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { Platform } from '@ionic/angular';
 import { Capacitor } from '@capacitor/core';
-import { Filesystem } from '@capacitor/filesystem';
 import { Plugins } from '@capacitor/core';
 
-
 const { Permissions } = Plugins;
-
-
-import { LoaderService } from './services/loader.service';
 
 @Component({
     selector: 'app-root',
     templateUrl: 'app.component.html',
     styleUrls: ['app.component.scss'],
     standalone: true,
-    imports: [MbscModule, FormsModule, IonicModule, CommonModule],
+    imports: [ FormsModule, IonicModule, CommonModule],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppComponent {

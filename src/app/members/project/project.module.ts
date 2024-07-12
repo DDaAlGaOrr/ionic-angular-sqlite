@@ -4,16 +4,29 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
+import { NzProgressModule } from 'ng-zorro-antd/progress';
+
 import { ProjectPageRoutingModule } from './project-routing.module';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 
 import { ProjectPage } from './project.page';
+import { LoaderModule } from 'src/app/components/loader/loader.module';
+import { HeaderModule } from './../../components/header/header.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ProjectPageRoutingModule
+    ProjectPageRoutingModule,
+    LoaderModule,
+    HeaderModule,
+    NzProgressModule,
+    NzPaginationModule,
+    NzSpaceModule,
+    NzTagModule
   ],
   declarations: [ProjectPage]
 })

@@ -1,11 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  setOptions,
-  MbscEventcalendarView,
-  MbscCalendarEvent,
-  localeEs,
-  MbscEventcalendarOptions,
-} from '@mobiscroll/angular';
 import { AlertController } from '@ionic/angular';
 import { CalendarOptions } from '@fullcalendar/core'; // useful for typechecking
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -15,21 +8,7 @@ import listPlugin from '@fullcalendar/list';
 import { ProjectsService } from './../../services/projects.service';
 import { AuthenticationService } from './../../services/authentication.service';
 import { LoggedData } from './../../interfaces/Auth';
-import { TopLevel } from './../../interfaces/Calendar';
 import { Event } from 'src/app/interfaces/Projects';
-
-
-
-setOptions({
-  locale: localeEs,
-  theme: 'ios',
-  themeVariant: 'light',
-  clickToCreate: false,
-  dragToCreate: false,
-  dragToMove: false,
-  dragToResize: false,
-  eventDelete: false,
-});
 
 @Component({
   selector: 'app-projects',
@@ -38,20 +17,9 @@ setOptions({
 })
 export class ProjectsPage implements OnInit {
   userdata: LoggedData = { email: '', firstname: '', lastname: '', staffid: 0 }
-  selectedSegment: 'agenda' | 'incidencia' = 'agenda';
   myEvents: Event[] = [];
   currentEvent: any[] = [];
-  view = 'month';
 
-  calView: MbscEventcalendarView = {
-    calendar: {
-      type: 'month',
-      labels: false,
-      popover: true,
-      popoverClass: 'custom-event-popover',
-    },
-    agenda: { type: 'month' },
-  };
   public alertButtons = [
     {
       text: 'Cancelar',

@@ -1,9 +1,414 @@
 import { Injectable } from '@angular/core';
 
+import { LoaderService } from './loader.service';
+import { NetworkService } from './network.service';
+import { HttpService } from './http.service';
+import { PlanDetail } from '../interfaces/Checklist';
+import { ToastService } from './toast.service';
+import { TaskData } from '../interfaces/Checklist';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
+  tasksData: any[] = [];
+  servicesAreas: any[] = []
+  checklistItems: any[] = [];
+  uvChecklistItems: any[] = []
+  clientName: string = ""
+  subsdiaryName: string = ""
+  planName: string = ""
 
-  constructor() { }
+  constructor(
+    private networkService: NetworkService,
+    private httpService: HttpService,
+    private toastService: ToastService
+  ) { }
+
+  dataUrlToBlob(dataUrl: string) {
+    const arr = dataUrl.split(',');
+    if (arr.length !== 2) {
+      throw new Error('Invalid data URL format');
+    }
+    const mimeMatch = arr[0].match(/:(.*?);/);
+    const mime = mimeMatch ? mimeMatch[1] : 'application/octet-stream';
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
+  }
+
+  async uploadImage(blob: Blob, route: string) {
+    //   try {
+    //     const currentDate = Date.now();
+    //     const filePath = `${route}/${currentDate}.jpg`;
+    //     const fileRef = ref(this.storage, filePath);
+    //     const task = await uploadBytes(fileRef, blob);
+    //     const url = getDownloadURL(fileRef);
+    //     return url;
+    //   } catch (error) {
+    //     console.error('Error al cargar la imagen:', error);
+    //     throw error;
+    //   }
+  }
+
+  async getProjectTasks(projectId: number, projectType: string) {
+    if (this.networkService.getNetworkStatus()) {
+      return await this.getOnlineProjectTasks(projectId, projectType)
+    } else {
+      return await this.getOfflineProjectTasks(projectId, projectType)
+    }
+  }
+
+  async getOnlineProjectTasks(projectId: number, projectType: string): Promise<PlanDetail> {
+    const data: PlanDetail = {
+      tasksData: [],
+      clientName: '',
+      subsdiaryName: '',
+      planName: '',
+      checklistItems: '',
+      formattedTask: { formattedTasks: [], tasksBelts: [] },
+      projectType: projectType,
+      uvChecklistItems: {}
+    }
+    const observableResult = await this.httpService.get(`staffs/${projectId}/tasks`, true)
+    return new Promise((resolve, reject) => {
+      observableResult.subscribe(
+        (response: any) => {
+          console.log(response)
+          data.tasksData = response.tasks;
+          data.clientName = `${response.plan_detail[0].client} - ${response.plan_detail[0].id_subsidiary}`;
+          data.subsdiaryName = response.plan_detail[0].subsidiary;
+          data.planName = response.plan_detail[0].folio;
+          data.checklistItems = response.items;
+          data.formattedTask = this.formatTasksObject(
+            response.tasks,
+            response.service_area,
+            response.cinturones.split(', ')
+          );
+          resolve(data);
+        },
+        (error: any) => {
+          this.toastService.presentToast('Algo salio mal')
+          console.error('Error al enviar datos:', error);
+        }
+      );
+    })
+  }
+
+  async getOfflineProjectTasks(projectId: number, projectType: string) { }
+
+  async getTaskItems(projectId: number, projectType: string) {
+    const data = {
+      clientName: '',
+      subsdiaryName: '',
+      uvChecklistItems: ''
+    }
+    this.httpService
+      .get(`staffs/${projectId}/tasks_uv`, true)
+      .then((observableResult) => {
+        observableResult.subscribe(
+          (response: any) => {
+            console.log(response);
+            const groupedTasks = response.tasks.reduce(
+              (acc: any, task: any) => {
+                const { cinturon } = task;
+                if (!acc[cinturon]) {
+                  acc[cinturon] = [];
+                }
+                acc[cinturon].push(task);
+                return acc;
+              },
+              {}
+            );
+            data.clientName = response.plan_detail[0].name_client;
+            data.subsdiaryName = response.plan_detail[0].client_name;
+            data.uvChecklistItems = groupedTasks;
+          },
+          (error: any) => {
+            console.error('Error al enviar datos:', error);
+          }
+        );
+      })
+      .catch((error) => {
+        console.error('Error al realizar la solicitud de calendar:', error);
+      });
+  }
+
+  // getDocumentalChecklist(projectId: number, projectType: string) {
+  //   if (projectType == 'project') {
+  //     this.httpService
+  //       .get(`staffs/${projectId}/documentalChecklist`, true)
+  //       .then((observableResult) => {
+  //         observableResult.subscribe(
+  //           (response: any) => {
+  //             const checklistItemsBySection: any = {};
+  //             this.totalPaginas = response.checklist_sections.length;
+  //             for (const sectionId in response.items) {
+  //               if (response.items.hasOwnProperty(sectionId)) {
+  //                 const sectionItems = response.items[sectionId];
+  //                 if (Array.isArray(sectionItems)) {
+  //                   checklistItemsBySection[sectionId] = sectionItems;
+  //                 } else {
+  //                   const indexName = Object.keys(sectionItems)[0];
+  //                   checklistItemsBySection[sectionId] = {
+  //                     subsection: true,
+  //                     name: indexName,
+  //                     items: sectionItems[indexName],
+  //                   };
+  //                   this.evaluationAnswers[sectionId] = {
+  //                     items: sectionItems[indexName],
+  //                   };
+  //                 }
+  //               }
+  //             }
+
+  //             // Guardar la lista de secciones con sus elementos
+  //             this.sectionListItems = response.checklist_sections.map(
+  //               (section: any) => {
+  //                 let extraAnswerDescription = '';
+  //                 let sections = [19, 16, 8, 9];
+  //                 if (sections.includes(parseInt(section.id))) {
+  //                   switch (parseInt(section.id)) {
+  //                     case 19:
+  //                       extraAnswerDescription =
+  //                         'TECNICO NO SE ENCUENTRA EN PISO/NA';
+  //                       break;
+  //                     case 16:
+  //                       extraAnswerDescription =
+  //                         'CUMPLE POR ARRANQUE DE SERVICIO / NA';
+  //                       break;
+  //                     case 8:
+  //                       extraAnswerDescription =
+  //                         'CUMPLE POR ARRANQUE DE SERVICIO / NA';
+  //                       break;
+  //                     case 9:
+  //                       extraAnswerDescription =
+  //                         'CUMPLE EN REVISIÓN POR EL CLIENTE';
+  //                       break;
+  //                   }
+  //                 }
+
+  //                 return {
+  //                   extraAnswer: sections.includes(parseInt(section.id)),
+  //                   extraAnswerDescription,
+  //                   ...section,
+  //                   items: checklistItemsBySection[section.id] || [],
+  //                 };
+  //               }
+  //             );
+  //             this.sectionList = response.checklist_sections;
+  //             this.productsDocumntalChecklist = response.products.products;
+  //             this.techniciansDocumntalChecklist =
+  //               response.products.technicians_name;
+  //             this.selectedTexts = Array(
+  //               response.products.products.length
+  //             ).fill('Seleccionado');
+
+  //             this.selectedTextsTechnicians = Array(
+  //               response.products.technicians_name.length
+  //             ).fill('Seleccionado');
+  //             // console.log(this.evaluationAnswers);
+  //             this.evaluationAnswers[7].items.forEach((item: any) => {
+  //               this.techniciansDocumntalChecklistAnswers[item.question_id] =
+  //               {
+  //                 question_id: item.question_id,
+  //                 answer: true,
+  //               };
+  //             });
+  //             console.log(this.evaluationAnswers);
+  //             this.evaluationAnswers[15].items.forEach((item: any) => {
+  //               this.productsDocumntalChecklistAnswers[item.question_id] = {
+  //                 question_id: item.question_id,
+  //                 answer: true,
+  //               };
+  //             });
+  //           },
+  //           (error: any) => {
+  //             console.error('Error al enviar datos:', error);
+  //           }
+  //         );
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error al realizar la solicitud de calendar:', error);
+  //       });
+  //   } else {
+  //     this.httpService
+  //       .get(`staffs/${project_id}/documentalUvChecklist`, true)
+  //       .then((observableResult) => {
+  //         observableResult.subscribe(
+  //           (response: any) => {
+  //             const checklistItemsBySection: any = {};
+  //             this.totalPaginas = response.checklist_sections.length;
+  //             for (const sectionId in response.items) {
+  //               if (response.items.hasOwnProperty(sectionId)) {
+  //                 const sectionItems = response.items[sectionId];
+  //                 if (Array.isArray(sectionItems)) {
+  //                   checklistItemsBySection[sectionId] = sectionItems;
+  //                 } else {
+  //                   const indexName = Object.keys(sectionItems)[0];
+  //                   checklistItemsBySection[sectionId] = {
+  //                     subsection: true,
+  //                     name: indexName,
+  //                     items: sectionItems[indexName],
+  //                   };
+  //                 }
+  //               }
+  //             }
+  //             this.sectionListItems = response.checklist_sections.map(
+  //               (section: any) => {
+  //                 let extraAnswerDescription = '';
+  //                 let sections = [19, 16, 8, 9];
+  //                 if (sections.includes(parseInt(section.id))) {
+  //                   switch (parseInt(section.id)) {
+  //                     case 19:
+  //                       extraAnswerDescription =
+  //                         'TECNICO NO SE ENCUENTRA EN PISO/NA';
+  //                       break;
+  //                     case 16:
+  //                       extraAnswerDescription =
+  //                         'CUMPLE POR ARRANQUE DE SERVICIO / NA';
+  //                       break;
+  //                     case 8:
+  //                       extraAnswerDescription =
+  //                         'CUMPLE POR ARRANQUE DE SERVICIO / NA';
+  //                       break;
+  //                     case 9:
+  //                       extraAnswerDescription =
+  //                         'CUMPLE EN REVISIÓN POR EL CLIENTE';
+  //                       break;
+  //                   }
+  //                 }
+  //                 return {
+  //                   extraAnswer: sections.includes(parseInt(section.id)),
+  //                   extraAnswerDescription,
+  //                   ...section,
+  //                   items: checklistItemsBySection[section.id] || [],
+  //                 };
+  //               }
+  //             );
+  //             this.sectionList = response.checklist_sections;
+  //             this.productsDocumntalChecklist = response.products.products;
+  //             this.techniciansDocumntalChecklist =
+  //               response.products.technicians_name;
+  //             this.selectedTexts = Array(
+  //               response.products.products.length
+  //             ).fill('Seleccionado');
+  //             this.selectedTextsTechnicians = Array(
+  //               response.products.technicians_name.length
+  //             ).fill('Seleccionado');
+  //           },
+  //           (error: any) => {
+  //             console.error('Error al enviar datos:', error);
+  //           }
+  //         );
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error al realizar la solicitud de calendar:', error);
+  //       });
+  //   }
+  // }
+
+  formatTasksObject(tasks: any[], services: any[], cinturones: any[]) {
+    const tasksBelts = cinturones;
+    const formattedTasks: any[] = [];
+    const edc: any = {
+      area_service: {},
+      cinturones: [],
+      total_tasks: 0,
+    };
+    const edcm: any = {
+      area_service: {},
+      cinturones: [],
+      total_tasks: 0,
+    };
+    const lln: any = {
+      area_service: {},
+      cinturones: [],
+      total_tasks: 0,
+    };
+    const rnp: any = {
+      area_service: {},
+      cinturones: [],
+      total_tasks: 0,
+    };
+
+    // Agrupar tareas por tipo de control y ubicación
+    tasks.forEach((task) => {
+
+      const controlType = task.group_control;
+      let cinturon = task.cinturon;
+
+      switch (controlType) {
+        case '1':
+          if (!edc.area_service[cinturon]) {
+            edc.area_service[cinturon] = [];
+          }
+          edc.area_service[cinturon].push(task);
+          edc.total_tasks++;
+          break;
+        case '2':
+          if (!edcm.area_service[cinturon]) {
+            edcm.area_service[cinturon] = [];
+          }
+          edcm.area_service[cinturon].push(task);
+          edcm.total_tasks++;
+          break;
+        case '3':
+          if (!lln.area_service[cinturon]) {
+            lln.area_service[cinturon] = [];
+          }
+          lln.area_service[cinturon].push(task);
+          lln.total_tasks++;
+          break;
+        case '4':
+          if (cinturon != 'areas') {
+            cinturon = 'areas';
+          }
+          if (!rnp.area_service[cinturon]) {
+            rnp.area_service[cinturon] = [];
+          }
+          rnp.area_service[cinturon].push(task);
+          rnp.total_tasks++;
+          break;
+      }
+    });
+
+    // Agrupar servicios por tipo de control
+    services.forEach((service) => {
+      switch (service.name) {
+        case 'EDC':
+          edc.service = service;
+          edc.cinturones.push(service.cinturon.trim());
+          break;
+        case 'EDCM':
+          edcm.service = service;
+          edcm.cinturones.push(service.cinturon.trim());
+          break;
+        case 'LLN':
+          lln.service = service;
+          lln.cinturones.push(service.cinturon.trim());
+          break;
+        case 'RNP':
+          rnp.service = service;
+          rnp.cinturones.push(service.cinturon.trim());
+          break;
+      }
+    });
+
+    formattedTasks.push({
+      edc,
+      edcm,
+      lln,
+      rnp,
+    });
+
+    return {
+      tasksBelts: tasksBelts,
+      formattedTasks: formattedTasks
+    }
+  }
 }
