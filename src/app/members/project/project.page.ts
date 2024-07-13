@@ -85,10 +85,17 @@ export class ProjectPage implements OnInit {
       this.checklistItems = planDetail.checklistItems
       this.tasksBelts = planDetail.formattedTask.tasksBelts
       this.formattedTasks = planDetail.formattedTask.formattedTasks
+      const documental = await this.projectService.getProjectDocumentalChecklist(this.projectId, this.projectType)
+      this.totalPages = documental.totalPages
+      this.sectionList = documental.sectionList
+      this.sectionListItems = documental.sectionListItems
+      this.productsDocumntalChecklist = documental.productsDocumntalChecklist
+      this.techniciansDocumntalChecklist = documental.techniciansDocumntalChecklist
+      console.log(documental)
     } else {
       await this.projectService.getTaskItems(this.projectId, this.projectType)
+      // await this.projectService.getTaskDocumentalChecklist(this.projectId,this.projectType)
     }
-    // this.projectService.getDocumentalChecklist(this.projectId,this.projectType)
     this.loaderService.hide();
   }
 
@@ -100,8 +107,8 @@ export class ProjectPage implements OnInit {
     // );
   }
   changeSelectedPage(evento: number): void {
-    this.currentPage = this.selectedOption + 1;
-    this.setProgresSection();
+    this.currentPage = evento;
+    this.selectedOption = evento - 1;
   }
 
   showSelectedPage(): void {

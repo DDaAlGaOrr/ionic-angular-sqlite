@@ -32,3 +32,29 @@ export interface FormattedTask {
   tasksBelts: any[]
   formattedTasks: any[]
 }
+
+interface EvaluationAnswers {
+  [key: string]: any;
+}
+
+interface TechniciansDocumntalChecklistAnswers {
+  [key: string]: any;
+}
+interface ProductsDocumntalChecklistAnswers {
+  [key: string]: any;
+}
+
+export interface DocumentalData {
+  totalPages: number;
+  evaluationAnswers: EvaluationAnswers;
+  sectionListItems: any[];
+  sectionList: any[];
+  productsDocumntalChecklist: any[];
+  techniciansDocumntalChecklist: {};
+  selectedTexts: string[];
+  selectedTextsTechnicians: string[];
+  techniciansDocumntalChecklistAnswers: TechniciansDocumntalChecklistAnswers;
+  productsDocumntalChecklistAnswers: ProductsDocumntalChecklistAnswers;
+
+}
+
