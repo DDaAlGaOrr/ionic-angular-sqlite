@@ -44,6 +44,10 @@ interface ProductsDocumntalChecklistAnswers {
   [key: string]: any;
 }
 
+export interface TasksGroup {
+  [key: string]: Task[];
+}
+
 export interface DocumentalData {
   totalPages: number;
   evaluationAnswers: EvaluationAnswers;

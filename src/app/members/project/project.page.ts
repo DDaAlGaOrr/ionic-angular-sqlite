@@ -15,7 +15,7 @@ import { DocumentalChecklistService } from '../../services/documental-checklist.
 import { NetworkService } from '../../services/network.service';
 import { ProjectService } from '../../services/project.service';
 import { LoaderService } from '../../services/loader.service';
-import { PlanDetail } from 'src/app/interfaces/Checklist';
+import { PlanDetail, TasksGroup } from '../../interfaces/Checklist';
 
 
 
@@ -50,6 +50,8 @@ export class ProjectPage implements OnInit {
   reasonDocumentalAnswer: string = ""
   projectType: string = '';
   projectId: number = 0;
+  uvTotalTasks: TasksGroup = {};
+  selectedItem: number | null = null;
 
 
 
@@ -267,17 +269,17 @@ export class ProjectPage implements OnInit {
   }
 
   toggleItem(index: number) {
-    // if (this.selectedItem === index) {
-    //   // Si ya está seleccionado, ciérralo
-    //   this.selectedItem = null;
-    // } else {
-    //   // Si es diferente al seleccionado, ábrelo y cierra los demás
-    //   this.selectedItem = index;
-    // }
+    if (this.selectedItem === index) {
+      // Si ya está seleccionado, ciérralo
+      this.selectedItem = null;
+    } else {
+      // Si es diferente al seleccionado, ábrelo y cierra los demás
+      this.selectedItem = index;
+    }
   }
 
   isItemOpen(index: number): boolean {
-    // return this.selectedItem === index;
+    return this.selectedItem === index;
     return true
   }
 
@@ -289,5 +291,9 @@ export class ProjectPage implements OnInit {
       return this.evidenceImageDocumental
     }
   }
+
+  openSelectUvMeasure(isOpen: boolean, indexTask: number) { }
+
+  showModalAddMinuteItem(status: boolean) { }
 
 }

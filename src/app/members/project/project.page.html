@@ -144,7 +144,7 @@
     </ion-item>
   </ng-container>
 
-  <!-- <ng-container *ngIf="selectedSegment === 'piso'">
+  <ng-container *ngIf="selectedSegment === 'piso'">
     <ion-item-divider class="ion-margin-top">
       <ion-label class="ion-text-center"> Trampas </ion-label>
     </ion-item-divider>
@@ -153,7 +153,8 @@
       <nz-tag [nzColor]="'red'">Por revisar</nz-tag>
     </ion-row>
 
-    <ion-grid *ngIf="typeProject === 'project'; else uvTask">
+    <!-- <ion-grid *ngIf="projectType === 'project'; else uvTask"> -->
+    <ion-grid *ngIf="projectType === 'project'">
       <ion-list>
         <div class="accordion accordion-flush">
           <div class="accordion-item">
@@ -401,7 +402,7 @@
         </div>
       </ion-list>
     </ion-grid>
-    <ng-template #uvTask>
+    <!-- <ng-template #uvTask>
       <ion-row>
         <ion-col size="auto">
           <div class="content-trampa">
@@ -435,9 +436,9 @@
         </ion-col>
       </ion-row>
     </ng-template>
-    <ion-grid *ngIf="typeProject === 'task_sup'">
+    <ion-grid *ngIf="projectType === 'task_sup'">
       <div>
-        <ion-button (click)="modalAddMinuteItem(true)" [strong]="true">Agregar elemento</ion-button>
+        <ion-button (click)="showModalAddMinuteItem(true)" [strong]="true">Agregar elemento</ion-button>
       </div>
       <nz-table #basicTable>
         <thead>
@@ -457,8 +458,9 @@
           </tr>
         </tbody>
       </nz-table>
-    </ion-grid>
-    <ion-modal [isOpen]="modalTaskAnswerNo" class="modal-encuesta" [backdropDismiss]="false">
+    </ion-grid> -->
+
+    <!-- <ion-modal [isOpen]="modalTaskAnswerNo" class="modal-encuesta" [backdropDismiss]="false">
       <ng-template>
         <ion-content>
           <ion-toolbar>
@@ -507,8 +509,8 @@
           </ion-list>
         </ion-content>
       </ng-template>
-    </ion-modal>
-    <ion-modal [isOpen]="isSelectUvMeasure">
+    </ion-modal> -->
+    <!-- <ion-modal [isOpen]="isSelectUvMeasure">
       <ng-template>
         <ion-content>
           <ion-header>
@@ -567,8 +569,8 @@
           </ion-item>
         </ion-content>
       </ng-template>
-    </ion-modal>
-    <ion-modal [isOpen]="openTaskModal" trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+    </ion-modal> -->
+    <!-- <ion-modal [isOpen]="openTaskModal" trigger="open-modal" (willDismiss)="onWillDismiss($event)">
       <ng-template>
         <ion-header>
           <ion-toolbar>
@@ -677,8 +679,8 @@
           </ion-grid>
         </ion-content>
       </ng-template>
-    </ion-modal>
-  </ng-container> -->
+    </ion-modal> -->
+  </ng-container>
 </ion-content>
 
 <!-- <ion-modal [isOpen]="openDocumentModal" class="modal-encuesta" [backdropDismiss]="false">
