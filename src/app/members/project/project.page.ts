@@ -44,14 +44,15 @@ export class ProjectPage implements OnInit {
   selectedTexts: string[] = [];
   techniciansDocumntalChecklist: any = [];
   selectedTextsTechnicians: string[] = [];
-  openDocumentModal: boolean = false
+  openNoAnswerDocumentModal: boolean = false
   documentChecklistItemId: number = 0
-  evidenceImageDocumental: string = ""
+  evidenceImageDocumental: any = "";
   reasonDocumentalAnswer: string = ""
   projectType: string = '';
   projectId: number = 0;
   uvTotalTasks: TasksGroup = {};
   selectedItem: number | null = null;
+  documentalAnswerDescription: string = ''
 
 
 
@@ -127,17 +128,9 @@ export class ProjectPage implements OnInit {
     return answer ? answer.answer : undefined;
   }
 
-  async setAnswerDocumental(
-    idItemChecklist: number,
-    answer: any,
-    description: any = ""
-  ) {
+  async setAnswerYesDocumental(idItemChecklist: number, answer: any, description: any = "") {
     setTimeout(() => {
-      this.documentalChecklistService.setSelectedItem(
-        idItemChecklist,
-        answer,
-        description
-      );
+      this.documentalChecklistService.setSelectedItem(idItemChecklist, answer, description);
     }, 0);
     console.log(this.documentalChecklistService.getAllItems())
     // await this.storageProjectService.saveProgress(
@@ -146,26 +139,21 @@ export class ProjectPage implements OnInit {
     // );
   }
 
-  setOpenModalDocumental(isOpen: boolean, id: number) {
-    this.openDocumentModal = isOpen;
+  setOpenNoAnswerDocumentalModal(isOpen: boolean, id: number) {
+    this.openNoAnswerDocumentModal = isOpen;
     this.documentChecklistItemId = id;
   }
 
   closeDocumentalModal(isOpen: boolean) {
-    this.openDocumentModal = isOpen;
+    this.openNoAnswerDocumentModal = isOpen;
   }
 
   async setDocumentalAnswerNo(isOpen: boolean) {
     let url = this.evidenceImageDocumental.length > 0 ? await this.setUrlImage(this.evidenceImageDocumental, 'documentalEvidence') || "" : ''
-    this.documentalChecklistService.setSelectedItem(
-      this.documentChecklistItemId,
-      'no',
-      this.reasonDocumentalAnswer,
-      url
-    );
-    this.reasonDocumentalAnswer = '';
+    this.documentalChecklistService.setSelectedItem(this.documentChecklistItemId, 'no', this.documentalAnswerDescription, url);
+    this.documentalAnswerDescription = '';
     this.evidenceImageDocumental = '';
-    this.openDocumentModal = isOpen;
+    this.openNoAnswerDocumentModal = isOpen;
 
     // await this.storageProjectService.saveProgress(
     //   this.checklistService.getAllItems(),
@@ -285,11 +273,16 @@ export class ProjectPage implements OnInit {
 
   async setUrlImage(evidenceImage: string, folder: string) {
     if (this.networkService.getNetworkStatus()) {
-      const blob = this.projectService.dataUrlToBlob(evidenceImage);
-      return await this.projectService.uploadImage(blob, folder);
+      // const blob = this.projectService.dataUrlToBlob(evidenceImage);
+      // return await this.projectService.uploadImage(blob, folder);
+      return evidenceImage
     } else {
-      return this.evidenceImageDocumental
+      return evidenceImage
     }
+  }
+
+  async takePictureDocumental() {
+    this.evidenceImageDocumental = this.projectService.takePictureDocumental()
   }
 
   openSelectUvMeasure(isOpen: boolean, indexTask: number) { }

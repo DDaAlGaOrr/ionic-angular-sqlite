@@ -1,22 +1,40 @@
 import { Injectable } from '@angular/core';
+import { Capacitor } from '@capacitor/core';
+import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+// import { Storage as IonicStorage  } from '@ionic/storage-angular';
 
-import { LoaderService } from './loader.service';
+
 import { NetworkService } from './network.service';
 import { HttpService } from './http.service';
 import { PlanDetail, DocumentalData } from '../interfaces/Checklist';
 import { ToastService } from './toast.service';
+// import {
+//   Storage as FirebaseStorage,
+//   getDownloadURL,
+//   ref,
+//   uploadBytes,
+// } from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
-
-
   constructor(
     private networkService: NetworkService,
     private httpService: HttpService,
-    private toastService: ToastService
-  ) { }
+    private toastService: ToastService,
+    // private firebaseStorage: FirebaseStorage,
+    // private androidPermissions: AndroidPermissions,
+    // private ionicStorage: IonicStorage
+  ) {
+    this.init()
+  }
+
+  private async init() {
+    // await this.ionicStorage.create();
+  }
 
   dataUrlToBlob(dataUrl: string) {
     const arr = dataUrl.split(',');
@@ -35,17 +53,17 @@ export class ProjectService {
   }
 
   async uploadImage(blob: Blob, route: string) {
-    //   try {
-    //     const currentDate = Date.now();
-    //     const filePath = `${route}/${currentDate}.jpg`;
-    //     const fileRef = ref(this.storage, filePath);
-    //     const task = await uploadBytes(fileRef, blob);
-    //     const url = getDownloadURL(fileRef);
-    //     return url;
-    //   } catch (error) {
-    //     console.error('Error al cargar la imagen:', error);
-    //     throw error;
-    //   }
+  //   try {
+  //     const currentDate = Date.now();
+  //     const filePath = `${route}/${currentDate}.jpg`;
+  //     const fileRef = ref(this.firebaseStorage, filePath);
+  //     const task = await uploadBytes(fileRef, blob);
+  //     const url = getDownloadURL(fileRef);
+  //     return url;
+  //   } catch (error) {
+  //     console.error('Error al cargar la imagen:', error);
+  //     throw error;
+  //   }
   }
 
   async getProjectTasks(projectId: number, projectType: string) {
@@ -501,5 +519,48 @@ export class ProjectService {
       tasksBelts: tasksBelts,
       formattedTasks: formattedTasks
     }
+  }
+
+  async takePictureDocumental() {
+    // try {
+    //   if (Capacitor.getPlatform() !== 'web') {
+    //     this.androidPermissions
+    //       .checkPermission(this.androidPermissions.PERMISSION.CAMERA)
+    //       .then(
+    //         (result: any) => {
+    //           if (result.hasPermission) {
+    //             // Acceder a la cámara
+    //           } else {
+    //             this.androidPermissions.requestPermission(
+    //               this.androidPermissions.PERMISSION.CAMERA
+    //             );
+    //           }
+    //         },
+    //         () =>
+    //           this.androidPermissions.requestPermission(
+    //             this.androidPermissions.PERMISSION.CAMERA
+    //           )
+    //       );
+    //   }
+    //   const evidenceImageDocumental = await Camera.getPhoto({
+    //     quality: 90,
+    //     source: CameraSource.Prompt,
+    //     width: 600,
+    //     resultType: CameraResultType.DataUrl,
+    //   });
+    //   if (evidenceImageDocumental.dataUrl) {
+    //     const base64Data = evidenceImageDocumental.dataUrl.split(',')[1];
+    //     const fileName = `IMG_${new Date().getTime()}.jpeg`;
+    //     await Filesystem.writeFile({
+    //       path: fileName,
+    //       data: base64Data,
+    //       directory: Directory.External, // Guardar en almacenamiento externo
+    //     });
+    //   }
+    //   return evidenceImageDocumental.dataUrl;
+    // } catch (error) {
+    //   return false
+    //   console.log(error);
+    // }
   }
 }

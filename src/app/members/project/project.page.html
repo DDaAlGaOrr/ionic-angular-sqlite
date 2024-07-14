@@ -79,19 +79,20 @@
                     <ion-radio-group [value]="getDocumentalAnswer(item.question_id)" [allowEmptySelection]="true">
                       <ion-grid>
                         <ion-col>
-                          <ion-radio (click)="setAnswerDocumental(item.question_id,'yes')" class="py-0 max-width-value"
-                            value="yes" justify="start" labelPlacement="end">Sí Cumple</ion-radio>
+                          <ion-radio (click)="setAnswerYesDocumental(item.question_id,'yes')"
+                            class="py-0 max-width-value" value="yes" justify="start" labelPlacement="end">Sí
+                            Cumple</ion-radio>
                         </ion-col>
                         <ion-col>
                           <ion-radio class="py-0 max-width-value" id="open-modal-documental" value="no"
-                            (click)="setOpenModalDocumental(true,item.question_id)" justify="start"
+                            (click)="setOpenNoAnswerDocumentalModal(true,item.question_id)" justify="start"
                             labelPlacement="end">No
                             Cumple</ion-radio>
                         </ion-col>
                         <ion-col>
                           <ion-radio *ngIf="sectionItem?.extraAnswer === true" class="py-0 max-width-value"
                             id="open-modal-documental" value="extra" justify="start" labelPlacement="end"
-                            (click)="setAnswerDocumental(item.question_id,'extra', sectionItem.extraAnswerDescription)">{{
+                            (click)="setAnswerYesDocumental(item.question_id,'extra', sectionItem.extraAnswerDescription)">{{
                             sectionItem.extraAnswerDescription }}</ion-radio>
                         </ion-col>
                       </ion-grid>
@@ -683,38 +684,36 @@
   </ng-container>
 </ion-content>
 
-<!-- <ion-modal [isOpen]="openDocumentModal" class="modal-encuesta" [backdropDismiss]="false">
+<ion-modal [isOpen]="openNoAnswerDocumentModal" class="modal-encuesta" [backdropDismiss]="false">
   <ng-template>
     <ion-content>
       <ion-toolbar>
         <ion-buttons slot="start">
-          <ion-button class="btn-close_modal" color="dark" shape="round" (click)="closeDocumentalModal(false)">Cancelar</ion-button>
+          <ion-button class="btn-close_modal" color="dark" shape="round"
+            (click)="closeDocumentalModal(false)">Cancelar</ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
-          <ion-button [disabled]="!validateForm.valid" class="btn-close_modal" color="dark" shape="round"
+          <ion-button class="btn-close_modal" color="dark" shape="round"
             (click)="setDocumentalAnswerNo(false)">Aceptar</ion-button>
         </ion-buttons>
       </ion-toolbar>
       <ion-list>
-        <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-          <ion-item class="mt-5">
-            <ion-col>
-              <ion-label>Comentario:</ion-label>
-              <textarea formControlName="comentario" rows="4" nz-input [(ngModel)]="reason"></textarea>
+        <ion-item class="mt-5">
+          <ion-col>
+            <ion-label>Comentario:</ion-label>
+            <textarea rows="4" [(ngModel)]="documentalAnswerDescription"></textarea>
+          </ion-col>
+        </ion-item>
+        <ion-item class="ion-margin-bottom">
+          <ion-grid>
+            <ion-label>Añadir archivos</ion-label>
+            <ion-col size="12" class="ion-justify-content-center">
+              <img *ngIf="evidenceImageDocumental" [src]="evidenceImageDocumental" />
+              <ion-button expand="block" (click)="takePictureDocumental()">Agregar foto</ion-button>
             </ion-col>
-          </ion-item>
-
-          <ion-item class="ion-margin-bottom">
-            <ion-grid>
-              <ion-label>Añadir archivos</ion-label>
-              <ion-col size="12" class="ion-justify-content-center">
-                <img *ngIf="evidenceImageDocumental" [src]="evidenceImageDocumental" />
-                <ion-button expand="block" (click)="takePictureDocumental()">Agregar foto</ion-button>
-              </ion-col>
-            </ion-grid>
-          </ion-item>
-        </form>
+          </ion-grid>
+        </ion-item>
       </ion-list>
     </ion-content>
   </ng-template>
-</ion-modal> -->
+</ion-modal>

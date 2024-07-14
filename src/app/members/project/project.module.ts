@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -19,6 +19,7 @@ import { HeaderModule } from './../../components/header/header.module';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     IonicModule,
     ProjectPageRoutingModule,
     LoaderModule,
@@ -30,4 +31,4 @@ import { HeaderModule } from './../../components/header/header.module';
   ],
   declarations: [ProjectPage]
 })
-export class ProjectPageModule {}
+export class ProjectPageModule { }

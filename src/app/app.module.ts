@@ -8,6 +8,8 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
+
 
 import { firebaseConfig } from './environments/firebase.config';
 import { AppComponent } from './app.component';
@@ -21,17 +23,17 @@ registerLocaleData(localeEsMX, 'es-MX');
   declarations: [AppComponent, LoaderComponent],
   imports: [
     BrowserModule,
+    IonicStorageModule.forRoot({
+      driverOrder: ['sqlite', 'indexeddb', 'localstorage', 'websql']
+    }),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideStorage(() => getStorage()),
     IonicModule.forRoot(),
     AppRoutingModule,
-    IonicStorageModule.forRoot({
-      driverOrder: ['sqlite', 'indexeddb', 'localstorage', 'websql']
-    }),
     HttpClientModule,
     FullCalendarModule,
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, AndroidPermissions],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
