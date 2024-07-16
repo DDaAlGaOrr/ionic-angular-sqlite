@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { SqliteService } from './sqlite.service';
 import { StorageService } from './storage.service';
+import { ChecklistSectionService } from './offline/checklist-section.service';
 import { Toast } from '@capacitor/toast';
 
 @Injectable()
@@ -12,6 +13,7 @@ export class InitializeAppService {
     constructor(
         private sqliteService: SqliteService,
         private storageService: StorageService,
+        private checklistSectionService: ChecklistSectionService,
     ) {
 
     }
@@ -26,6 +28,7 @@ export class InitializeAppService {
                 // Initialize the myuserdb database
                 const DB_USERS = 'myuserdb'
                 await this.storageService.initializeDatabase(DB_USERS);
+                await this.checklistSectionService.initializeDatabase(DB_USERS)
                 // Here Initialize MOCK_DATA if required
 
                 // Initialize whatever database and/or MOCK_DATA you like

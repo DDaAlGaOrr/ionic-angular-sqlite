@@ -42,12 +42,31 @@ export class UserUpgradeStatements {
                 `ALTER TABLE users ADD COLUMN password TEXT;`,
             ]
         },
-        // {
-        //     toVersion: 3,
-        //     statements: [
-        //         `DROP TABLE appname_modelname;`,
-        //     ]
-        // },
+        {
+            toVersion: 7,
+            statements: [
+                `
+                    CREATE TABLE IF NOT EXISTS tbltasks(
+                        id INTEGER PRIMARY KEY,
+                        folio_number TEXT,
+                        name TEXT,
+                        group_control INTEGER,
+                        dateadded TEXT,
+                        startdate TEXT,
+                        subsidiary_id TEXT,
+                        uv_task INTEGER,
+                        cinturon TEXT,
+                        duedate TEXT,
+                        addedfrom INTEGER,
+                        status INTEGER,
+                        rel_id INTEGER,
+                        rel_type  TEXT,
+                        type_task TEXT,
+                    );
+                `
+            ]
+
+        },
         // {
         //     toVersion: 4,
         //     statements: [
