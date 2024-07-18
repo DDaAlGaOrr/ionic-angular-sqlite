@@ -146,6 +146,7 @@ export class StorageService {
                 id_sub_section INTEGER,
                 description TEXT
             );
+
         `;
 
         try {
@@ -165,7 +166,6 @@ export class StorageService {
     async loadUsers() {
         const users: User[] = (await this.db.query('SELECT * FROM users;')).values as User[];
         this.userList.next(users);
-        console.log(users)
     }
     // CRUD Operations
     async getUsers() {

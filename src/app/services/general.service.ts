@@ -8,6 +8,7 @@ import { ToastService } from './toast.service';
 import { ProjectProgressService } from './project-progress.service';
 import { LoaderService } from './loader.service';
 import { ChecklistSections, ChecklistTaskForm, ChecklistQuestions } from '../interfaces/Checklist';
+import { Client, SubsidiaryClient, Project, Task, ContractsTypes, ProjectsItems } from '../interfaces/General';
 
 import { LoggedData } from '../interfaces/Auth';
 import { Activities } from '../interfaces/Projects';
@@ -119,6 +120,120 @@ export class GeneralService {
 
   async getSyncChecklisQuestions(staffid: number): Promise<ChecklistQuestions[]> {
     const observableResult = await this.httpService.get(`staffs/${staffid}/getSyncChecklistQuestions`, true)
+    try {
+      return new Promise((resolve, reject) => {
+        observableResult.subscribe((response: any) => {
+          resolve(response);
+        },
+          (error: any) => {
+            this.toastService.presentToast('No se pudieron obtener los datos')
+            console.error('Error al enviar datos:', error);
+            reject(error);
+          }
+        )
+      })
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getSyncSubsidiaryClient(staffid: number): Promise<SubsidiaryClient[]> {
+    const observableResult = await this.httpService.get(`staffs/${staffid}/getSyncSubsidiaryClient`, true)
+    try {
+      return new Promise((resolve, reject) => {
+        observableResult.subscribe((response: any) => {
+          resolve(response);
+        },
+          (error: any) => {
+            this.toastService.presentToast('No se pudieron obtener los datos')
+            console.error('Error al enviar datos:', error);
+            reject(error);
+          }
+        )
+      })
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getSyncClient(staffid: number): Promise<Client[]> {
+    const observableResult = await this.httpService.get(`staffs/${staffid}/getSyncClient`, true)
+    try {
+      return new Promise((resolve, reject) => {
+        observableResult.subscribe((response: any) => {
+          resolve(response);
+        },
+          (error: any) => {
+            this.toastService.presentToast('No se pudieron obtener los datos')
+            console.error('Error al enviar datos:', error);
+            reject(error);
+          }
+        )
+      })
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getSyncprojects(staffid: number): Promise<Project[]> {
+    const observableResult = await this.httpService.get(`staffs/${staffid}/getSyncprojects`, true)
+    try {
+      return new Promise((resolve, reject) => {
+        observableResult.subscribe((response: any) => {
+          resolve(response);
+        },
+          (error: any) => {
+            this.toastService.presentToast('No se pudieron obtener los datos')
+            console.error('Error al enviar datos:', error);
+            reject(error);
+          }
+        )
+      })
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getSyncTasks(staffid: number, endpoint: string): Promise<Task[]> {
+    const observableResult = await this.httpService.get(`staffs/${staffid}/${endpoint}`, true)
+    try {
+      return new Promise((resolve, reject) => {
+        observableResult.subscribe((response: any) => {
+          resolve(response);
+        },
+          (error: any) => {
+            this.toastService.presentToast('No se pudieron obtener los datos')
+            console.error('Error al enviar datos:', error);
+            reject(error);
+          }
+        )
+      })
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getSyncContractsType(staffid: number): Promise<ContractsTypes[]> {
+    const observableResult = await this.httpService.get(`staffs/${staffid}/getSyncContractsTypes`, true)
+    try {
+      return new Promise((resolve, reject) => {
+        observableResult.subscribe((response: any) => {
+          resolve(response);
+        },
+          (error: any) => {
+            this.toastService.presentToast('No se pudieron obtener los datos')
+            console.error('Error al enviar datos:', error);
+            reject(error);
+          }
+        )
+      })
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getSyncProjectsItems(staffid: number): Promise<ProjectsItems[]> {
+    const observableResult = await this.httpService.get(`staffs/${staffid}/getSyncProjectsItems`, true)
     try {
       return new Promise((resolve, reject) => {
         observableResult.subscribe((response: any) => {

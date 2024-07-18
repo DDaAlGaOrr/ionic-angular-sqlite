@@ -62,25 +62,25 @@ export class ChecklistSectionService {
   async addData(id: number, name: string) {
     const sql = `INSERT INTO tblchecklist_section (id, name) VALUES (?,?);`;
     await this.db.run(sql, [id, name]);
-    this.loadData()
+    // this.loadData()
   }
 
   async addDataSubSections(id: number, name: string) {
     const sql = `INSERT INTO tblchecklist_sub_section (id, name) VALUES (?,?);`;
     await this.db.run(sql, [id, name]);
-    this.loadData()
+    // this.loadData()
   }
 
   async addDataTblchecklistTaskForm(data: ChecklistTaskForm) {
     const sql = `INSERT INTO tblchecklist_task_form (id, task_id, rel_type, answered, signature_picture, evidence_type) VALUES (?,?,?,?,?,?);`;
     await this.db.run(sql, [data.id, data.task_id, data.rel_type, data.answered, data.signature_picture, data.evidence_type]);
-    this.loadData()
+    // this.loadData()
   }
 
   async addDataTblchecklistQuestions(data: ChecklistQuestions) {
     const sql = `INSERT INTO tblchecklist_questions (id,id_form,form_id, id_section, id_sub_section, description) VALUES (?,?,?,?,?,?);`;
     await this.db.run(sql, [data.id, data.id_form, data.id_form, data.id_section, data.id_sub_section, data.description]);
-    this.loadData()
+    // this.loadData()
   }
 
   async clearUserTable() {

@@ -1,13 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 
+import { ToastService } from 'src/app/services/toast.service';
 import { LoggedData } from './../../interfaces/Auth';
 import { Activities } from '../../interfaces/Projects';
 import { AuthenticationService } from './../../services/authentication.service';
 import { StorageService } from './../../services/storage.service';
 import { GeneralService } from './../../services/general.service';
 import { LoaderService } from './../../services/loader.service';
-import { ChecklistSectionService } from '../../services/offline/checklist-section.service';
+import { ChecklistSectionService } from '../../services/offline/checklist-section.service'
+import { SubsidiaryClientService } from '../../services/offline/subsidiary-client.service';
+import { ClientsService } from 'src/app/services/offline/clients.service';
+import { ProjectsService } from '../../services/offline/projects.service';
+import { TasksService } from '../../services/offline/tasks.service';
+import { ContractsTypeService } from '../../services/offline/contracts-type.service';
 
 
 @Component({
@@ -27,6 +33,12 @@ export class HeaderComponent implements OnInit {
     private loaderService: LoaderService,
     private storage: Storage,
     private checklistSectionService: ChecklistSectionService,
+    private subsidiaryClientService: SubsidiaryClientService,
+    private clientsService: ClientsService,
+    private projectService: ProjectsService,
+    private tasksService: TasksService,
+    private toastService: ToastService,
+    private contractsTypeService: ContractsTypeService,
   ) { this.init() }
 
   private async init() {
@@ -45,11 +57,30 @@ export class HeaderComponent implements OnInit {
   async syncDataUser() {
     this.loaderService.show();
     // await this.syncUserTable()
-    // await this.syncActivities()
+    // this.toastService.presentToast('Tabla usuarios descargada')
     // await this.syncChecklistSectionTable()
+    // this.toastService.presentToast('Tabla checklistSections descargada')
     // await this.syncChecklistSubSections()
+    // this.toastService.presentToast('Tabla checklistSubSections descargada')
     // await this.syncChecklisTaskForm()
-    await this.syncChecklisQuestions()
+    // this.toastService.presentToast('Tabla checklistTaskForm descargada')
+    // await this.syncChecklisQuestions()
+    // this.toastService.presentToast('Tabla checklistQuestions descargada')
+    // await this.syncSubsidiaryClient()
+    // this.toastService.presentToast('Tabla subsidiaryClient descargada')
+    // await this.syncClient()
+    // this.toastService.presentToast('Tabla client descargada')
+    // await this.syncProjects()
+    // this.toastService.presentToast('Tabla projects descargada')
+    // await this.syncTasks()
+    // this.toastService.presentToast('Tabla Tasks descargada')
+    // await this.syncContractsType()
+    // this.toastService.presentToast('Tabla contractsType descargada')
+    await this.syncProjectsItems()
+    this.toastService.presentToast('Tabla projectsItems descargada')
+    // await this.syncActivities()
+    // this.toastService.presentToast('Actividades descargadas')
+    
     // this.storageService.showTables()
     this.loaderService.hide();
   }
@@ -100,4 +131,51 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  async syncSubsidiaryClient() {
+    const data = await this.generalService.getSyncSubsidiaryClient(this.userdata.staffid)
+    await this.subsidiaryClientService.clearUserTable()
+    for (const item of data) {
+      await this.subsidiaryClientService.addData(item);
+    }
+  }
+
+  async syncClient() {
+    const data = await this.generalService.getSyncClient(this.userdata.staffid)
+    await this.clientsService.clearUserTable()
+    for (const item of data) {
+      await this.clientsService.addData(item);
+    }
+  }
+
+  async syncProjects() {
+    const data = await this.generalService.getSyncprojects(this.userdata.staffid)
+    await this.projectService.clearUserTable()
+    for (const item of data) {
+      await this.projectService.addData(item);
+    }
+  }
+
+  async syncTasks() {
+    const data = await this.generalService.getSyncTasks(this.userdata.staffid, 'getSyncTasks')
+    await this.tasksService.clearUserTable()
+    for (const item of data) {
+      await this.tasksService.addData(item);
+    }
+  }
+
+  async syncContractsType() {
+    const data = await this.generalService.getSyncContractsType(this.userdata.staffid)
+    await this.contractsTypeService.clearUserTable()
+    for (const item of data) {
+      await this.contractsTypeService.addData(item);
+    }
+  }
+
+  async syncProjectsItems() {
+    const data = await this.generalService.getSyncProjectsItems(this.userdata.staffid)
+    await this.projectService.clearUserTable()
+    for (const item of data) {
+      await this.projectService.addPorjectItem(item);
+    }
+  }
 }
