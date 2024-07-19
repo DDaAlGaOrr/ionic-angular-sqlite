@@ -173,6 +173,14 @@ export class ProjectsService {
   }
 
   async verifyIfActivityIsEnable(type: string, project_id: number): Promise<any> {
+    if (this.networkService.getNetworkStatus()) {
+      return await this.verifyIfActivityIsEnableNetwork(type, project_id)
+    } else {
+      return await this.verifyIfActivityIsEnableOffline(type, project_id)
+    }
+  }
+
+  async verifyIfActivityIsEnableNetwork(type: string, project_id: number) {
     if (type === 'project') {
       try {
         const observableResult = await this.httpService.get(`staffs/${project_id}/documentalChecklist`, true);
@@ -237,7 +245,25 @@ export class ProjectsService {
     }
   }
 
-
+  async verifyIfActivityIsEnableOffline(type: string, project_id: number){
+    if (type === 'project') {
+      this.router.navigate(['/members', 'project'], {
+        queryParams: {
+          project_id: project_id,
+          type: type,
+          is_active: false,
+        },
+      });
+    }else{
+      this.router.navigate(['/members', 'project'], {
+        queryParams: {
+          project_id: project_id,
+          type: type,
+          is_active: false,
+        },
+      });0
+    }
+  }
 
 }
 

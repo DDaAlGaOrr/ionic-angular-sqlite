@@ -3,6 +3,7 @@ import { Capacitor } from '@capacitor/core';
 import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Filesystem, Directory } from '@capacitor/filesystem';
+import { ProjectsService } from './offline/projects.service';
 // import { Storage as IonicStorage  } from '@ionic/storage-angular';
 
 
@@ -25,6 +26,7 @@ export class ProjectService {
     private networkService: NetworkService,
     private httpService: HttpService,
     private toastService: ToastService,
+    private offlineProjectsService: ProjectsService,
     // private firebaseStorage: FirebaseStorage,
     // private androidPermissions: AndroidPermissions,
     // private ionicStorage: IonicStorage
@@ -53,17 +55,17 @@ export class ProjectService {
   }
 
   async uploadImage(blob: Blob, route: string) {
-  //   try {
-  //     const currentDate = Date.now();
-  //     const filePath = `${route}/${currentDate}.jpg`;
-  //     const fileRef = ref(this.firebaseStorage, filePath);
-  //     const task = await uploadBytes(fileRef, blob);
-  //     const url = getDownloadURL(fileRef);
-  //     return url;
-  //   } catch (error) {
-  //     console.error('Error al cargar la imagen:', error);
-  //     throw error;
-  //   }
+    //   try {
+    //     const currentDate = Date.now();
+    //     const filePath = `${route}/${currentDate}.jpg`;
+    //     const fileRef = ref(this.firebaseStorage, filePath);
+    //     const task = await uploadBytes(fileRef, blob);
+    //     const url = getDownloadURL(fileRef);
+    //     return url;
+    //   } catch (error) {
+    //     console.error('Error al cargar la imagen:', error);
+    //     throw error;
+    //   }
   }
 
   async getProjectTasks(projectId: number, projectType: string) {
@@ -109,7 +111,9 @@ export class ProjectService {
     })
   }
 
-  async getOfflineProjectTasks(projectId: number, projectType: string) { }
+  async getOfflineProjectTasks(projectId: number, projectType: string) {
+    await this.offlineProjectsService.getPlanDetail(projectId, projectType)
+  }
 
   async getTaskItems(projectId: number, projectType: string) {
     const data = {

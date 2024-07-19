@@ -66,8 +66,58 @@ export class ProjectsService {
   async clearUserTable() {
     const sql = `DELETE FROM tblprojects`;
     await this.db.run(sql);
+  }
+
+  async clearProjectsItem() {
     const sql1 = `DELETE FROM tblprojects_items`;
     await this.db.run(sql1);
+  }
+
+  async getPlanDetail(projectId: number, projectType: string) {
+
+    const getProjectTasks = await this.getProjectTasks(projectId)
+    const getServiceArea = await this.getServiceArea(projectId)
+    // console.log(getProjectTasks)
+    // console.log(getServiceArea)
+  }
+
+  async getProjectTasks(projectId: number) {
+    try {
+      const query = `
+        SELECT tbltasks.id,
+            tbltasks.folio_number,
+            tbltasks.name,
+            tbltasks.group_control,
+            tbltasks.duedate,
+            tbltasks.cinturon,
+            tbltasks.status 
+        FROM tbltasks
+        WHERE tbltasks.rel_type = "project"
+        and tbltasks.rel_id = ${projectId} ;
+      `;
+      const results = (await this.db.query(query)).values;
+      return results;
+    } catch (error) {
+      console.error('Error executing query:', error);
+      return false
+    }
+  }
+
+  async getServiceArea(projectId: number) {
+    try {
+      const query = `
+        SELECT tblprojects_items.cinturon, tblcontracts_types.name 
+        FROM tblprojects_items
+        INNER JOIN tblprojects ON tblprojects.id = tblprojects_items.project_id
+        INNER JOIN tblcontracts_types ON tblcontracts_types.id = tblprojects_items.grupo_control
+        WHERE tblprojects_items.project_id = ${projectId}
+      `;
+      const results = (await this.db.query(query)).values;
+      return results;
+    } catch (error) {
+      console.error('Error executing query:', error);
+      return false
+    }
   }
 }
 

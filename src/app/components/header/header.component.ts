@@ -56,31 +56,31 @@ export class HeaderComponent implements OnInit {
 
   async syncDataUser() {
     this.loaderService.show();
-    // await this.syncUserTable()
-    // this.toastService.presentToast('Tabla usuarios descargada')
-    // await this.syncChecklistSectionTable()
-    // this.toastService.presentToast('Tabla checklistSections descargada')
-    // await this.syncChecklistSubSections()
-    // this.toastService.presentToast('Tabla checklistSubSections descargada')
-    // await this.syncChecklisTaskForm()
-    // this.toastService.presentToast('Tabla checklistTaskForm descargada')
-    // await this.syncChecklisQuestions()
-    // this.toastService.presentToast('Tabla checklistQuestions descargada')
-    // await this.syncSubsidiaryClient()
-    // this.toastService.presentToast('Tabla subsidiaryClient descargada')
-    // await this.syncClient()
-    // this.toastService.presentToast('Tabla client descargada')
-    // await this.syncProjects()
-    // this.toastService.presentToast('Tabla projects descargada')
-    // await this.syncTasks()
-    // this.toastService.presentToast('Tabla Tasks descargada')
-    // await this.syncContractsType()
-    // this.toastService.presentToast('Tabla contractsType descargada')
+    await this.syncUserTable()
+    this.toastService.presentToast('1 de 12 tablas descargadas')
+    await this.syncChecklistSectionTable()
+    this.toastService.presentToast('2 de 12 tablas descargadas')
+    await this.syncChecklistSubSections()
+    this.toastService.presentToast('3 de 12 tablas descargadas')
+    await this.syncChecklisTaskForm()
+    this.toastService.presentToast('4 de 12 tablas descargadas')
+    await this.syncChecklisQuestions()
+    this.toastService.presentToast('5 de 12 tablas descargadas')
+    await this.syncSubsidiaryClient()
+    this.toastService.presentToast('6 de 12 tablas descargadas')
+    await this.syncClient()
+    this.toastService.presentToast('7 de 12 tablas descargadas')
+    await this.syncProjects()
+    this.toastService.presentToast('8 de 12 tablas descargadas')
+    await this.syncTasks()
+    this.toastService.presentToast('9 de 12 tablas descargadas')
+    await this.syncContractsType()
+    this.toastService.presentToast('10 de 12 tablas descargadas')
     await this.syncProjectsItems()
-    this.toastService.presentToast('Tabla projectsItems descargada')
-    // await this.syncActivities()
-    // this.toastService.presentToast('Actividades descargadas')
-    
+    this.toastService.presentToast('11 de 12 tablas descargadas')
+    await this.syncActivities()
+    this.toastService.presentToast('12 de 12 tablas descargadas')
+
     // this.storageService.showTables()
     this.loaderService.hide();
   }
@@ -109,7 +109,7 @@ export class HeaderComponent implements OnInit {
 
   async syncChecklistSubSections() {
     const data = await this.generalService.getSyncChecklistSubSections(this.userdata.staffid)
-    await this.checklistSectionService.clearUserTable()
+    await this.checklistSectionService.clearChecklistSubSection()
     for (const section of data) {
       await this.checklistSectionService.addDataSubSections(section.id, section.name);
     }
@@ -117,7 +117,7 @@ export class HeaderComponent implements OnInit {
 
   async syncChecklisTaskForm() {
     const data = await this.generalService.getsyncChecklisTaskForm(this.userdata.staffid)
-    await this.checklistSectionService.clearUserTable()
+    await this.checklistSectionService.clearChecklistTaskForm()
     for (const item of data) {
       await this.checklistSectionService.addDataTblchecklistTaskForm(item);
     }
@@ -125,7 +125,7 @@ export class HeaderComponent implements OnInit {
 
   async syncChecklisQuestions() {
     const data = await this.generalService.getSyncChecklisQuestions(this.userdata.staffid)
-    await this.checklistSectionService.clearUserTable()
+    await this.checklistSectionService.clearChecklistQuestions()
     for (const item of data) {
       await this.checklistSectionService.addDataTblchecklistQuestions(item);
     }
@@ -149,6 +149,7 @@ export class HeaderComponent implements OnInit {
 
   async syncProjects() {
     const data = await this.generalService.getSyncprojects(this.userdata.staffid)
+    console.log(data)
     await this.projectService.clearUserTable()
     for (const item of data) {
       await this.projectService.addData(item);
@@ -173,7 +174,7 @@ export class HeaderComponent implements OnInit {
 
   async syncProjectsItems() {
     const data = await this.generalService.getSyncProjectsItems(this.userdata.staffid)
-    await this.projectService.clearUserTable()
+    await this.projectService.clearProjectsItem()
     for (const item of data) {
       await this.projectService.addPorjectItem(item);
     }

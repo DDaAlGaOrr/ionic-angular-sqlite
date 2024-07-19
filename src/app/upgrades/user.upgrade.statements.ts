@@ -61,11 +61,17 @@ export class UserUpgradeStatements {
                         status INTEGER,
                         rel_id INTEGER,
                         rel_type  TEXT,
-                        type_task TEXT,
+                        type_task TEXT
                     );
                 `
             ]
 
+        },
+        {
+            toVersion: 8,
+            statements: [
+                `ALTER TABLE tblclients ADD COLUMN company TEXT;`,
+            ]
         },
         // {
         //     toVersion: 4,

@@ -86,10 +86,19 @@ export class ChecklistSectionService {
   async clearUserTable() {
     const sql = `DELETE FROM tblchecklist_section`;
     await this.db.run(sql);
+  }
+
+  async clearChecklistSubSection() {
     const sql2 = `DELETE FROM tblchecklist_sub_section`;
     await this.db.run(sql2);
+  }
+
+  async clearChecklistTaskForm() {
     const sql3 = `DELETE FROM tblchecklist_task_form`;
     await this.db.run(sql3);
+  }
+
+  async clearChecklistQuestions() {
     const sql4 = `DELETE FROM tblchecklist_questions`;
     await this.db.run(sql4);
   }
