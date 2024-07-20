@@ -7,8 +7,8 @@ import { AuthenticationService } from './authentication.service';
 import { ToastService } from './toast.service';
 import { ProjectProgressService } from './project-progress.service';
 import { LoaderService } from './loader.service';
-import { ChecklistSections, ChecklistTaskForm, ChecklistQuestions } from '../interfaces/Checklist';
-import { Client, SubsidiaryClient, Project, Task, ContractsTypes, ProjectsItems } from '../interfaces/General';
+import { ChecklistSections, ChecklistTaskForm, ChecklistQuestions, ChecklistTasks } from '../interfaces/Checklist';
+import { Client, SubsidiaryClient, Project, Task, ContractsTypes, ProjectsItems, serviceAll } from '../interfaces/General';
 
 import { LoggedData } from '../interfaces/Auth';
 import { Activities } from '../interfaces/Projects';
@@ -237,6 +237,45 @@ export class GeneralService {
     try {
       return new Promise((resolve, reject) => {
         observableResult.subscribe((response: any) => {
+          resolve(response);
+        },
+          (error: any) => {
+            this.toastService.presentToast('No se pudieron obtener los datos')
+            console.error('Error al enviar datos:', error);
+            reject(error);
+          }
+        )
+      })
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getSyncChecklistTasks(staffid: number): Promise<ChecklistTasks[]> {
+    const observableResult = await this.httpService.get(`staffs/${staffid}/getSyncChecklistTasks`, true)
+    try {
+      return new Promise((resolve, reject) => {
+        observableResult.subscribe((response: any) => {
+          resolve(response);
+        },
+          (error: any) => {
+            this.toastService.presentToast('No se pudieron obtener los datos')
+            console.error('Error al enviar datos:', error);
+            reject(error);
+          }
+        )
+      })
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getSyncServiceAll(staffid: number): Promise<serviceAll[]> {
+    const observableResult = await this.httpService.get(`staffs/${staffid}/getSyncServiceAll`, true)
+    try {
+      return new Promise((resolve, reject) => {
+        observableResult.subscribe((response: any) => {
+          console.log(response)
           resolve(response);
         },
           (error: any) => {

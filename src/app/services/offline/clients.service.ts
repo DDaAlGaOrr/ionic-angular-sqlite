@@ -4,7 +4,7 @@ import { SQLiteDBConnection } from '@capacitor-community/sqlite';
 import { SqliteService } from './../sqlite.service';
 import { DbnameVersionService } from '../dbname-version.service';
 import { UserUpgradeStatements } from '../../upgrades/user.upgrade.statements';
-import { Client } from '../../interfaces/General';
+import { Client, serviceAll } from '../../interfaces/General';
 
 @Injectable({
   providedIn: 'root'
@@ -55,8 +55,19 @@ export class ClientsService {
     // this.loadData()
   }
 
+  async addServiceAllData(data: serviceAll) {
+    const sql = `INSERT INTO tblservice_all (num_Cliente, observaciones_Plagas, observaciones_Plaga, actividad_consumo) VALUES (?,?,?,?);`;
+    await this.db.run(sql, [data.Num_Cliente, data.Observaciones_Plagas, data.Observaciones_Plaga, data.Actividad_consumo]);
+    // this.loadData()
+  }
+
   async clearUserTable() {
     const sql = `DELETE FROM tblclients`;
+    await this.db.run(sql);
+  }
+
+  async clearServiceAll() {
+    const sql = `DELETE FROM tblservice_all`;
     await this.db.run(sql);
   }
 

@@ -56,30 +56,34 @@ export class HeaderComponent implements OnInit {
 
   async syncDataUser() {
     this.loaderService.show();
-    await this.syncUserTable()
-    this.toastService.presentToast('1 de 12 tablas descargadas')
-    await this.syncChecklistSectionTable()
-    this.toastService.presentToast('2 de 12 tablas descargadas')
-    await this.syncChecklistSubSections()
-    this.toastService.presentToast('3 de 12 tablas descargadas')
-    await this.syncChecklisTaskForm()
-    this.toastService.presentToast('4 de 12 tablas descargadas')
-    await this.syncChecklisQuestions()
-    this.toastService.presentToast('5 de 12 tablas descargadas')
-    await this.syncSubsidiaryClient()
-    this.toastService.presentToast('6 de 12 tablas descargadas')
-    await this.syncClient()
-    this.toastService.presentToast('7 de 12 tablas descargadas')
-    await this.syncProjects()
-    this.toastService.presentToast('8 de 12 tablas descargadas')
-    await this.syncTasks()
-    this.toastService.presentToast('9 de 12 tablas descargadas')
-    await this.syncContractsType()
-    this.toastService.presentToast('10 de 12 tablas descargadas')
-    await this.syncProjectsItems()
-    this.toastService.presentToast('11 de 12 tablas descargadas')
-    await this.syncActivities()
-    this.toastService.presentToast('12 de 12 tablas descargadas')
+    // await this.syncUserTable()
+    // this.toastService.presentToast('1 de 14 tablas descargadas')
+    // await this.syncChecklistSectionTable()
+    // this.toastService.presentToast('2 de 14 tablas descargadas')
+    // await this.syncChecklistSubSections()
+    // this.toastService.presentToast('3 de 14 tablas descargadas')
+    // await this.syncChecklisTaskForm()
+    // this.toastService.presentToast('4 de 14 tablas descargadas')
+    // await this.syncChecklisQuestions()
+    // this.toastService.presentToast('5 de 14 tablas descargadas')
+    // await this.syncSubsidiaryClient()
+    // this.toastService.presentToast('6 de 14 tablas descargadas')
+    // await this.syncClient()
+    // this.toastService.presentToast('7 de 14 tablas descargadas')
+    // await this.syncProjects()
+    // this.toastService.presentToast('8 de 14 tablas descargadas')
+    // await this.syncTasks()
+    // this.toastService.presentToast('9 de 14 tablas descargadas')
+    // await this.syncContractsType()
+    // this.toastService.presentToast('10 de 14 tablas descargadas')
+    // await this.syncProjectsItems()
+    // this.toastService.presentToast('11 de 14 tablas descargadas')
+    // await this.syncActivities()
+    // this.toastService.presentToast('12 de 14 tablas descargadas')
+    // await this.syncChecklistTasks()
+    // this.toastService.presentToast('13 de 14 tablas descargadas')
+    await this.syncServiceAll()
+    this.toastService.presentToast('14 de 14 tablas descargadas')
 
     // this.storageService.showTables()
     this.loaderService.hide();
@@ -177,6 +181,23 @@ export class HeaderComponent implements OnInit {
     await this.projectService.clearProjectsItem()
     for (const item of data) {
       await this.projectService.addPorjectItem(item);
+    }
+  }
+
+  async syncChecklistTasks() {
+    const data = await this.generalService.getSyncChecklistTasks(this.userdata.staffid)
+    await this.checklistSectionService.clearChecklistTasks()
+    for (const item of data) {
+      await this.checklistSectionService.addDataTblchecklistTasks(item);
+    }
+  }
+
+  async syncServiceAll() {
+    console.log('Sync service All')
+    const data = await this.generalService.getSyncServiceAll(this.userdata.staffid)
+    await this.clientsService.clearServiceAll()
+    for (const item of data) {
+      await this.clientsService.addServiceAllData(item);
     }
   }
 }

@@ -80,7 +80,7 @@ export class ProjectPage implements OnInit {
       this.projectType = params['type'];
     })
     if (this.projectType == 'project') {
-      const planDetail: PlanDetail = await this.projectService.getProjectTasks(this.projectId, this.projectType) as PlanDetail
+      const planDetail = await this.projectService.getProjectTasks(this.projectId, this.projectType) 
       this.tasksData = planDetail.tasksData
       this.clientName = planDetail.clientName
       this.subsdiaryName = planDetail.subsdiaryName
@@ -94,7 +94,7 @@ export class ProjectPage implements OnInit {
       this.sectionListItems = documental.sectionListItems
       this.productsDocumntalChecklist = documental.productsDocumntalChecklist
       this.techniciansDocumntalChecklist = documental.techniciansDocumntalChecklist
-      console.log(documental)
+      // console.log(documental)
     } else {
       await this.projectService.getTaskItems(this.projectId, this.projectType)
       // await this.projectService.getTaskDocumentalChecklist(this.projectId,this.projectType)

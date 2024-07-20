@@ -4,7 +4,7 @@ import { SqliteService } from './../sqlite.service';
 import { UserUpgradeStatements } from '../../upgrades/user.upgrade.statements';
 import { SQLiteDBConnection } from '@capacitor-community/sqlite';
 import { DbnameVersionService } from '../dbname-version.service';
-import { ChecklistQuestions, ChecklistSections, ChecklistTaskForm } from '../../interfaces/Checklist';
+import { ChecklistQuestions, ChecklistSections, ChecklistTaskForm, ChecklistTasks } from '../../interfaces/Checklist';
 
 
 
@@ -72,8 +72,8 @@ export class ChecklistSectionService {
   }
 
   async addDataTblchecklistTaskForm(data: ChecklistTaskForm) {
-    const sql = `INSERT INTO tblchecklist_task_form (id, task_id, rel_type, answered, signature_picture, evidence_type) VALUES (?,?,?,?,?,?);`;
-    await this.db.run(sql, [data.id, data.task_id, data.rel_type, data.answered, data.signature_picture, data.evidence_type]);
+    const sql = `INSERT INTO tblchecklist_task_form (id, task_id, form_id, rel_type, answered, signature_picture, evidence_type) VALUES (?,?,?,?,?,?,?);`;
+    await this.db.run(sql, [data.id, data.task_id, data.form_id, data.rel_type, data.answered, data.signature_picture, data.evidence_type]);
     // this.loadData()
   }
 
@@ -83,24 +83,35 @@ export class ChecklistSectionService {
     // this.loadData()
   }
 
+  async addDataTblchecklistTasks(data: ChecklistTasks) {
+    const sql = `INSERT INTO tblchecklist_tasks (id,checklist_name) VALUES (?,?);`;
+    await this.db.run(sql, [data.id, data.checklist_name]);
+    // this.loadData()
+  }
+
   async clearUserTable() {
     const sql = `DELETE FROM tblchecklist_section`;
     await this.db.run(sql);
   }
 
   async clearChecklistSubSection() {
-    const sql2 = `DELETE FROM tblchecklist_sub_section`;
-    await this.db.run(sql2);
+    const sql = `DELETE FROM tblchecklist_sub_section`;
+    await this.db.run(sql);
   }
 
   async clearChecklistTaskForm() {
-    const sql3 = `DELETE FROM tblchecklist_task_form`;
-    await this.db.run(sql3);
+    const sql = `DELETE FROM tblchecklist_task_form`;
+    await this.db.run(sql);
   }
 
   async clearChecklistQuestions() {
-    const sql4 = `DELETE FROM tblchecklist_questions`;
-    await this.db.run(sql4);
+    const sql = `DELETE FROM tblchecklist_questions`;
+    await this.db.run(sql);
+  }
+
+  async clearChecklistTasks() {
+    const sql = `DELETE FROM tblchecklist_tasks`;
+    await this.db.run(sql);
   }
 
 }

@@ -70,3 +70,12 @@ export interface ProjectsItems {
     project_id: number;
     total_tasks: number;
 }
+
+export interface serviceAll {
+    id: number;
+    Num_Cliente: string;
+    Observaciones_Plagas: string;
+    Observaciones_Plaga: string;
+    Actividad_consumo : string;
+   
+}

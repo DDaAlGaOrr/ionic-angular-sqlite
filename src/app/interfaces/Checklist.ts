@@ -85,3 +85,10 @@ export interface ChecklistQuestions {
   description: string,
 }
 
+export interface ChecklistTasks {
+  id: number
+  checklist_name: string
+}
+
+
+

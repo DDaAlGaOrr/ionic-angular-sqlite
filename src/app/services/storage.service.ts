@@ -146,6 +146,18 @@ export class StorageService {
                 id_sub_section INTEGER,
                 description TEXT
             );
+            CREATE TABLE IF NOT EXISTS tblchecklist_tasks(
+                id INTEGER PRIMARY KEY,
+                checklist_name TEXT
+            );
+
+            CREATE TABLE IF NOT EXISTS tblservice_all(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                num_Cliente TEXT,
+                observaciones_Plagas TEXT,
+                observaciones_Plaga TEXT,
+                actividad_consumo TEXT
+            );
 
         `;
 

@@ -70,8 +70,10 @@ export class ProjectService {
 
   async getProjectTasks(projectId: number, projectType: string) {
     if (this.networkService.getNetworkStatus()) {
+      console.log("online")
       return await this.getOnlineProjectTasks(projectId, projectType)
     } else {
+      console.log('offline')
       return await this.getOfflineProjectTasks(projectId, projectType)
     }
   }
@@ -112,7 +114,27 @@ export class ProjectService {
   }
 
   async getOfflineProjectTasks(projectId: number, projectType: string) {
-    await this.offlineProjectsService.getPlanDetail(projectId, projectType)
+    const data: PlanDetail = {
+      tasksData: [],
+      clientName: '',
+      subsdiaryName: '',
+      planName: '',
+      checklistItems: '',
+      formattedTask: { formattedTasks: [], tasksBelts: [] },
+      projectType: projectType,
+      uvChecklistItems: {}
+    }
+    const result = await this.offlineProjectsService.getPlanDetail(projectId, projectType)
+    data.tasksData = result.projectTasks
+    data.clientName = `${result.planDetail[0].client} - ${result.planDetail[0].id_subsidiary}`
+    data.subsdiaryName = result.planDetail[0].subsidiary
+    data.planName = result.planDetail[0].folio
+    data.formattedTask = this.formatTasksObject(
+      result.projectTasks,
+      result.serviceArea,
+      result.cinturones.split(', ')
+    );
+    return data
   }
 
   async getTaskItems(projectId: number, projectType: string) {
@@ -153,6 +175,14 @@ export class ProjectService {
   }
 
   async getProjectDocumentalChecklist(projectId: number, projectType: string): Promise<DocumentalData> {
+    if (this.networkService.getNetworkStatus()) {
+      return await this.getOnlineProjectDocumentalChecklist(projectId, projectType)
+    } else {
+      return await this.getOfflineProjectDocumentalChecklist(projectId, projectType)
+    }
+  }
+
+  async getOnlineProjectDocumentalChecklist(projectId: number, projectType: string): Promise<DocumentalData> {
     const data: DocumentalData = {
       totalPages: 0,
       evaluationAnswers: {},
@@ -253,177 +283,100 @@ export class ProjectService {
         }
       );
     })
-
-    this.httpService
-      .get(`staffs/${projectId}/documentalChecklist`, true)
-      .then((observableResult) => {
-        observableResult.subscribe(
-          (response: any) => {
-            const checklistItemsBySection: any = {};
-            data.totalPages = response.checklist_sections.length;
-            for (const sectionId in response.items) {
-              if (response.items.hasOwnProperty(sectionId)) {
-                const sectionItems = response.items[sectionId];
-                if (Array.isArray(sectionItems)) {
-                  checklistItemsBySection[sectionId] = sectionItems;
-                } else {
-                  const indexName = Object.keys(sectionItems)[0];
-                  checklistItemsBySection[sectionId] = {
-                    subsection: true,
-                    name: indexName,
-                    items: sectionItems[indexName],
-                  };
-                  data.evaluationAnswers[sectionId] = {
-                    items: sectionItems[indexName],
-                  };
-                }
-              }
-            }
-            data.sectionListItems = response.checklist_sections.map(
-              (section: any) => {
-                let extraAnswerDescription = '';
-                let sections = [19, 16, 8, 9];
-                if (sections.includes(parseInt(section.id))) {
-                  switch (parseInt(section.id)) {
-                    case 19:
-                      extraAnswerDescription =
-                        'TECNICO NO SE ENCUENTRA EN PISO/NA';
-                      break;
-                    case 16:
-                      extraAnswerDescription =
-                        'CUMPLE POR ARRANQUE DE SERVICIO / NA';
-                      break;
-                    case 8:
-                      extraAnswerDescription =
-                        'CUMPLE POR ARRANQUE DE SERVICIO / NA';
-                      break;
-                    case 9:
-                      extraAnswerDescription =
-                        'CUMPLE EN REVISIÓN POR EL CLIENTE';
-                      break;
-                  }
-                }
-
-                return {
-                  extraAnswer: sections.includes(parseInt(section.id)),
-                  extraAnswerDescription,
-                  ...section,
-                  items: checklistItemsBySection[section.id] || [],
-                };
-              }
-            );
-            data.sectionList = response.checklist_sections;
-            data.productsDocumntalChecklist = response.products.products;
-            data.techniciansDocumntalChecklist =
-              response.products.technicians_name;
-            data.selectedTexts = Array(
-              response.products.products.length
-            ).fill('Seleccionado');
-
-            data.selectedTextsTechnicians = Array(
-              response.products.technicians_name.length
-            ).fill('Seleccionado');
-            // console.log(data.evaluationAnswers);
-            data.evaluationAnswers[7].items.forEach((item: any) => {
-              data.techniciansDocumntalChecklistAnswers[item.question_id] =
-              {
-                question_id: item.question_id,
-                answer: true,
-              };
-            });
-            console.log(data.evaluationAnswers);
-            data.evaluationAnswers[15].items.forEach((item: any) => {
-              data.productsDocumntalChecklistAnswers[item.question_id] = {
-                question_id: item.question_id,
-                answer: true,
-              };
-            });
-          },
-          (error: any) => {
-            console.error('Error al enviar datos:', error);
-          }
-        );
-      })
-      .catch((error) => {
-        console.error('Error al realizar la solicitud de calendar:', error);
-      });
   }
 
-  // getTasktDocumentalChecklist(projectId: number, projectType: string) {
-  //   this.httpService
-  //     .get(`staffs/${project_id}/documentalUvChecklist`, true)
-  //     .then((observableResult) => {
-  //       observableResult.subscribe(
-  //         (response: any) => {
-  //           const checklistItemsBySection: any = {};
-  //           this.totalPaginas = response.checklist_sections.length;
-  //           for (const sectionId in response.items) {
-  //             if (response.items.hasOwnProperty(sectionId)) {
-  //               const sectionItems = response.items[sectionId];
-  //               if (Array.isArray(sectionItems)) {
-  //                 checklistItemsBySection[sectionId] = sectionItems;
-  //               } else {
-  //                 const indexName = Object.keys(sectionItems)[0];
-  //                 checklistItemsBySection[sectionId] = {
-  //                   subsection: true,
-  //                   name: indexName,
-  //                   items: sectionItems[indexName],
-  //                 };
-  //               }
-  //             }
-  //           }
-  //           this.sectionListItems = response.checklist_sections.map(
-  //             (section: any) => {
-  //               let extraAnswerDescription = '';
-  //               let sections = [19, 16, 8, 9];
-  //               if (sections.includes(parseInt(section.id))) {
-  //                 switch (parseInt(section.id)) {
-  //                   case 19:
-  //                     extraAnswerDescription =
-  //                       'TECNICO NO SE ENCUENTRA EN PISO/NA';
-  //                     break;
-  //                   case 16:
-  //                     extraAnswerDescription =
-  //                       'CUMPLE POR ARRANQUE DE SERVICIO / NA';
-  //                     break;
-  //                   case 8:
-  //                     extraAnswerDescription =
-  //                       'CUMPLE POR ARRANQUE DE SERVICIO / NA';
-  //                     break;
-  //                   case 9:
-  //                     extraAnswerDescription =
-  //                       'CUMPLE EN REVISIÓN POR EL CLIENTE';
-  //                     break;
-  //                 }
-  //               }
-  //               return {
-  //                 extraAnswer: sections.includes(parseInt(section.id)),
-  //                 extraAnswerDescription,
-  //                 ...section,
-  //                 items: checklistItemsBySection[section.id] || [],
-  //               };
-  //             }
-  //           );
-  //           this.sectionList = response.checklist_sections;
-  //           this.productsDocumntalChecklist = response.products.products;
-  //           this.techniciansDocumntalChecklist =
-  //             response.products.technicians_name;
-  //           this.selectedTexts = Array(
-  //             response.products.products.length
-  //           ).fill('Seleccionado');
-  //           this.selectedTextsTechnicians = Array(
-  //             response.products.technicians_name.length
-  //           ).fill('Seleccionado');
-  //         },
-  //         (error: any) => {
-  //           console.error('Error al enviar datos:', error);
-  //         }
-  //       );
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error al realizar la solicitud de calendar:', error);
-  //     });
-  // }
+  async getOfflineProjectDocumentalChecklist(projectId: number, projectType: string): Promise<DocumentalData> {
+    const data: DocumentalData = {
+      totalPages: 0,
+      evaluationAnswers: {},
+      sectionListItems: [],
+      productsDocumntalChecklist: [],
+      productsDocumntalChecklistAnswers: {},
+      sectionList: [],
+      selectedTexts: [],
+      selectedTextsTechnicians: [],
+      techniciansDocumntalChecklist: {},
+      techniciansDocumntalChecklistAnswers: {}
+    }
+    const response = await this.offlineProjectsService.getDocumentalChecklist(projectId, projectType)
+    const checklistItemsBySection: any = {};
+    data.totalPages = response.checklist_sections.length;
+    for (const sectionId in response.items) {
+      if (response.items.hasOwnProperty(sectionId)) {
+        const sectionItems = response.items[sectionId];
+        if (Array.isArray(sectionItems)) {
+          checklistItemsBySection[sectionId] = sectionItems;
+        } else {
+          const indexName = Object.keys(sectionItems)[0];
+          checklistItemsBySection[sectionId] = {
+            subsection: true,
+            name: indexName,
+            items: sectionItems[indexName],
+          };
+          data.evaluationAnswers[sectionId] = {
+            items: sectionItems[indexName],
+          };
+        }
+      }
+    }
+
+    data.sectionListItems = response.checklist_sections.map(
+      (section: any) => {
+        let extraAnswerDescription = '';
+        let sections = [19, 16, 8, 9];
+        if (sections.includes(parseInt(section.id))) {
+          switch (parseInt(section.id)) {
+            case 19:
+              extraAnswerDescription =
+                'TECNICO NO SE ENCUENTRA EN PISO/NA';
+              break;
+            case 16:
+              extraAnswerDescription =
+                'CUMPLE POR ARRANQUE DE SERVICIO / NA';
+              break;
+            case 8:
+              extraAnswerDescription =
+                'CUMPLE POR ARRANQUE DE SERVICIO / NA';
+              break;
+            case 9:
+              extraAnswerDescription =
+                'CUMPLE EN REVISIÓN POR EL CLIENTE';
+              break;
+          }
+        }
+        return {
+          extraAnswer: sections.includes(parseInt(section.id)),
+          extraAnswerDescription,
+          ...section,
+          items: checklistItemsBySection[section.id] || [],
+        };
+      }
+    );
+    data.sectionList = response.checklist_sections;
+    data.productsDocumntalChecklist = response.products.products;
+    data.techniciansDocumntalChecklist =
+      response.products.technicians_name;
+    data.selectedTexts = Array(
+      response.products.products.length
+    ).fill('Seleccionado');
+    data.selectedTextsTechnicians = Array(
+      response.products.technicians_name.length
+    ).fill('Seleccionado');
+    // data.evaluationAnswers[7].items.forEach((item: any) => {
+    //   data.techniciansDocumntalChecklistAnswers[item.question_id] =
+    //   {
+    //     question_id: item.question_id,
+    //     answer: true,
+    //   };
+    // });
+    // data.evaluationAnswers[15].items.forEach((item: any) => {
+    //   data.productsDocumntalChecklistAnswers[item.question_id] = {
+    //     question_id: item.question_id,
+    //     answer: true,
+    //   };
+    // });
+    return data
+  }
 
   formatTasksObject(tasks: any[], services: any[], cinturones: any[]) {
     const tasksBelts = cinturones;
@@ -452,32 +405,31 @@ export class ProjectService {
     // Agrupar tareas por tipo de control y ubicación
     tasks.forEach((task) => {
 
-      const controlType = task.group_control;
+      const controlType = parseInt(task.group_control);
       let cinturon = task.cinturon;
-
       switch (controlType) {
-        case '1':
+        case 1:
           if (!edc.area_service[cinturon]) {
             edc.area_service[cinturon] = [];
           }
           edc.area_service[cinturon].push(task);
           edc.total_tasks++;
           break;
-        case '2':
+        case 2:
           if (!edcm.area_service[cinturon]) {
             edcm.area_service[cinturon] = [];
           }
           edcm.area_service[cinturon].push(task);
           edcm.total_tasks++;
           break;
-        case '3':
+        case 3:
           if (!lln.area_service[cinturon]) {
             lln.area_service[cinturon] = [];
           }
           lln.area_service[cinturon].push(task);
           lln.total_tasks++;
           break;
-        case '4':
+        case 4:
           if (cinturon != 'areas') {
             cinturon = 'areas';
           }
