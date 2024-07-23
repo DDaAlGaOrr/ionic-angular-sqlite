@@ -80,7 +80,7 @@ export class ProjectPage implements OnInit {
       this.projectType = params['type'];
     })
     if (this.projectType == 'project') {
-      const planDetail = await this.projectService.getProjectTasks(this.projectId, this.projectType) 
+      const planDetail = await this.projectService.getProjectTasks(this.projectId, this.projectType)
       this.tasksData = planDetail.tasksData
       this.clientName = planDetail.clientName
       this.subsdiaryName = planDetail.subsdiaryName
@@ -273,16 +273,17 @@ export class ProjectPage implements OnInit {
 
   async setUrlImage(evidenceImage: string, folder: string) {
     if (this.networkService.getNetworkStatus()) {
-      // const blob = this.projectService.dataUrlToBlob(evidenceImage);
-      // return await this.projectService.uploadImage(blob, folder);
-      return evidenceImage
+      console.log('firebase')
+      const blob = this.projectService.dataUrlToBlob(evidenceImage);
+      return await this.projectService.uploadImage(blob, folder);
     } else {
       return evidenceImage
     }
   }
 
   async takePictureDocumental() {
-    this.evidenceImageDocumental = this.projectService.takePictureDocumental()
+    this.evidenceImageDocumental = await this.projectService.takePictureDocumental()
+    console.log(this.evidenceImageDocumental)
   }
 
   openSelectUvMeasure(isOpen: boolean, indexTask: number) { }

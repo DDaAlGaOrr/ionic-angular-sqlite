@@ -26,14 +26,16 @@ registerLocaleData(localeEsMX, 'es-MX');
     IonicStorageModule.forRoot({
       driverOrder: ['sqlite', 'indexeddb', 'localstorage', 'websql']
     }),
-    provideFirebaseApp(() => initializeApp(firebaseConfig)),
-    provideStorage(() => getStorage()),
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
     FullCalendarModule,
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, AndroidPermissions],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+  provideFirebaseApp(() => initializeApp(firebaseConfig)),
+  provideStorage(() => getStorage()),
+
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

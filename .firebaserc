@@ -1,14 +1,5 @@
 {
-    "projects": {
-        "default": "sipocfiles"
-    },
-    "targets": {
-        "sipocfiles": {
-            "hosting": {
-                "app": [
-                    "sipocfiles"
-                ]
-            }
-        }
-    }
+  "projects": {
+    "default": "sipocfiles"
+  }
 }

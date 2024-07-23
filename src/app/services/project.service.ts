@@ -4,19 +4,19 @@ import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { ProjectsService } from './offline/projects.service';
-// import { Storage as IonicStorage  } from '@ionic/storage-angular';
+import { Storage as IonicStorage  } from '@ionic/storage-angular';
 
 
 import { NetworkService } from './network.service';
 import { HttpService } from './http.service';
 import { PlanDetail, DocumentalData } from '../interfaces/Checklist';
 import { ToastService } from './toast.service';
-// import {
-//   Storage as FirebaseStorage,
-//   getDownloadURL,
-//   ref,
-//   uploadBytes,
-// } from '@angular/fire/storage';
+import {
+  Storage as FirebaseStorage,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -27,9 +27,9 @@ export class ProjectService {
     private httpService: HttpService,
     private toastService: ToastService,
     private offlineProjectsService: ProjectsService,
-    // private firebaseStorage: FirebaseStorage,
-    // private androidPermissions: AndroidPermissions,
-    // private ionicStorage: IonicStorage
+    private firebaseStorage: FirebaseStorage,
+    private androidPermissions: AndroidPermissions,
+    private ionicStorage: IonicStorage
   ) {
     this.init()
   }
@@ -55,17 +55,17 @@ export class ProjectService {
   }
 
   async uploadImage(blob: Blob, route: string) {
-    //   try {
-    //     const currentDate = Date.now();
-    //     const filePath = `${route}/${currentDate}.jpg`;
-    //     const fileRef = ref(this.firebaseStorage, filePath);
-    //     const task = await uploadBytes(fileRef, blob);
-    //     const url = getDownloadURL(fileRef);
-    //     return url;
-    //   } catch (error) {
-    //     console.error('Error al cargar la imagen:', error);
-    //     throw error;
-    //   }
+      try {
+        const currentDate = Date.now();
+        const filePath = `${route}/${currentDate}.jpg`;
+        const fileRef = ref(this.firebaseStorage, filePath);
+        const task = await uploadBytes(fileRef, blob);
+        const url = getDownloadURL(fileRef);
+        return url;
+      } catch (error) {
+        console.error('Error al cargar la imagen:', error);
+        throw error;
+      }
   }
 
   async getProjectTasks(projectId: number, projectType: string) {
@@ -477,45 +477,47 @@ export class ProjectService {
   }
 
   async takePictureDocumental() {
-    // try {
-    //   if (Capacitor.getPlatform() !== 'web') {
-    //     this.androidPermissions
-    //       .checkPermission(this.androidPermissions.PERMISSION.CAMERA)
-    //       .then(
-    //         (result: any) => {
-    //           if (result.hasPermission) {
-    //             // Acceder a la cámara
-    //           } else {
-    //             this.androidPermissions.requestPermission(
-    //               this.androidPermissions.PERMISSION.CAMERA
-    //             );
-    //           }
-    //         },
-    //         () =>
-    //           this.androidPermissions.requestPermission(
-    //             this.androidPermissions.PERMISSION.CAMERA
-    //           )
-    //       );
-    //   }
-    //   const evidenceImageDocumental = await Camera.getPhoto({
-    //     quality: 90,
-    //     source: CameraSource.Prompt,
-    //     width: 600,
-    //     resultType: CameraResultType.DataUrl,
-    //   });
-    //   if (evidenceImageDocumental.dataUrl) {
-    //     const base64Data = evidenceImageDocumental.dataUrl.split(',')[1];
-    //     const fileName = `IMG_${new Date().getTime()}.jpeg`;
-    //     await Filesystem.writeFile({
-    //       path: fileName,
-    //       data: base64Data,
-    //       directory: Directory.External, // Guardar en almacenamiento externo
-    //     });
-    //   }
-    //   return evidenceImageDocumental.dataUrl;
-    // } catch (error) {
-    //   return false
-    //   console.log(error);
-    // }
+    console.log('Si entra')
+    try {
+      if (Capacitor.getPlatform() !== 'web') {
+        this.androidPermissions
+          .checkPermission(this.androidPermissions.PERMISSION.CAMERA)
+          .then(
+            (result: any) => {
+              if (result.hasPermission) {
+                // Acceder a la cámara
+              } else {
+                this.androidPermissions.requestPermission(
+                  this.androidPermissions.PERMISSION.CAMERA
+                );
+              }
+            },
+            () =>
+              this.androidPermissions.requestPermission(
+                this.androidPermissions.PERMISSION.CAMERA
+              )
+          );
+      }
+      const evidenceImageDocumental = await Camera.getPhoto({
+        quality: 90,
+        source: CameraSource.Prompt,
+        width: 600,
+        resultType: CameraResultType.DataUrl,
+      });
+      if (evidenceImageDocumental.dataUrl) {
+        console.log(evidenceImageDocumental.dataUrl)
+        const base64Data = evidenceImageDocumental.dataUrl.split(',')[1];
+        const fileName = `IMG_${new Date().getTime()}.jpeg`;
+        await Filesystem.writeFile({
+          path: fileName,
+          data: base64Data,
+          directory: Directory.External, // Guardar en almacenamiento externo
+        });
+      }
+      return evidenceImageDocumental.dataUrl;
+    } catch (error) {
+      return false
+      console.log(error);
+    }
   }
 }
