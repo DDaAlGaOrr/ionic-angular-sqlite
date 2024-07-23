@@ -214,8 +214,8 @@ export class ProjectsService {
                 resultArray[sectionId][subSectionName] = [];
               }
 
-              const currentArray = subSectionName !== null ? resultArray[sectionId][subSectionName] : resultArray[sectionId];
-
+              let currentArray = subSectionName !== null ? resultArray[sectionId][subSectionName] : resultArray[sectionId];
+              // console.log(currentArray)
               currentArray.push({
                 question_id: item.id,
                 question_description: item.description

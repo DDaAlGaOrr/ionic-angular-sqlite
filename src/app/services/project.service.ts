@@ -304,7 +304,7 @@ export class ProjectService {
     for (const sectionId in response.items) {
       if (response.items.hasOwnProperty(sectionId)) {
         const sectionItems = response.items[sectionId];
-        if (Array.isArray(sectionItems)) {
+        if (sectionItems[0]) {
           checklistItemsBySection[sectionId] = sectionItems;
         } else {
           const indexName = Object.keys(sectionItems)[0];
@@ -319,7 +319,6 @@ export class ProjectService {
         }
       }
     }
-
     data.sectionListItems = response.checklist_sections.map(
       (section: any) => {
         let extraAnswerDescription = '';
@@ -362,19 +361,19 @@ export class ProjectService {
     data.selectedTextsTechnicians = Array(
       response.products.technicians_name.length
     ).fill('Seleccionado');
-    // data.evaluationAnswers[7].items.forEach((item: any) => {
-    //   data.techniciansDocumntalChecklistAnswers[item.question_id] =
-    //   {
-    //     question_id: item.question_id,
-    //     answer: true,
-    //   };
-    // });
-    // data.evaluationAnswers[15].items.forEach((item: any) => {
-    //   data.productsDocumntalChecklistAnswers[item.question_id] = {
-    //     question_id: item.question_id,
-    //     answer: true,
-    //   };
-    // });
+    data.evaluationAnswers[7].items.forEach((item: any) => {
+      data.techniciansDocumntalChecklistAnswers[item.question_id] =
+      {
+        question_id: item.question_id,
+        answer: true,
+      };
+    });
+    data.evaluationAnswers[15].items.forEach((item: any) => {
+      data.productsDocumntalChecklistAnswers[item.question_id] = {
+        question_id: item.question_id,
+        answer: true,
+      };
+    });
     return data
   }
 

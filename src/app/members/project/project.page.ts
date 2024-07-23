@@ -94,7 +94,7 @@ export class ProjectPage implements OnInit {
       this.sectionListItems = documental.sectionListItems
       this.productsDocumntalChecklist = documental.productsDocumntalChecklist
       this.techniciansDocumntalChecklist = documental.techniciansDocumntalChecklist
-      // console.log(documental)
+      console.log(documental)
     } else {
       await this.projectService.getTaskItems(this.projectId, this.projectType)
       // await this.projectService.getTaskDocumentalChecklist(this.projectId,this.projectType)
