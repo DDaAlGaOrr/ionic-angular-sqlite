@@ -9,7 +9,8 @@ import { ProjectsPageRoutingModule } from './projects-routing.module';
 
 import { ProjectsPage } from './projects.page';
 import { HeaderModule } from './../../components/header/header.module';
-import { LoaderModule } from 'src/app/components/loader/loader.module';
+import { BottomTabsModule } from '../../components/bottom-tabs/bottom-tabs.module';
+import { LoaderModule } from '../../components/loader/loader.module';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { LoaderModule } from 'src/app/components/loader/loader.module';
     ProjectsPageRoutingModule,
     HeaderModule,
     LoaderModule,
-    FullCalendarModule
+    FullCalendarModule,
+    BottomTabsModule
   ],
   declarations: [ProjectsPage]
 })

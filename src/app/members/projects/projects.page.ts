@@ -40,7 +40,7 @@ export class ProjectsPage implements OnInit {
   ];
   calendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, listPlugin],
-    initialView: 'dayGridMonth',
+    initialView: 'listMonth',
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',

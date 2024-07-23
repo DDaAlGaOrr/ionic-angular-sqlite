@@ -14,6 +14,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { ProjectPage } from './project.page';
 import { LoaderModule } from 'src/app/components/loader/loader.module';
 import { HeaderModule } from './../../components/header/header.module';
+import { BottomTabsModule } from '../../components/bottom-tabs/bottom-tabs.module';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { HeaderModule } from './../../components/header/header.module';
     NzProgressModule,
     NzPaginationModule,
     NzSpaceModule,
-    NzTagModule
+    NzTagModule,
+    BottomTabsModule
   ],
   declarations: [ProjectPage]
 })
