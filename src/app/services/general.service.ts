@@ -32,7 +32,7 @@ export class GeneralService {
           resolve(response);
         },
           (error: any) => {
-            this.toastService.presentToast('No se pudieron obtener los planes')
+            this.toastService.presentToast('No se pudieron obtener los planes', 'danger')
             console.error('Error al enviar datos:', error);
             reject(error);
           }
@@ -51,7 +51,7 @@ export class GeneralService {
           resolve(response);
         },
           (error: any) => {
-            this.toastService.presentToast('No se pudieron obtener los planes')
+            this.toastService.presentToast('No se pudieron obtener los planes', 'danger')
             console.error('Error al enviar datos:', error);
             reject(error);
           }
@@ -70,7 +70,7 @@ export class GeneralService {
           resolve(response);
         },
           (error: any) => {
-            this.toastService.presentToast('No se pudieron obtener los datos')
+            this.toastService.presentToast('No se pudieron obtener los datos', 'danger')
             console.error('Error al enviar datos:', error);
             reject(error);
           }
@@ -88,7 +88,7 @@ export class GeneralService {
           resolve(response);
         },
           (error: any) => {
-            this.toastService.presentToast('No se pudieron obtener los datos')
+            this.toastService.presentToast('No se pudieron obtener los datos', 'danger')
             console.error('Error al enviar datos:', error);
             reject(error);
           }
@@ -107,7 +107,7 @@ export class GeneralService {
           resolve(response);
         },
           (error: any) => {
-            this.toastService.presentToast('No se pudieron obtener los datos')
+            this.toastService.presentToast('No se pudieron obtener los datos', 'danger')
             console.error('Error al enviar datos:', error);
             reject(error);
           }
@@ -126,7 +126,7 @@ export class GeneralService {
           resolve(response);
         },
           (error: any) => {
-            this.toastService.presentToast('No se pudieron obtener los datos')
+            this.toastService.presentToast('No se pudieron obtener los datos', 'danger')
             console.error('Error al enviar datos:', error);
             reject(error);
           }
@@ -145,7 +145,7 @@ export class GeneralService {
           resolve(response);
         },
           (error: any) => {
-            this.toastService.presentToast('No se pudieron obtener los datos')
+            this.toastService.presentToast('No se pudieron obtener los datos', 'danger')
             console.error('Error al enviar datos:', error);
             reject(error);
           }
@@ -164,7 +164,7 @@ export class GeneralService {
           resolve(response);
         },
           (error: any) => {
-            this.toastService.presentToast('No se pudieron obtener los datos')
+            this.toastService.presentToast('No se pudieron obtener los datos', 'danger')
             console.error('Error al enviar datos:', error);
             reject(error);
           }
@@ -183,7 +183,7 @@ export class GeneralService {
           resolve(response);
         },
           (error: any) => {
-            this.toastService.presentToast('No se pudieron obtener los datos')
+            this.toastService.presentToast('No se pudieron obtener los datos', 'danger')
             console.error('Error al enviar datos:', error);
             reject(error);
           }
@@ -202,7 +202,7 @@ export class GeneralService {
           resolve(response);
         },
           (error: any) => {
-            this.toastService.presentToast('No se pudieron obtener los datos')
+            this.toastService.presentToast('No se pudieron obtener los datos', 'danger')
             console.error('Error al enviar datos:', error);
             reject(error);
           }
@@ -221,7 +221,7 @@ export class GeneralService {
           resolve(response);
         },
           (error: any) => {
-            this.toastService.presentToast('No se pudieron obtener los datos')
+            this.toastService.presentToast('No se pudieron obtener los datos', 'danger')
             console.error('Error al enviar datos:', error);
             reject(error);
           }
@@ -240,7 +240,7 @@ export class GeneralService {
           resolve(response);
         },
           (error: any) => {
-            this.toastService.presentToast('No se pudieron obtener los datos')
+            this.toastService.presentToast('No se pudieron obtener los datos', 'danger')
             console.error('Error al enviar datos:', error);
             reject(error);
           }
@@ -259,7 +259,7 @@ export class GeneralService {
           resolve(response);
         },
           (error: any) => {
-            this.toastService.presentToast('No se pudieron obtener los datos')
+            this.toastService.presentToast('No se pudieron obtener los datos', 'danger')
             console.error('Error al enviar datos:', error);
             reject(error);
           }
@@ -279,7 +279,7 @@ export class GeneralService {
           resolve(response);
         },
           (error: any) => {
-            this.toastService.presentToast('No se pudieron obtener los datos')
+            this.toastService.presentToast('No se pudieron obtener los datos', 'danger')
             console.error('Error al enviar datos:', error);
             reject(error);
           }

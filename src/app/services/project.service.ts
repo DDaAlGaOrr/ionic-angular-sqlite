@@ -106,7 +106,7 @@ export class ProjectService {
           resolve(data);
         },
         (error: any) => {
-          this.toastService.presentToast('Algo salio mal')
+          this.toastService.presentToast('Algo salio mal', 'danger')
           console.error('Error al enviar datos:', error);
         }
       );
@@ -278,7 +278,7 @@ export class ProjectService {
         },
         (error: any) => {
           reject('Algo salio mal')
-          this.toastService.presentToast('Algo salio mal')
+          this.toastService.presentToast('Algo salio mal', 'danger')
           console.error('Error al enviar datos:', error);
         }
       );

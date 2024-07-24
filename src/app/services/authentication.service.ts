@@ -51,12 +51,12 @@ export class AuthenticationService {
       (await this.httpService.post('login/auth', postData, true)).subscribe(
         async (response: any) => {
           if (response.status) {
-            this.toastService.presentToast('Bienvenido')
+            this.toastService.presentToast('Bienvenido', 'secondary')
             await this.storage.set(TOKEN_KEY, response.result.data);
             this.authenticationState.next(true);
             this.router.navigate(['members', 'projects']);
           } else {
-            this.toastService.presentToast('Usuario o contraseña incorrectos')
+            this.toastService.presentToast('Usuario o contraseña incorrectos', 'danger')
           }
         },
         (error) => {
@@ -66,12 +66,12 @@ export class AuthenticationService {
     } else {
       const auth = await this.storageService.authUser(postData)
       if (auth) {
-        this.toastService.presentToast('Bienvenido')
+        this.toastService.presentToast('Bienvenido', 'secondary')
         await this.storage.set(TOKEN_KEY, auth);
         this.authenticationState.next(true);
         this.router.navigate(['members', 'projects']);
       } else {
-        this.toastService.presentToast('Usuario o contraseña incorrectos')
+        this.toastService.presentToast('Usuario o contraseña incorrectos', 'danger')
       }
     }
   }

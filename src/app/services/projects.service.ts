@@ -100,14 +100,14 @@ export class ProjectsService {
             resolve(tasksEvents);
           },
           (error: any) => {
-            this.toastService.presentToast('No se pudieron obtener los planes')
+            this.toastService.presentToast('No se pudieron obtener los planes', 'danger')
             console.error('Error al enviar datos:', error);
             reject(error);
           }
         );
       });
     } catch (error: any) {
-      this.toastService.presentToast('Error al realizar la solicitud de calendar')
+      this.toastService.presentToast('Error al realizar la solicitud de calendar', 'danger')
       console.error('Error al realizar la solicitud de calendar:', error);
       throw error;
     }
@@ -197,18 +197,18 @@ export class ProjectsService {
                 });
                 resolve(true)
               } else {
-                this.toastService.presentToast('Plan de trabajo ya finalizado')
+                this.toastService.presentToast('Plan de trabajo ya finalizado', 'danger')
                 resolve(false)
               }
             },
             (error: any) => {
-              this.toastService.presentToast('Algo salió mal')
+              this.toastService.presentToast('Algo salió mal', 'danger')
               console.error('Error al enviar datos:', error);
               reject(error);
             })
         })
       } catch (error) {
-        this.toastService.presentToast('Algo salió mal')
+        this.toastService.presentToast('Algo salió mal', 'danger')
         console.error('Error al enviar datos:', error);
         throw error;
       }
@@ -227,25 +227,25 @@ export class ProjectsService {
                   },
                 });
               } else {
-                this.toastService.presentToast('tarea ya finalizada');
+                this.toastService.presentToast('tarea ya finalizada', 'danger');
               }
             },
             (error: any) => {
-              this.toastService.presentToast('Algo salió mal')
+              this.toastService.presentToast('Algo salió mal', 'danger')
               console.error('Error al enviar datos:', error);
               reject(error);
             }
           )
         })
       } catch (error) {
-        this.toastService.presentToast('Algo salió mal')
+        this.toastService.presentToast('Algo salió mal', 'danger')
         console.error('Error al enviar datos:', error);
         throw error;
       }
     }
   }
 
-  async verifyIfActivityIsEnableOffline(type: string, project_id: number){
+  async verifyIfActivityIsEnableOffline(type: string, project_id: number) {
     if (type === 'project') {
       this.router.navigate(['/members', 'project'], {
         queryParams: {
@@ -254,14 +254,14 @@ export class ProjectsService {
           is_active: false,
         },
       });
-    }else{
+    } else {
       this.router.navigate(['/members', 'project'], {
         queryParams: {
           project_id: project_id,
           type: type,
           is_active: false,
         },
-      });0
+      }); 0
     }
   }
 
