@@ -477,7 +477,6 @@ export class ProjectService {
   }
 
   async takePictureDocumental() {
-    console.log('Si entra')
     try {
       if (Capacitor.getPlatform() !== 'web') {
         this.androidPermissions
@@ -485,7 +484,6 @@ export class ProjectService {
           .then(
             (result: any) => {
               if (result.hasPermission) {
-                // Acceder a la cámara
               } else {
                 this.androidPermissions.requestPermission(
                   this.androidPermissions.PERMISSION.CAMERA
@@ -505,7 +503,6 @@ export class ProjectService {
         resultType: CameraResultType.DataUrl,
       });
       if (evidenceImageDocumental.dataUrl) {
-        console.log(evidenceImageDocumental.dataUrl)
         const base64Data = evidenceImageDocumental.dataUrl.split(',')[1];
         const fileName = `IMG_${new Date().getTime()}.jpeg`;
         await Filesystem.writeFile({
@@ -516,8 +513,8 @@ export class ProjectService {
       }
       return evidenceImageDocumental.dataUrl;
     } catch (error) {
-      return false
       console.log(error);
+      return false
     }
   }
 }

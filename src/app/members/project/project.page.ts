@@ -17,6 +17,7 @@ import { ProjectService } from '../../services/project.service';
 import { LoaderService } from '../../services/loader.service';
 import { PlanDetail, TasksGroup } from '../../interfaces/Checklist';
 import { DocumentalModalService } from '../../services/documental-modal.service';
+import { ProgressService } from '../../services/progress.service';
 
 
 
@@ -65,6 +66,7 @@ export class ProjectPage implements OnInit {
     private fb: NonNullableFormBuilder,
     private loaderService: LoaderService,
     private documentalModalService: DocumentalModalService,
+    private progressService: ProgressService,
   ) { }
 
   validateForm: FormGroup<{
@@ -134,38 +136,11 @@ export class ProjectPage implements OnInit {
     setTimeout(() => {
       this.documentalChecklistService.setSelectedItem(idItemChecklist, answer, description);
     }, 0);
-    console.log(this.documentalChecklistService.getAllItems())
-    // await this.storageProjectService.saveProgress(
-    //   this.checklistService.getAllItems(),
-    //   'documentalProgress'
-    // );
+    await this.progressService.setData('documentalProgress', this.documentalChecklistService.getAllItems());
   }
 
   setOpenNoAnswerDocumentalModal(isOpen: boolean, id: number) {
     this.documentalModalService.show(id)
-    // this.openNoAnswerDocumentModal = isOpen;
-    // this.documentChecklistItemId = id;
-  }
-
-  closeDocumentalModal(isOpen: boolean) {
-    this.openNoAnswerDocumentModal = isOpen;
-  }
-
-  async setDocumentalAnswerNo(isOpen: boolean) {
-    let url = this.evidenceImageDocumental.length > 0 ? await this.setUrlImage(this.evidenceImageDocumental, 'documentalEvidence') || "" : ''
-    this.documentalChecklistService.setSelectedItem(this.documentChecklistItemId, 'no', this.documentalAnswerDescription, url);
-    this.documentalAnswerDescription = '';
-    this.evidenceImageDocumental = '';
-    this.openNoAnswerDocumentModal = isOpen;
-
-    // await this.storageProjectService.saveProgress(
-    //   this.checklistService.getAllItems(),
-    //   'documentalProgress'
-    // );
-    // console.log(
-    //   await this.storageProjectService.getDataBykey('documentalProgress')
-    // );
-    // console.log(this.checklistService.getAllItems());
   }
 
   getSelectedOptionsProducts(event: any, index: any) {

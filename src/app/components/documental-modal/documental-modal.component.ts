@@ -6,6 +6,9 @@ import { DocumentalChecklistService } from '../../services/documental-checklist.
 import { NetworkService } from '../../services/network.service';
 import { DocumentalModalService } from '../../services/documental-modal.service';
 import { openNoAnswerDocumentModal } from '../../interfaces/Project';
+import { LoaderService } from '../../services/loader.service';
+import { ToastService } from '../../services/toast.service';
+import { ProgressService } from '../../services/progress.service';
 
 
 @Component({
@@ -27,6 +30,9 @@ export class DocumentalModalComponent implements OnInit {
     private documentalChecklistService: DocumentalChecklistService,
     private networkService: NetworkService,
     private documentalModalService: DocumentalModalService,
+    private loaderService: LoaderService,
+    private toastService: ToastService,
+    private progressService: ProgressService,
   ) { }
 
   ngOnInit() {
@@ -48,30 +54,23 @@ export class DocumentalModalComponent implements OnInit {
   }
 
   async setDocumentalAnswerNo(isOpen: boolean) {
+    this.loaderService.show()
     let url = this.evidenceImageDocumental.length > 0 ? await this.setUrlImage(this.evidenceImageDocumental, 'documentalEvidence') || "" : ''
     this.documentalChecklistService.setSelectedItem(this.documentChecklistItemId, 'no', this.documentalAnswerDescription, url);
     this.documentalAnswerDescription = '';
     this.evidenceImageDocumental = '';
     this.openNoAnswerDocumentModal = isOpen;
-
-    // await this.storageProjectService.saveProgress(
-    //   this.checklistService.getAllItems(),
-    //   'documentalProgress'
-    // );
-    // console.log(
-    //   await this.storageProjectService.getDataBykey('documentalProgress')
-    // );
-    // console.log(this.checklistService.getAllItems());
+    this.loaderService.hide()
+    this.toastService.presentToast('Respuesta guardada', 'secondary')
+    await this.progressService.setData('documentalProgress', this.documentalChecklistService.getAllItems());
   }
 
   async takePictureDocumental() {
     this.evidenceImageDocumental = await this.projectService.takePictureDocumental() as string
-    console.log(this.evidenceImageDocumental)
   }
 
   async setUrlImage(evidenceImage: string, folder: string) {
     if (this.networkService.getNetworkStatus()) {
-      console.log('firebase')
       const blob = this.projectService.dataUrlToBlob(evidenceImage);
       return await this.projectService.uploadImage(blob, folder);
     } else {

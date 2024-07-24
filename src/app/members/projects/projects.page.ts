@@ -8,7 +8,8 @@ import listPlugin from '@fullcalendar/list';
 import { ProjectsService } from './../../services/projects.service';
 import { AuthenticationService } from './../../services/authentication.service';
 import { LoggedData } from './../../interfaces/Auth';
-import { Event } from 'src/app/interfaces/Projects';
+import { Event } from '../../interfaces/Projects';
+import { ProgressService } from '../../services/progress.service';
 
 @Component({
   selector: 'app-projects',
@@ -49,12 +50,39 @@ export class ProjectsPage implements OnInit {
     eventClick: this.presentAlert.bind(this),
     events: [] as Event[]
   };
-  constructor(private projectsService: ProjectsService, private authenticationService: AuthenticationService, private alertController: AlertController,) { }
+  constructor(
+    private projectsService: ProjectsService,
+    private authenticationService: AuthenticationService,
+    private alertController: AlertController,
+    private progressService: ProgressService,
+  ) { }
 
   async ngOnInit() {
     this.userdata = await this.authenticationService.getLoggedData()
     this.myEvents = await this.projectsService.getProjects(this.userdata.staffid)
     this.calendarOptions.events = this.myEvents;
+    if (await this.progressService.getByKey('documentalProgress')) {
+      const alertButtons = [
+        {
+          text: 'Cancelar',
+          cssClass: 'alert-button-cancel',
+          role: 'cancel',
+          handler: () => {
+            this.progressService.removeData('documentalProgress');
+          },
+        },
+        {
+          text: 'Iniciar',
+          cssClass: 'alert-button-confirm',
+          role: 'confirm',
+        },
+      ];
+      const alert = await this.alertController.create({
+        header: `Desea iniciar el plan de trabajo?`,
+        buttons: alertButtons
+      });
+      await alert.present();
+    }
   }
 
   async presentAlert(event: any) {

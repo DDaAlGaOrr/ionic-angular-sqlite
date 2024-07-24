@@ -9,6 +9,8 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
+import CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
+import { Drivers } from '@ionic/storage';
 
 
 import { firebaseConfig } from './environments/firebase.config';
@@ -24,7 +26,7 @@ registerLocaleData(localeEsMX, 'es-MX');
   imports: [
     BrowserModule,
     IonicStorageModule.forRoot({
-      driverOrder: ['sqlite', 'indexeddb', 'localstorage', 'websql']
+      driverOrder: [CordovaSQLiteDriver, Drivers.IndexedDB]
     }),
     IonicModule.forRoot(),
     AppRoutingModule,
