@@ -1,0 +1,33 @@
+<ion-modal [isOpen]="openNoAnswerDocumentModal" class="modal-encuesta" [backdropDismiss]="false">
+  <ng-template>
+    <ion-content>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button class="btn-close_modal" color="dark" shape="round"
+            (click)="closeDocumentalModal(false)">Cancelar</ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button class="btn-close_modal" color="dark" shape="round"
+            (click)="setDocumentalAnswerNo(false)">Aceptar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+      <ion-list>
+        <ion-item class="mt-5">
+          <ion-col>
+            <ion-label>Comentario:</ion-label>
+            <textarea rows="4" [(ngModel)]="documentalAnswerDescription"></textarea>
+          </ion-col>
+        </ion-item>
+        <ion-item class="ion-margin-bottom">
+          <ion-grid>
+            <ion-label>Añadir archivos</ion-label>
+            <ion-col size="12" class="ion-justify-content-center">
+              <img *ngIf="evidenceImageDocumental" [src]="evidenceImageDocumental" />
+              <ion-button expand="block" (click)="takePictureDocumental()">Agregar foto</ion-button>
+            </ion-col>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>

@@ -1,0 +1,27 @@
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { openNoAnswerDocumentModal } from '../interfaces/Project';
+
+@Injectable({
+  providedIn: 'root'
+})
+
+export class DocumentalModalService {
+  // private _modalData = new BehaviorSubject<openNoAnswerDocumentModal>({ checklistItemId: 0, description: '', open: false, urlImage: "" });
+  private itemId = new BehaviorSubject<number>(0);
+  modalData = this.itemId.asObservable();
+  private _showModal = new BehaviorSubject<boolean>(false);
+  showModal = this._showModal.asObservable();
+
+  constructor() { }
+
+  show(itemId: number) {
+    this.itemId.next(itemId);
+    this._showModal.next(true);
+  }
+
+  hide() {
+    this.itemId.next(0)
+    this._showModal.next(false);
+  }
+}

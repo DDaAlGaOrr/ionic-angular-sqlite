@@ -16,6 +16,7 @@ import { NetworkService } from '../../services/network.service';
 import { ProjectService } from '../../services/project.service';
 import { LoaderService } from '../../services/loader.service';
 import { PlanDetail, TasksGroup } from '../../interfaces/Checklist';
+import { DocumentalModalService } from '../../services/documental-modal.service';
 
 
 
@@ -63,6 +64,7 @@ export class ProjectPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private fb: NonNullableFormBuilder,
     private loaderService: LoaderService,
+    private documentalModalService: DocumentalModalService,
   ) { }
 
   validateForm: FormGroup<{
@@ -140,8 +142,9 @@ export class ProjectPage implements OnInit {
   }
 
   setOpenNoAnswerDocumentalModal(isOpen: boolean, id: number) {
-    this.openNoAnswerDocumentModal = isOpen;
-    this.documentChecklistItemId = id;
+    this.documentalModalService.show(id)
+    // this.openNoAnswerDocumentModal = isOpen;
+    // this.documentChecklistItemId = id;
   }
 
   closeDocumentalModal(isOpen: boolean) {
