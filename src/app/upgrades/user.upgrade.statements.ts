@@ -70,7 +70,16 @@ export class UserUpgradeStatements {
         {
             toVersion: 8,
             statements: [
-                `ALTER TABLE tblclients ADD COLUMN company TEXT;`,
+                `CREATE TABLE IF NOT EXISTS tblclients(
+                id INTEGER PRIMARY KEY,
+                code_client TEXT,
+                state TEXT,
+                address TEXT,
+                type_client TEXT,
+                active INTEGER,
+                zone TEXT,
+                company TEXT
+            );`,
             ]
         },
         // {
