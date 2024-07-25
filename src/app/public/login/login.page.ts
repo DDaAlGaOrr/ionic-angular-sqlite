@@ -25,9 +25,6 @@ export class LoginPage implements OnInit {
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['members', 'projects']); 
-      console.log('sisis') 
-    }else{
-      console.log('nono')
     }
   }
 

@@ -5,7 +5,6 @@ import { ProjectService } from '../../services/project.service';
 import { DocumentalChecklistService } from '../../services/documental-checklist.service';
 import { NetworkService } from '../../services/network.service';
 import { DocumentalModalService } from '../../services/documental-modal.service';
-import { openNoAnswerDocumentModal } from '../../interfaces/Project';
 import { LoaderService } from '../../services/loader.service';
 import { ToastService } from '../../services/toast.service';
 import { ProgressService } from '../../services/progress.service';
@@ -36,7 +35,6 @@ export class DocumentalModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('Si se inicia')
     this.subscription = this.documentalModalService.modalData.subscribe(
       (data: number) => {
         this.documentChecklistItemId = data;

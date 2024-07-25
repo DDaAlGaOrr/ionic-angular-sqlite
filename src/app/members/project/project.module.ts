@@ -16,6 +16,7 @@ import { LoaderModule } from 'src/app/components/loader/loader.module';
 import { HeaderModule } from './../../components/header/header.module';
 import { BottomTabsModule } from '../../components/bottom-tabs/bottom-tabs.module';
 import { DocumentalModalModule } from '../../components/documental-modal/documental-modal.module';
+import { TaskModalModule } from '../../components/task-modal/task-modal.module';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { DocumentalModalModule } from '../../components/documental-modal/documen
     NzSpaceModule,
     NzTagModule,
     BottomTabsModule,
-    DocumentalModalModule
+    DocumentalModalModule,
+    TaskModalModule
   ],
   declarations: [ProjectPage]
 })

@@ -18,6 +18,8 @@ import { LoaderService } from '../../services/loader.service';
 import { PlanDetail, TasksGroup } from '../../interfaces/Checklist';
 import { DocumentalModalService } from '../../services/documental-modal.service';
 import { ProgressService } from '../../services/progress.service';
+import { TaskChecklistService } from '../../services/task-checklist.service';
+import { TaskModalService } from '../../services/task-modal.service';
 
 
 
@@ -46,15 +48,11 @@ export class ProjectPage implements OnInit {
   selectedTexts: string[] = [];
   techniciansDocumntalChecklist: any = [];
   selectedTextsTechnicians: string[] = [];
-  openNoAnswerDocumentModal: boolean = false
-  documentChecklistItemId: number = 0
-  evidenceImageDocumental: any = "";
   reasonDocumentalAnswer: string = ""
   projectType: string = '';
   projectId: number = 0;
   uvTotalTasks: TasksGroup = {};
   selectedItem: number | null = null;
-  documentalAnswerDescription: string = ''
 
 
 
@@ -67,6 +65,8 @@ export class ProjectPage implements OnInit {
     private loaderService: LoaderService,
     private documentalModalService: DocumentalModalService,
     private progressService: ProgressService,
+    private taskChecklistService: TaskChecklistService,
+    private taskModalService: TaskModalService,
   ) { }
 
   validateForm: FormGroup<{
@@ -191,12 +191,14 @@ export class ProjectPage implements OnInit {
   }
 
   getSelectedProjectItem(itemId: string) {
-    // const project = this.projectService.getSelectedItem(itemId);
-    // return project ? project : false;
-    return true
+    const project = this.taskChecklistService.getSelectedItem(itemId);
+    return project ? project : false;
   }
 
-  async openModalTask(id_task: any, number_task: any, control: any) {
+  async openModalTask(taskId: any, taskNumber: any, taskControl: any) {
+    this.loaderService.show()
+    this.taskModalService.show({ taskId, taskNumber, taskControl })
+    this.loaderService.hide()
     // this.id_task = id_task;
     // this.task_control = control;
     // this.task_number = number_task;
@@ -259,10 +261,6 @@ export class ProjectPage implements OnInit {
     }
   }
 
-  async takePictureDocumental() {
-    this.evidenceImageDocumental = await this.projectService.takePictureDocumental()
-    console.log(this.evidenceImageDocumental)
-  }
 
   openSelectUvMeasure(isOpen: boolean, indexTask: number) { }
 

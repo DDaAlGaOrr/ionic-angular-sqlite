@@ -10,6 +10,7 @@ import { AuthenticationService } from './../../services/authentication.service';
 import { LoggedData } from './../../interfaces/Auth';
 import { Event } from '../../interfaces/Projects';
 import { ProgressService } from '../../services/progress.service';
+import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
   selector: 'app-projects',
@@ -55,12 +56,15 @@ export class ProjectsPage implements OnInit {
     private authenticationService: AuthenticationService,
     private alertController: AlertController,
     private progressService: ProgressService,
+    private loaderService: LoaderService,
   ) { }
 
   async ngOnInit() {
+    this.loaderService.show()
     this.userdata = await this.authenticationService.getLoggedData()
     this.myEvents = await this.projectsService.getProjects(this.userdata.staffid)
     this.calendarOptions.events = this.myEvents;
+    this.loaderService.hide()
     if (await this.progressService.getByKey('documentalProgress')) {
       const alertButtons = [
         {

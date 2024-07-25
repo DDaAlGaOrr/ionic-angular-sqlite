@@ -41,7 +41,6 @@ export class ProjectsService {
 
   async getNetworkProjects(userid: number): Promise<Event[]> {
     try {
-      this.loaderService.show();
       const observableResult = await this.httpService.get(`tasks/${userid}/tasks`, true);
       return new Promise((resolve, reject) => {
         observableResult.subscribe(
@@ -111,9 +110,7 @@ export class ProjectsService {
       console.error('Error al realizar la solicitud de calendar:', error);
       throw error;
     }
-    finally {
-      this.loaderService.hide();  // Ocultamos el loader al finalizar
-    }
+
   }
 
   async getOfflineProjects(userid: number) {

@@ -5,6 +5,15 @@ export interface ChecklistAnswer {
   urlImage: string;
 }
 
+export interface TaskChecklist {
+  id: string;
+  answer: string;
+  description: string;
+  urlImage: string;
+  customer_responsibility: boolean;
+  correctiveTaskAction: string;
+}
+
 export interface PlanDetail {
   tasksData: TaskData[];
   clientName: string;
