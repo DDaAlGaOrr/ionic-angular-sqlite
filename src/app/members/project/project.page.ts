@@ -53,6 +53,8 @@ export class ProjectPage implements OnInit {
   uvTotalTasks: TasksGroup = {};
   selectedItem: number | null = null;
   totalDocumentalItems: number = 0
+  productsDocumntalChecklistAnswers: any = {}
+  techniciansDocumntalChecklistAnswers: any = {}
 
 
 
@@ -145,40 +147,39 @@ export class ProjectPage implements OnInit {
   }
 
   getSelectedOptionsProducts(event: any, index: any) {
-    // const questions_ids = event.detail.value;
-    // Object.keys(this.productsDocumntalChecklistAnswers).forEach(
-    //   (element: any) => {
-    //     if (questions_ids.includes(element)) {
-    //       if (this.productsDocumntalChecklistAnswers[element].answer) {
-    //         this.checklistService.setSelectedItem(element, 'yes', '');
-    //         this.productsDocumntalChecklistAnswers[element].answer = true;
-    //       }
-    //     } else {
-    //       this.checklistService.setSelectedItem(element, 'no', '');
-    //       this.productsDocumntalChecklistAnswers[element].answer = false;
-    //     }
-    //   }
-    // );
+    const questions_ids = event.detail.value;
+    Object.keys(this.productsDocumntalChecklistAnswers).forEach(
+      (element: any) => {
+        if (questions_ids.includes(element)) {
+          if (this.productsDocumntalChecklistAnswers[element].answer) {
+            this.documentalChecklistService.setSelectedItem(element, 'yes', '');
+            this.productsDocumntalChecklistAnswers[element].answer = true;
+          }
+        } else {
+          this.documentalChecklistService.setSelectedItem(element, 'no', '');
+          this.productsDocumntalChecklistAnswers[element].answer = false;
+        }
+      }
+    );
   }
   getSelectedOptionsTechnicians(event: any, index: any) {
-    // const questions_ids = event.detail.value;
-    // Object.keys(this.techniciansDocumntalChecklistAnswers).forEach(
-    //   (element: any) => {
-    //     if (questions_ids.includes(element)) {
-    //       if (this.techniciansDocumntalChecklistAnswers[element].answer) {
-    //         this.checklistService.setSelectedItem(element, 'yes', '');
-    //         this.techniciansDocumntalChecklistAnswers[element].answer = true;
-    //       }
-    //     } else {
-    //       this.checklistService.setSelectedItem(element, 'no', '');
-    //       this.techniciansDocumntalChecklistAnswers[element].answer = false;
-    //     }
-    //   }
-    // );
+    const questions_ids = event.detail.value;
+    Object.keys(this.techniciansDocumntalChecklistAnswers).forEach(
+      (element: any) => {
+        if (questions_ids.includes(element)) {
+          if (this.techniciansDocumntalChecklistAnswers[element].answer) {
+            this.documentalChecklistService.setSelectedItem(element, 'yes', '');
+            this.techniciansDocumntalChecklistAnswers[element].answer = true;
+          }
+        } else {
+          this.documentalChecklistService.setSelectedItem(element, 'no', '');
+          this.techniciansDocumntalChecklistAnswers[element].answer = false;
+        }
+      }
+    );
   }
-
-  getSelectedProjectItem(itemId: string) {
-    const project = this.taskChecklistService.getSelectedItem(itemId);
+  getSelectedProjectItem(itemId: number) {
+    const project = this.taskChecklistService.getTaskItemById(itemId);
     return project ? project : false;
   }
 
@@ -213,6 +214,10 @@ export class ProjectPage implements OnInit {
     console.log(this.sectionListItems)
     const isTheTaskChecklistComplete = this.taskChecklistService.getLength() == this.tasksData.length
     const isTheDocumentalChecklistComplete = this.documentalChecklistService.getLength() == this.totalDocumentalItems
+    console.log(this.taskChecklistService.getLength())
+    console.log(this.tasksData.length)
+    console.log(this.documentalChecklistService.getLength())
+    console.log(this.totalDocumentalItems)
     if (!isTheTaskChecklistComplete) {
       this.toastService.presentToast('Faltan tareas por completar', 'danger')
       return

@@ -88,23 +88,23 @@ export class TaskModalComponent implements OnInit {
   }
 
   handleTaskStatus(event: any) {
-    // this.taskStatus = event.detail.value;
-    // if (this.taskStatus == '10' || this.taskStatus == '13') {
-    //   this.checklist.forEach((item) => {
-    //     if (item.id == 258 || item.id == 99 || item.id == 105) {
-    //       this.showModalTaskAnswerNo(true, item.id, 1, false);
-    //     }
-    //     this.checklistTaskService.setSelectedItem(
-    //       item.id,
-    //       'no',
-    //       this.taskStatus == '10' ? ' Equipo Extraviado' : 'Equipo Oculto',
-    //       '',
-    //       false,
-    //       ''
-    //     );
-    //   });
-    // }
-    // this.taskStatus = '';
+    this.taskStatus = event.detail.value;
+    if (this.taskStatus == '10' || this.taskStatus == '13') {
+      this.checklistItems.forEach((item: any) => {
+        if (item.id == 258 || item.id == 99 || item.id == 105) {
+          this.openModalTaskAnswerNo(true, item.id, 1, false);
+        }
+        this.taskChecklistService.setSelectedItem(
+          item.id,
+          'no',
+          this.taskStatus == '10' ? ' Equipo Extraviado' : 'Equipo Oculto',
+          '',
+          false,
+          ''
+        );
+      });
+    }
+    this.taskStatus = '';
   }
 
   getSelectedTaskItem(itemId: string) {

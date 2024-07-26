@@ -32,7 +32,6 @@ export class BottomTabsComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit() {
-    console.log('BottomTabsComponent initialized');
   }
 
   handleChangeRoute(route: string) {

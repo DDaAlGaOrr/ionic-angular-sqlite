@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TaskChecklist, ProjectAnswers} from '../interfaces/Checklist';
+import { TaskChecklist, ProjectAnswers } from '../interfaces/Checklist';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +35,6 @@ export class TaskChecklistService {
         correctiveTaskAction: correctiveTaskAction,
       };
     }
-    console.log(this.selectedItems);
   }
 
   getSelectedItem(itemId: string): TaskChecklist | undefined {
@@ -63,7 +62,7 @@ export class TaskChecklistService {
     description: any = ''
   ) {
     if (!this.taskChecklist) {
-      this.taskChecklist = {}; 
+      this.taskChecklist = {};
     }
     const existingItem = this.taskChecklist[rel_id];
     if (existingItem) {
@@ -83,11 +82,14 @@ export class TaskChecklistService {
         description: description,
       };
     }
-    console.log(this.taskChecklist);
+    console.log(this.taskChecklist)
   }
 
   getGeneralTaskAnswers() {
     return this.taskChecklist;
+  }
+  getTaskItemById(id: number) {
+    return this.taskChecklist[id];
   }
 
 }
