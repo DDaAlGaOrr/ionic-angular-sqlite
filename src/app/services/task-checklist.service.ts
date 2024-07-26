@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TaskChecklist } from '../interfaces/Checklist';
+import { TaskChecklist, ProjectAnswers} from '../interfaces/Checklist';
 
 @Injectable({
   providedIn: 'root'
@@ -8,14 +8,15 @@ export class TaskChecklistService {
 
   constructor() { }
   selectedItems: { [itemId: string]: TaskChecklist } = {};
+  taskChecklist: { [rel_id: string]: ProjectAnswers } = {};
 
   setSelectedItem(
     itemId: string,
     answer: string,
-    description: string,
+    description: string = '',
     urlImage: string = '',
-    customer_responsibility: boolean,
-    correctiveTaskAction: string
+    customer_responsibility: boolean = false,
+    correctiveTaskAction: string = ''
   ) {
     const existingItem = this.selectedItems[itemId];
     if (existingItem) {
@@ -52,5 +53,42 @@ export class TaskChecklistService {
   getLength() {
     return Object.keys(this.selectedItems).length;
   }
+
+  setGeneralChecklist(
+    rel_id: number,
+    rel_type: string,
+    id_checklist: string,
+    checklist_answers: any,
+    taskStatus: any = '',
+    description: any = ''
+  ) {
+    if (!this.taskChecklist) {
+      this.taskChecklist = {}; 
+    }
+    const existingItem = this.taskChecklist[rel_id];
+    if (existingItem) {
+      existingItem.rel_id = rel_id;
+      existingItem.checklist_answers = checklist_answers;
+      existingItem.rel_type = rel_type;
+      existingItem.id_checklist = id_checklist;
+      existingItem.taskStatus = taskStatus;
+      existingItem.description = description;
+    } else {
+      this.taskChecklist[rel_id] = {
+        rel_id: rel_id,
+        checklist_answers: checklist_answers,
+        rel_type: rel_type,
+        id_checklist: id_checklist,
+        taskStatus: taskStatus,
+        description: description,
+      };
+    }
+    console.log(this.taskChecklist);
+  }
+
+  getGeneralTaskAnswers() {
+    return this.taskChecklist;
+  }
+
 }
 

@@ -100,7 +100,9 @@ export class ProjectsPage implements OnInit {
   }
 
   async handleEventClick(event: any) {
+    this.loaderService.show()
     await this.projectsService.verifyIfActivityIsEnable(event.extendedProps.rel_type, event.extendedProps.project_id)
+    this.loaderService.hide()
   }
 
 }

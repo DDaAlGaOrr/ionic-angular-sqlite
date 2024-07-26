@@ -4,29 +4,20 @@ import { Storage } from '@ionic/storage-angular';
 
 
 import { HttpService } from './http.service';
-import { AuthenticationService } from './authentication.service';
 import { Event } from '../interfaces/Projects';
 
 
 import { ToastService } from './toast.service';
-import { ProjectProgressService } from './project-progress.service';
-import { LoaderService } from './loader.service';
 import { NetworkService } from './network.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectsService {
-  view = 'month';
-
-
   constructor(
     private httpService: HttpService,
-    private authenticationService: AuthenticationService,
     private toastService: ToastService,
-    private projectProgressService: ProjectProgressService,
     private router: Router,
-    private loaderService: LoaderService,
     private networkService: NetworkService,
     private storage: Storage
   ) { }

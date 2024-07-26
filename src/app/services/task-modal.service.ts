@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { HttpService } from './http.service';
 import { ToastService } from './toast.service';
 import { LoaderService } from './loader.service';
+import { TaskChecklistService } from './task-checklist.service';
 
 interface modalData {
   taskId: number
@@ -27,12 +28,13 @@ export class TaskModalService {
     private httpService: HttpService,
     private toastService: ToastService,
     private loaderService: LoaderService,
+    private taskChecklistService: TaskChecklistService,
   ) { }
 
   async show(data: modalData) {
     this.taskData.next(data)
     this._showModal.next(true);
-    const checklistItems = await this.getcChecklist(data.taskId)
+    const checklistItems = await this.getChecklist(data.taskId)
     this.checklist.next(checklistItems)
   }
 
@@ -41,12 +43,15 @@ export class TaskModalService {
     this.taskData.next({ taskId: 0, taskControl: '', taskNumber: '' })
   }
 
-  async getcChecklist(taskId: number) {
+  async getChecklist(taskId: number) {
     try {
       const observableResult = await this.httpService.get(`staffs/${taskId}/checklist`, true)
       return new Promise((resolve, reject) => {
         observableResult.subscribe((response: any) => {
           resolve(response);
+          response.items.forEach((item: any) => {
+            this.taskChecklistService.setSelectedItem(item.id, 'yes');
+          });
         },
           (error: any) => {
             this.toastService.presentToast('No se pudieron obtener los datos', 'danger')
@@ -58,41 +63,5 @@ export class TaskModalService {
     } catch (error) {
       throw error;
     }
-
-
-
-
-
-    this.httpService
-      .get(`staffs/${taskId}/checklist`, true)
-      .then((observableResult) => {
-        observableResult.subscribe(
-          (response: any) => {
-            return response
-            // this.checklist = response.items;
-            // this.checklist_id = response.checklist[0].id;
-            // this.taskStatus =
-            //   response.status_task != null ? response.status_task.content : 0;
-            // this.checklist.forEach((item) => {
-            //   this.checklistTaskService.setSelectedItem(
-            //     item.id,
-            //     'yes',
-            //     '',
-            //     '',
-            //     false,
-            //     ''
-            //   );
-            // });
-          },
-          (error: any) => {
-            console.error('Error al enviar datos:', error);
-            // Puedes manejar el error aquí
-          }
-        );
-      })
-      .catch((error) => {
-        console.error('Error al realizar la solicitud de calendar:', error);
-        // Puedes manejar el error aquí
-      });
   }
 }

@@ -508,7 +508,7 @@ export class ProjectService {
         await Filesystem.writeFile({
           path: fileName,
           data: base64Data,
-          directory: Directory.External, // Guardar en almacenamiento externo
+          directory: Directory.External, 
         });
       }
       return evidenceImageDocumental.dataUrl;

@@ -5,6 +5,15 @@ export interface ChecklistAnswer {
   urlImage: string;
 }
 
+export interface ProjectAnswers {
+  rel_id: number;
+  rel_type: string;
+  id_checklist: string;
+  checklist_answers: any;
+  taskStatus: string;
+  description: string;
+}
+
 export interface TaskChecklist {
   id: string;
   answer: string;

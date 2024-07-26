@@ -1,5 +1,5 @@
-
-<ion-modal [isOpen]="openTaskModal" >
+<app-loader></app-loader>
+<ion-modal [isOpen]="openTaskModal">
   <ng-template>
     <ion-header>
       <ion-toolbar>
@@ -69,7 +69,7 @@
                               value="yes">Sí Cumple</ion-radio>
                           </ion-col>
                           <ion-col>
-                            <ion-radio id="open-modal" (click)="showModalTaskAnswerNo(true,item.id,i)" justify="start"
+                            <ion-radio id="open-modal" (click)="openModalTaskAnswerNo(true,item.id,i)" justify="start"
                               value="no" labelPlacement="end">No Cumple</ion-radio>
                           </ion-col>
                         </ion-col>
@@ -92,7 +92,7 @@
                               value="yes">sin incidencia</ion-radio>
                           </ion-col>
                           <ion-col>
-                            <ion-radio id="open-modal" (click)="showModalTaskAnswerNo(true,item.id,i,true)"
+                            <ion-radio id="open-modal" (click)="openModalTaskAnswerNo(true,item.id,i,true)"
                               justify="start" value="no" labelPlacement="end">Generar incidencia</ion-radio>
                           </ion-col>
                         </ion-col>
@@ -105,6 +105,55 @@
           </ng-container>
         </ng-container>
       </ion-grid>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [isOpen]="modalTaskAnswerNo" class="modal-encuesta" [backdropDismiss]="false">
+  <ng-template>
+    <ion-content>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button class="btn-close_modal" color="dark" shape="round" (click)="cancel()">Cancelar</ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button class="btn-close_modal" color="dark" shape="round"
+            (click)="setNoTaskAnswer(false)">Aceptar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+      <ion-list>
+          <ion-item class="mt-5">
+            <ion-col>
+              <ion-label>Comentario:</ion-label>
+              <textarea rows="4" nz-input [(ngModel)]="taskReason"></textarea>
+              <ion-item>
+                <ion-col size="12">
+                  <ion-label>Acción correctiva:</ion-label>
+                  <ion-select justify="space-between" required aria-label="Acción correctiva" interface="popover"
+                    placeholder="Seleccione acción correctiva" (ionChange)="handleCorrectiveAction($event)">
+                    <ion-select-option value="1">Requiere reemplazo</ion-select-option>
+                    <ion-select-option value="2">Se recomiendo atender para evitar
+                      plaga</ion-select-option>
+                    <ion-select-option value="3">Se recomienda atender para evitar ingreso de fauna
+                      nociva</ion-select-option>
+                  </ion-select>
+                </ion-col>
+              </ion-item>
+              <ion-checkbox (click)="setTaskResponsiveValue($event)">
+                No cumple por cuestion del cliente
+              </ion-checkbox>
+            </ion-col>
+          </ion-item>
+          <ion-item class="ion-margin-bottom">
+            <ion-grid>
+              <ion-label>Añadir archivos</ion-label>
+              <ion-col size="12" class="ion-justify-content-center">
+                <img *ngIf="evidenceImageTask" [src]="evidenceImageTask" />
+                <ion-button expand="block" (click)="takePicture()">Agregar foto</ion-button>
+              </ion-col>
+            </ion-grid>
+          </ion-item>
+      </ion-list>
     </ion-content>
   </ng-template>
 </ion-modal>

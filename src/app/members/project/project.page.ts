@@ -176,20 +176,6 @@ export class ProjectPage implements OnInit {
     // );
   }
 
-  showModalTaskAnswerNo(
-    open: boolean,
-    item_id: any,
-    index: any,
-    isRnp: any = false
-  ) {
-    // this.currentTaskChecklistItem = item_id;
-    // if (isRnp) {
-    //   this.showTicketsModal(true);
-    // } else {
-    //   this.modalTaskAnswerNo = open;
-    // }
-  }
-
   getSelectedProjectItem(itemId: string) {
     const project = this.taskChecklistService.getSelectedItem(itemId);
     return project ? project : false;
@@ -199,56 +185,18 @@ export class ProjectPage implements OnInit {
     this.loaderService.show()
     this.taskModalService.show({ taskId, taskNumber, taskControl })
     this.loaderService.hide()
-    // this.id_task = id_task;
-    // this.task_control = control;
-    // this.task_number = number_task;
-    // this.httpService
-    //   .get(`staffs/${id_task}/checklist`, true)
-    //   .then((observableResult) => {
-    //     observableResult.subscribe(
-    //       (response: any) => {
-    //         this.checklist = response.items;
-    //         this.checklist_id = response.checklist[0].id;
-    //         this.taskStatus =
-    //           response.status_task != null ? response.status_task.content : 0;
-    //         this.checklist.forEach((item) => {
-    //           this.checklistTaskService.setSelectedItem(
-    //             item.id,
-    //             'yes',
-    //             '',
-    //             '',
-    //             false,
-    //             ''
-    //           );
-    //         });
-    //       },
-    //       (error: any) => {
-    //         console.error('Error al enviar datos:', error);
-    //         // Puedes manejar el error aquí
-    //       }
-    //     );
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error al realizar la solicitud de calendar:', error);
-    //     // Puedes manejar el error aquí
-    //   });
-    // this.openTaskModal = true;
-    // return this.modal.present(); // Mostrar el modal
   }
 
   toggleItem(index: number) {
     if (this.selectedItem === index) {
-      // Si ya está seleccionado, ciérralo
       this.selectedItem = null;
     } else {
-      // Si es diferente al seleccionado, ábrelo y cierra los demás
       this.selectedItem = index;
     }
   }
 
   isItemOpen(index: number): boolean {
     return this.selectedItem === index;
-    return true
   }
 
   async setUrlImage(evidenceImage: string, folder: string) {
