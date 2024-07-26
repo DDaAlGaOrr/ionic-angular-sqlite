@@ -4,7 +4,7 @@ import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { ProjectsService } from './offline/projects.service';
-import { Storage as IonicStorage  } from '@ionic/storage-angular';
+import { Storage as IonicStorage } from '@ionic/storage-angular';
 
 
 import { NetworkService } from './network.service';
@@ -22,6 +22,9 @@ import {
   providedIn: 'root'
 })
 export class ProjectService {
+  totalDocuemntalItems: number = 0
+
+
   constructor(
     private networkService: NetworkService,
     private httpService: HttpService,
@@ -55,17 +58,17 @@ export class ProjectService {
   }
 
   async uploadImage(blob: Blob, route: string) {
-      try {
-        const currentDate = Date.now();
-        const filePath = `${route}/${currentDate}.jpg`;
-        const fileRef = ref(this.firebaseStorage, filePath);
-        const task = await uploadBytes(fileRef, blob);
-        const url = getDownloadURL(fileRef);
-        return url;
-      } catch (error) {
-        console.error('Error al cargar la imagen:', error);
-        throw error;
-      }
+    try {
+      const currentDate = Date.now();
+      const filePath = `${route}/${currentDate}.jpg`;
+      const fileRef = ref(this.firebaseStorage, filePath);
+      const task = await uploadBytes(fileRef, blob);
+      const url = getDownloadURL(fileRef);
+      return url;
+    } catch (error) {
+      console.error('Error al cargar la imagen:', error);
+      throw error;
+    }
   }
 
   async getProjectTasks(projectId: number, projectType: string) {
@@ -184,6 +187,7 @@ export class ProjectService {
 
   async getOnlineProjectDocumentalChecklist(projectId: number, projectType: string): Promise<DocumentalData> {
     const data: DocumentalData = {
+      totalDocumentalItems: 0,
       totalPages: 0,
       evaluationAnswers: {},
       sectionListItems: [],
@@ -199,15 +203,18 @@ export class ProjectService {
     return new Promise((resolve, reject) => {
       observableResult.subscribe(
         (response: any) => {
+          let totalDocuemntalItems = 0
           const checklistItemsBySection: any = {};
           data.totalPages = response.checklist_sections.length;
           for (const sectionId in response.items) {
             if (response.items.hasOwnProperty(sectionId)) {
               const sectionItems = response.items[sectionId];
               if (Array.isArray(sectionItems)) {
+                totalDocuemntalItems += sectionItems.length
                 checklistItemsBySection[sectionId] = sectionItems;
               } else {
                 const indexName = Object.keys(sectionItems)[0];
+                totalDocuemntalItems += sectionItems[indexName].length
                 checklistItemsBySection[sectionId] = {
                   subsection: true,
                   name: indexName,
@@ -219,6 +226,7 @@ export class ProjectService {
               }
             }
           }
+          data.totalDocumentalItems = totalDocuemntalItems
           data.sectionListItems = response.checklist_sections.map(
             (section: any) => {
               let extraAnswerDescription = '';
@@ -287,6 +295,7 @@ export class ProjectService {
 
   async getOfflineProjectDocumentalChecklist(projectId: number, projectType: string): Promise<DocumentalData> {
     const data: DocumentalData = {
+      totalDocumentalItems: 0,
       totalPages: 0,
       evaluationAnswers: {},
       sectionListItems: [],
@@ -299,15 +308,18 @@ export class ProjectService {
       techniciansDocumntalChecklistAnswers: {}
     }
     const response = await this.offlineProjectsService.getDocumentalChecklist(projectId, projectType)
+    let totalDocuemntalItems = 0
     const checklistItemsBySection: any = {};
     data.totalPages = response.checklist_sections.length;
     for (const sectionId in response.items) {
       if (response.items.hasOwnProperty(sectionId)) {
         const sectionItems = response.items[sectionId];
         if (sectionItems[0]) {
+          totalDocuemntalItems += sectionItems.length
           checklistItemsBySection[sectionId] = sectionItems;
         } else {
           const indexName = Object.keys(sectionItems)[0];
+          totalDocuemntalItems += sectionItems[indexName].length
           checklistItemsBySection[sectionId] = {
             subsection: true,
             name: indexName,
@@ -508,7 +520,7 @@ export class ProjectService {
         await Filesystem.writeFile({
           path: fileName,
           data: base64Data,
-          directory: Directory.External, 
+          directory: Directory.External,
         });
       }
       return evidenceImageDocumental.dataUrl;

@@ -67,6 +67,7 @@ export interface TasksGroup {
 }
 
 export interface DocumentalData {
+  totalDocumentalItems: number
   totalPages: number;
   evaluationAnswers: EvaluationAnswers;
   sectionListItems: any[];

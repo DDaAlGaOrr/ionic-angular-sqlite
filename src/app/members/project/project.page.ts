@@ -20,8 +20,7 @@ import { DocumentalModalService } from '../../services/documental-modal.service'
 import { ProgressService } from '../../services/progress.service';
 import { TaskChecklistService } from '../../services/task-checklist.service';
 import { TaskModalService } from '../../services/task-modal.service';
-
-
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-project',
@@ -53,6 +52,7 @@ export class ProjectPage implements OnInit {
   projectId: number = 0;
   uvTotalTasks: TasksGroup = {};
   selectedItem: number | null = null;
+  totalDocumentalItems: number = 0
 
 
 
@@ -67,6 +67,7 @@ export class ProjectPage implements OnInit {
     private progressService: ProgressService,
     private taskChecklistService: TaskChecklistService,
     private taskModalService: TaskModalService,
+    private toastService: ToastService,
   ) { }
 
   validateForm: FormGroup<{
@@ -98,7 +99,7 @@ export class ProjectPage implements OnInit {
       this.sectionListItems = documental.sectionListItems
       this.productsDocumntalChecklist = documental.productsDocumntalChecklist
       this.techniciansDocumntalChecklist = documental.techniciansDocumntalChecklist
-      console.log(documental)
+      this.totalDocumentalItems = documental.totalDocumentalItems
     } else {
       await this.projectService.getTaskItems(this.projectId, this.projectType)
       // await this.projectService.getTaskDocumentalChecklist(this.projectId,this.projectType)
@@ -201,12 +202,26 @@ export class ProjectPage implements OnInit {
 
   async setUrlImage(evidenceImage: string, folder: string) {
     if (this.networkService.getNetworkStatus()) {
-      console.log('firebase')
       const blob = this.projectService.dataUrlToBlob(evidenceImage);
       return await this.projectService.uploadImage(blob, folder);
     } else {
       return evidenceImage
     }
+  }
+
+  canBeSent() {
+    console.log(this.sectionListItems)
+    const isTheTaskChecklistComplete = this.taskChecklistService.getLength() == this.tasksData.length
+    const isTheDocumentalChecklistComplete = this.documentalChecklistService.getLength() == this.totalDocumentalItems
+    if (!isTheTaskChecklistComplete) {
+      this.toastService.presentToast('Faltan tareas por completar', 'danger')
+      return
+    }
+    if (!isTheDocumentalChecklistComplete) {
+      this.toastService.presentToast('Faltan reactivos en el documental', 'danger')
+      return
+    }
+
   }
 
 

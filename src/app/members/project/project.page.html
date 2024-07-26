@@ -15,6 +15,20 @@
     </ion-row>
   </ion-grid>
 
+  <ng-container>
+    <ion-item>
+      <ion-grid>
+        <ion-row class="ion-text-end">
+          <ion-col>
+            <ion-button size="default" color="primary" id="open-custom-dialog" shape="round"
+              (click)="canBeSent()">Terminar</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ng-container>
+
+
   <ion-item>
     <ion-segment value="documental" [(ngModel)]="selectedSegment">
       <ion-segment-button value="documental">
