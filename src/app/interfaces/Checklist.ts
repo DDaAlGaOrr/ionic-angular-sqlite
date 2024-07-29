@@ -32,6 +32,7 @@ export interface PlanDetail {
   formattedTask: FormattedTask;
   projectType: string,
   uvChecklistItems: {}
+  subsidiaryId: string
 }
 
 export interface TaskData {

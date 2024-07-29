@@ -14,3 +14,10 @@ export interface Activities {
     projects: any[];
     taskData: any[];
 }
+
+export interface TicketEvent {
+    start: Date;
+    end: Date;
+    title: string;
+    id: number
+}

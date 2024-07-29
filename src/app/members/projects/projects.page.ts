@@ -46,7 +46,7 @@ export class ProjectsPage implements OnInit {
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'dayGridMonth,listMonth'
+      right: 'listMonth'
     },
     eventClick: this.presentAlert.bind(this),
     events: [] as Event[]
@@ -82,7 +82,7 @@ export class ProjectsPage implements OnInit {
         },
       ];
       const alert = await this.alertController.create({
-        header: `Desea iniciar el plan de trabajo?`,
+        header: `Tienes un plan de trabajo  activo, ¿deseas continuar con este?`,
         buttons: alertButtons
       });
       await alert.present();

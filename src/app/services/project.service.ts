@@ -90,7 +90,8 @@ export class ProjectService {
       checklistItems: '',
       formattedTask: { formattedTasks: [], tasksBelts: [] },
       projectType: projectType,
-      uvChecklistItems: {}
+      uvChecklistItems: {},
+      subsidiaryId: ''
     }
     const observableResult = await this.httpService.get(`staffs/${projectId}/tasks`, true)
     return new Promise((resolve, reject) => {
@@ -106,6 +107,7 @@ export class ProjectService {
             response.service_area,
             response.cinturones.split(', ')
           );
+          data.subsidiaryId = response.plan_detail[0].id_subsidiary
           resolve(data);
         },
         (error: any) => {
@@ -125,7 +127,8 @@ export class ProjectService {
       checklistItems: '',
       formattedTask: { formattedTasks: [], tasksBelts: [] },
       projectType: projectType,
-      uvChecklistItems: {}
+      uvChecklistItems: {},
+      subsidiaryId: ''
     }
     const result = await this.offlineProjectsService.getPlanDetail(projectId, projectType)
     data.tasksData = result.projectTasks
@@ -137,6 +140,7 @@ export class ProjectService {
       result.serviceArea,
       result.cinturones.split(', ')
     );
+    data.subsidiaryId = result.planDetail[0].id_subsidiary
     return data
   }
 
