@@ -18,8 +18,12 @@
   <ng-container>
     <ion-item>
       <ion-grid>
-        <ion-row class="ion-text-end">
+        <ion-row >
           <ion-col>
+            <ion-button size="default" color="primary" *ngIf="showIncidentsButton" shape="round"
+              (click)="seeIncidents()">Ver incidencias</ion-button>
+          </ion-col>
+          <ion-col class="ion-text-end">
             <ion-button size="default" color="primary" id="open-custom-dialog" shape="round"
               (click)="canBeSent()">Terminar</ion-button>
           </ion-col>

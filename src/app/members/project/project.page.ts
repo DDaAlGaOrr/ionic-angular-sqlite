@@ -10,6 +10,7 @@ import {
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { DocumentalChecklistService } from '../../services/documental-checklist.service';
 import { NetworkService } from '../../services/network.service';
@@ -21,6 +22,8 @@ import { ProgressService } from '../../services/progress.service';
 import { TaskChecklistService } from '../../services/task-checklist.service';
 import { TaskModalService } from '../../services/task-modal.service';
 import { ToastService } from '../../services/toast.service';
+import { TicketsService } from '../../services/tickets.service';
+
 
 @Component({
   selector: 'app-project',
@@ -55,8 +58,8 @@ export class ProjectPage implements OnInit {
   totalDocumentalItems: number = 0
   productsDocumntalChecklistAnswers: any = {}
   techniciansDocumntalChecklistAnswers: any = {}
-
-
+  subsidiaryId: string = ""
+  showIncidentsButton: boolean = false
 
   constructor(
     private documentalChecklistService: DocumentalChecklistService,
@@ -70,6 +73,8 @@ export class ProjectPage implements OnInit {
     private taskChecklistService: TaskChecklistService,
     private taskModalService: TaskModalService,
     private toastService: ToastService,
+    private ticketsService: TicketsService,
+    private router: Router,
   ) { }
 
   validateForm: FormGroup<{
@@ -88,6 +93,7 @@ export class ProjectPage implements OnInit {
     })
     if (this.projectType == 'project') {
       const planDetail = await this.projectService.getProjectTasks(this.projectId, this.projectType)
+      console.log(planDetail)
       this.tasksData = planDetail.tasksData
       this.clientName = planDetail.clientName
       this.subsdiaryName = planDetail.subsdiaryName
@@ -95,7 +101,13 @@ export class ProjectPage implements OnInit {
       this.checklistItems = planDetail.checklistItems
       this.tasksBelts = planDetail.formattedTask.tasksBelts
       this.formattedTasks = planDetail.formattedTask.formattedTasks
+      this.subsidiaryId = planDetail.subsidiaryId
+      // const haveIncidents = await this.haveIncidents(planDetail.subsidiaryId)
+      // haveIncidents.length > 0 ? this.showIncidentsButton = true : this.showIncidentsButton = false
+      this.showIncidentsButton = true
+
       const documental = await this.projectService.getProjectDocumentalChecklist(this.projectId, this.projectType)
+      console.log(documental)
       this.totalPages = documental.totalPages
       this.sectionList = documental.sectionList
       this.sectionListItems = documental.sectionListItems
@@ -229,6 +241,29 @@ export class ProjectPage implements OnInit {
 
   }
 
+  async haveIncidents(subsidiaryId: string) {
+    if (this.networkService.getNetworkStatus()) {
+      return await this.validateIfHaveIncidentsOnline(subsidiaryId)
+    } else {
+      this.validateIfHaveIncidentsOffline(subsidiaryId)
+    }
+  }
+
+  async validateIfHaveIncidentsOnline(subsidiaryId: string) {
+    return await this.ticketsService.HaveIncidents(subsidiaryId)
+  }
+
+  validateIfHaveIncidentsOffline(subsidiaryId: string) {
+
+  }
+
+  seeIncidents() {
+    this.router.navigate(['/members', 'tickets'], {
+      queryParams: {
+        subsidiaryId: this.subsidiaryId
+      },
+    });
+  }
 
   openSelectUvMeasure(isOpen: boolean, indexTask: number) { }
 
