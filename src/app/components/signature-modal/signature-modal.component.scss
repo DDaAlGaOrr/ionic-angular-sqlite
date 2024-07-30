@@ -1,0 +1,12 @@
+ion-modal#signature-modal {
+    --width: fit-content;
+    --min-width: 250px;
+    --height: fit-content;
+    padding: 1em .5em;
+    --border-radius: 6px;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+}
+
+ion-modal#signature-modal .wrapper {
+    margin-bottom: 10px;
+}

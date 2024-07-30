@@ -1,0 +1,33 @@
+<ion-modal [isOpen]="openSignatureModal" [backdropDismiss]="false" id="signature-modal">
+  <ng-template>
+    <form nz-form [formGroup]="validateSignForm">
+      <div class="wrapper">
+        <ion-list>
+          <ion-item>
+            <ion-input formControlName="namesignature" type="text" label="Nombre" labelPlacement="stacked"
+              placeholder="Ingrese su nombre" [(ngModel)]="nameSignatureValue"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input formControlName="lastnamesignature" type="text" label="Apellido" labelPlacement="stacked"
+              placeholder="Ingrese su apellido" [(ngModel)]="lastNameSignatureValue"></ion-input>
+          </ion-item>
+          <ion-item class="ion-margin-bottom">
+            <ion-input formControlName="emailsignature" type="email" label="Correo" labelPlacement="stacked"
+              placeholder="Ingrese su correo" required="true" [(ngModel)]="emailSignatureValue"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label class="ion-margin-bottom">Dibuje su firma:</ion-label>
+          </ion-item>
+          <app-signature-pad></app-signature-pad>
+        </ion-list>
+        <br />
+        <ion-button [disabled]="!validateSignForm.valid" color="primary" expand="block" shape="round"
+          (click)="submitSignatureForm()">
+          Terminar plan de trabajo
+        </ion-button>
+      </div>
+      <ion-button size="default" color="primary" id="open-custom-dialog" shape="round"
+        (click)="closeModal()">Cerrar ventana</ion-button>
+    </form>
+  </ng-template>
+</ion-modal>
