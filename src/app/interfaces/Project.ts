@@ -11,3 +11,17 @@ export interface openNoAnswerDocumentModal {
     urlImage: string;
     checklistItemId: number
 }
+
+export interface submitProject {
+    rel_id: number
+    rel_type: string
+    id_checklist: number
+    checklist_answers: {}
+    signaturePicture: string
+    tasksAnswers: {}
+    evidenceType: number
+    namesignature: string,
+    lastnamesignature: string,
+    emailsignature: string,
+    staff_id: number,
+}

@@ -17,6 +17,7 @@ import { HeaderModule } from './../../components/header/header.module';
 import { BottomTabsModule } from '../../components/bottom-tabs/bottom-tabs.module';
 import { DocumentalModalModule } from '../../components/documental-modal/documental-modal.module';
 import { TaskModalModule } from '../../components/task-modal/task-modal.module';
+import { SignatureModalModule } from '../../components/signature-modal/signature-modal.module';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { TaskModalModule } from '../../components/task-modal/task-modal.module';
     NzTagModule,
     BottomTabsModule,
     DocumentalModalModule,
-    TaskModalModule
+    TaskModalModule,
+    SignatureModalModule
   ],
   declarations: [ProjectPage]
 })

@@ -23,6 +23,7 @@ import { TaskChecklistService } from '../../services/task-checklist.service';
 import { TaskModalService } from '../../services/task-modal.service';
 import { ToastService } from '../../services/toast.service';
 import { TicketsService } from '../../services/tickets.service';
+import { SubmitService } from '../../services/submit.service';
 
 
 @Component({
@@ -75,6 +76,7 @@ export class ProjectPage implements OnInit {
     private toastService: ToastService,
     private ticketsService: TicketsService,
     private router: Router,
+    private submitService: SubmitService,
   ) { }
 
   validateForm: FormGroup<{
@@ -223,21 +225,22 @@ export class ProjectPage implements OnInit {
   }
 
   canBeSent() {
-    console.log(this.sectionListItems)
-    const isTheTaskChecklistComplete = this.taskChecklistService.getLength() == this.tasksData.length
-    const isTheDocumentalChecklistComplete = this.documentalChecklistService.getLength() == this.totalDocumentalItems
-    console.log(this.taskChecklistService.getLength())
-    console.log(this.tasksData.length)
-    console.log(this.documentalChecklistService.getLength())
-    console.log(this.totalDocumentalItems)
-    if (!isTheTaskChecklistComplete) {
-      this.toastService.presentToast('Faltan tareas por completar', 'danger')
-      return
-    }
-    if (!isTheDocumentalChecklistComplete) {
-      this.toastService.presentToast('Faltan reactivos en el documental', 'danger')
-      return
-    }
+    // console.log(this.sectionListItems)
+    // const isTheTaskChecklistComplete = this.taskChecklistService.getLength() == this.tasksData.length
+    // const isTheDocumentalChecklistComplete = this.documentalChecklistService.getLength() == this.totalDocumentalItems
+    // console.log(this.taskChecklistService.getLength())
+    // console.log(this.tasksData.length)
+    // console.log(this.documentalChecklistService.getLength())
+    // console.log(this.totalDocumentalItems)
+    // if (!isTheTaskChecklistComplete) {
+    //   this.toastService.presentToast('Faltan tareas por completar', 'danger')
+    //   return
+    // }
+    // if (!isTheDocumentalChecklistComplete) {
+    //   this.toastService.presentToast('Faltan reactivos en el documental', 'danger')
+    //   return
+    // }
+    this.submitService.show(this.evidenceType)
 
   }
 
