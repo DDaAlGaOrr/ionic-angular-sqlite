@@ -48,7 +48,7 @@ export class AuthenticationService {
 
   async login(postData: Auth) {
     if (this.networkService.getNetworkStatus()) {
-      (await this.httpService.post('login/auth', postData, true)).subscribe(
+      (await this.httpService.post('staffs/123/auth', postData, true)).subscribe(
         async (response: any) => {
           if (response.status) {
             this.toastService.presentToast('Bienvenido', 'secondary')
