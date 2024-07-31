@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { SignatureModalComponent } from './signature-modal.component';
 import { SignaturePadComponent } from '../signature-pad/signature-pad.component';
+import { LoaderModule } from '../loader/loader.module';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { SignaturePadComponent } from '../signature-pad/signature-pad.component'
     CommonModule,
     IonicModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LoaderModule
   ],
   exports:[SignatureModalComponent]
 })

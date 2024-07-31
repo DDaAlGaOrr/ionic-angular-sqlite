@@ -30,20 +30,25 @@ export class SubmitService {
     this._showModal.next(false);
   }
 
-  submitActivity(data: submitProject) {
-    this.httpService
-      .post(`staffs/${data.staff_id}/save_checklist`, JSON.stringify(data), true)
-      .then((observableResult: any) => {
-        observableResult.subscribe(
-          async (res: any) => {
-            console.log(res)
-          },
+  async submitActivity(data: submitProject): Promise<any> {
+    try {
+      const observableResult = await this.httpService.post(`staffs/${data.staff_id}/save_checklist`, JSON.stringify(data), true)
+      return new Promise((resolve, reject) => {
+        observableResult.subscribe((response: any) => {
+          console.log(response)
+          resolve(response);
+        },
           (error: any) => {
-            console.log(error)
-            this.toastService.presentToast('Error en la red, comuníquese con un administrador.','danger');
+            this.toastService.presentToast('Algo salió mal, vuleve a intentarlo', 'danger')
+            console.error('Error al enviar datos:', error);
+            reject(error);
           }
         )
       })
-    console.log(data)
+    } catch (error) {
+      this.toastService.presentToast('Algo salió mal, vuleve a intentarlo', 'danger')
+      console.error('Error al enviar datos:', error);
+      throw error;
+    }
   }
 }

@@ -20,6 +20,8 @@ import { LoggedData } from '../../interfaces/Auth';
 import { AuthenticationService } from '../../services/authentication.service';
 import { DocumentalChecklistService } from '../../services/documental-checklist.service';
 import { TaskChecklistService } from '../../services/task-checklist.service';
+import { LoaderService } from '../../services/loader.service';
+import { ToastService } from '../../services/toast.service';
 
 
 @Component({
@@ -63,6 +65,8 @@ export class SignatureModalComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private documentalChecklistService: DocumentalChecklistService,
     private taskChecklistService: TaskChecklistService,
+    private loaderService: LoaderService,
+    private toastService: ToastService,
   ) { }
 
   async ngOnInit() {
@@ -88,6 +92,7 @@ export class SignatureModalComponent implements OnInit {
   }
 
   async submitSignatureForm() {
+    this.loaderService.show()
     let signaturebase64
     this.signatureService.currentSignature.subscribe(async (signature: any) => {
       signaturebase64 = signature
@@ -106,7 +111,20 @@ export class SignatureModalComponent implements OnInit {
       emailsignature: this.emailSignatureValue,
       staff_id: this.userdata.staffid,
     };
-    this.submitService.submitActivity(data)
+    const isSubmit = await this.submitService.submitActivity(data)
+    if (isSubmit) {
+      this.activityId = 0
+      this.activityType = ''
+      this.documentalChecklistService.clearItems()
+      this.taskChecklistService.clearGeneralItems()
+      this.evidenceType = ''
+      this.nameSignatureValue = ''
+      this.lastNameSignatureValue = ''
+      this.emailSignatureValue = ''
+      this.toastService.presentToast('Plan de trabajo enviado','secondary')
+    }
+    this.loaderService.hide()
+
     // this.signatureService.currentSignature.subscribe(async (signature) => {
     //   let type = '';
     //   this.activatedRoute.queryParams.subscribe((params) => {

@@ -48,8 +48,10 @@ export class AuthenticationService {
 
   async login(postData: Auth) {
     if (this.networkService.getNetworkStatus()) {
-      (await this.httpService.post('staffs/123/auth', postData, true)).subscribe(
+      (await this.httpService.post('login/auth', JSON.stringify(postData), false)).subscribe(
+        // (await this.httpService.post('login/auth', JSON.stringify(postData), true)).subscribe(
         async (response: any) => {
+          console.log(response)
           if (response.status) {
             this.toastService.presentToast('Bienvenido', 'secondary')
             await this.storage.set(TOKEN_KEY, response.result.data);
@@ -60,7 +62,14 @@ export class AuthenticationService {
           }
         },
         (error) => {
-          console.error('Error en la solicitud:', error);
+          console.error('Error en la solicitud:', JSON.stringify(error, null, 2));
+          console.dir(error);
+          if (error.status === 0) {
+            console.error('Posibles problemas de conexión o configuración CORS.');
+          } else {
+            console.error('Detalles del error:', error);
+          }
+
         }
       );
     } else {

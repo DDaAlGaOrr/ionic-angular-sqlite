@@ -49,9 +49,7 @@ export class TaskChecklistService {
     this.selectedItems = {};
   }
 
-  getLength() {
-    return Object.keys(this.selectedItems).length;
-  }
+  
 
   setGeneralChecklist(
     rel_id: number,
@@ -91,6 +89,14 @@ export class TaskChecklistService {
   getTaskItemById(id: number) {
     return this.taskChecklist[id];
   }
+  getLength() {
+    return Object.keys(this.taskChecklist).length;
+  }
+
+  clearGeneralItems() {
+    this.taskChecklist = {};
+  }
+
 
 }
 
