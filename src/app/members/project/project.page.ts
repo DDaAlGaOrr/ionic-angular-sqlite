@@ -61,6 +61,7 @@ export class ProjectPage implements OnInit {
   techniciansDocumntalChecklistAnswers: any = {}
   subsidiaryId: string = ""
   showIncidentsButton: boolean = false
+  isActive: boolean = false
 
   constructor(
     private documentalChecklistService: DocumentalChecklistService,
@@ -92,6 +93,7 @@ export class ProjectPage implements OnInit {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.projectId = params['project_id'];
       this.projectType = params['type'];
+      this.isActive = params['type'];
     })
     if (this.projectType == 'project') {
       const planDetail = await this.projectService.getProjectTasks(this.projectId, this.projectType)
@@ -118,6 +120,12 @@ export class ProjectPage implements OnInit {
       this.productsDocumntalChecklist = documental.productsDocumntalChecklist
       this.techniciansDocumntalChecklist = documental.techniciansDocumntalChecklist
       this.totalDocumentalItems = documental.totalDocumentalItems
+      const storage: any = await this.progressService.loadProgress();
+      if (this.isActive || Object.keys(storage).length > 0) {
+        this.evidenceType = storage.evidenceType;
+        this.documentalChecklistService.setCurrentProgress(storage.documentalProgress);
+        this.taskChecklistService.setcurrentGeneralProgress(storage.savedProgress);
+      }
     } else {
       await this.projectService.getTaskItems(this.projectId, this.projectType)
       // await this.projectService.getTaskDocumentalChecklist(this.projectId,this.projectType)
@@ -127,10 +135,7 @@ export class ProjectPage implements OnInit {
 
   async handleChangeEvidence(event: any) {
     this.evidenceType = event.detail.value;
-    // await this.storageProjectService.saveProgress(
-    //   this.evidenceType,
-    //   'evidenceType'
-    // );
+    await this.progressService.setData('evidenceType', this.evidenceType);
   }
   changeSelectedPage(evento: number): void {
     this.currentPage = evento;

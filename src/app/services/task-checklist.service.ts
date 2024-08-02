@@ -49,7 +49,7 @@ export class TaskChecklistService {
     this.selectedItems = {};
   }
 
-  
+
 
   setGeneralChecklist(
     rel_id: number,
@@ -95,6 +95,10 @@ export class TaskChecklistService {
 
   clearGeneralItems() {
     this.taskChecklist = {};
+  }
+
+  setcurrentGeneralProgress(progress: any) {
+    this.taskChecklist = progress
   }
 
 

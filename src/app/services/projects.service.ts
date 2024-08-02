@@ -2,13 +2,11 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
 
-
 import { HttpService } from './http.service';
 import { Event } from '../interfaces/Projects';
-
-
 import { ToastService } from './toast.service';
 import { NetworkService } from './network.service';
+import { ProgressService } from './progress.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +17,8 @@ export class ProjectsService {
     private toastService: ToastService,
     private router: Router,
     private networkService: NetworkService,
-    private storage: Storage
+    private storage: Storage,
+    private progressService: ProgressService,
   ) { }
 
   async getProjects(userid: number): Promise<Event[]> {
@@ -183,6 +182,16 @@ export class ProjectsService {
                     is_active: false,
                   },
                 });
+                this.progressService.setData(
+                  'currentProject',
+                  {
+                    queyParams: {
+                      project_id: project_id,
+                      type: type,
+                    },
+                  },
+
+                );
                 resolve(true)
               } else {
                 this.toastService.presentToast('Plan de trabajo ya finalizado', 'danger')

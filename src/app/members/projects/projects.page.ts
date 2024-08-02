@@ -4,13 +4,15 @@ import { CalendarOptions } from '@fullcalendar/core'; // useful for typechecking
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
+import { Router } from '@angular/router';
 
 import { ProjectsService } from './../../services/projects.service';
 import { AuthenticationService } from './../../services/authentication.service';
 import { LoggedData } from './../../interfaces/Auth';
 import { Event } from '../../interfaces/Projects';
 import { ProgressService } from '../../services/progress.service';
-import { LoaderService } from 'src/app/services/loader.service';
+import { LoaderService } from '../../services/loader.service';
+
 
 @Component({
   selector: 'app-projects',
@@ -57,6 +59,7 @@ export class ProjectsPage implements OnInit {
     private alertController: AlertController,
     private progressService: ProgressService,
     private loaderService: LoaderService,
+    private router: Router,
   ) { }
 
   async ngOnInit() {
@@ -79,12 +82,11 @@ export class ProjectsPage implements OnInit {
           text: 'Iniciar',
           cssClass: 'alert-button-confirm',
           role: 'confirm',
-          handler: () => {
-            // this.progressService.removeData('documentalProgress');
-            const storage: any = await this.storageProjectService.loadProgress();
-            this.router.navigate(['/tabs', 'tab3'], {
+          handler: async () => {
+            const storage: any = await this.progressService.loadProgress();
+            console.log(storage)
+            this.router.navigate(['/members', 'project'], {
               queryParams: {
-                task_id: storage.project_data.queyParams.task_id,
                 project_id: storage.project_data.queyParams.project_id,
                 type: storage.project_data.queyParams.type,
                 is_active: true,

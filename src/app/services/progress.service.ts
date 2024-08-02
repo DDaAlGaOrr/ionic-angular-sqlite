@@ -29,4 +29,16 @@ export class ProgressService {
   async clearAll() {
     await this.storage.clear()
   }
+
+  async loadProgress() {
+    const savedProgress = await this.storage.get('taskProgress');
+    const project_data = await this.storage.get('currentProject');
+    const documentalProgress = await this.storage.get('documentalProgress');
+    const evidenceType = await this.storage.get('evidenceType');
+    if (savedProgress || documentalProgress) {
+      return { savedProgress, project_data, documentalProgress, evidenceType };
+    } else {
+      return [];
+    }
+  }
 }
