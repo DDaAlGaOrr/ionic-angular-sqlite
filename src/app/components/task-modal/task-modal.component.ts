@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 import { TaskModalService } from '../../services/task-modal.service';
 import { TaskChecklistService } from '../../services/task-checklist.service';
@@ -7,7 +8,10 @@ import { ProjectService } from '../../services/project.service';
 import { LoaderService } from '../../services/loader.service';
 import { NetworkService } from '../../services/network.service';
 import { ToastService } from '../../services/toast.service';
-import { ProgressService } from 'src/app/services/progress.service';
+import { ProgressService } from '../../services/progress.service';
+import { TicketsService } from '../../services/tickets.service';
+import { LoggedData } from '../../interfaces/Auth';
+import { AuthenticationService } from '../../services/authentication.service';
 
 interface modalData {
   taskId: number
@@ -33,6 +37,9 @@ export class TaskModalComponent implements OnInit {
   taskReason: string = '';
   modalTaskAnswerNo = false;
   currentTaskChecklistItem: string = ''
+  userdata: LoggedData = { staffid: 0, firstname: '', lastname: '', email: '', role: 0 }
+  projectId: number = 0
+  checklistId: string = ''
 
   private subscription: Subscription = new Subscription;
   constructor(
@@ -43,9 +50,12 @@ export class TaskModalComponent implements OnInit {
     private networkService: NetworkService,
     private toastService: ToastService,
     private progressService: ProgressService,
+    private ticketsService: TicketsService,
+    private activatedRoute: ActivatedRoute,
+    private authenticationService: AuthenticationService,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.subscription = this.taskModalService.showModal.subscribe(
       (showModal: boolean) => {
         this.openTaskModal = showModal
@@ -56,6 +66,8 @@ export class TaskModalComponent implements OnInit {
         this.checklistItems = checklistItems.items
         this.taskStatus = checklistItems.status_task.content
         this.currentTaskChecklistItem = checklistItems.checklist[0].id;
+        this.currentTaskChecklistItem = checklistItems.checklist[0].id;
+        this.checklistId = checklistItems.checklist[0].id;
       }
     );
     this.subscription = this.taskModalService.modalData.subscribe((modalData: modalData) => {
@@ -63,6 +75,10 @@ export class TaskModalComponent implements OnInit {
       this.taskControl = modalData.taskControl
       this.task_number = modalData.taskNumber
     })
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.projectId = params['project_id'];
+    })
+    this.userdata = await this.authenticationService.getLoggedData()
   }
 
   closeTaskModal() {
@@ -132,7 +148,7 @@ export class TaskModalComponent implements OnInit {
     this.toastService.presentToast('Respuesta guardada', 'secondary')
   }
 
-  openModalTaskAnswerNo(
+  async openModalTaskAnswerNo(
     open: boolean,
     item_id: any,
     index: any,
@@ -140,7 +156,8 @@ export class TaskModalComponent implements OnInit {
   ) {
     this.currentTaskChecklistItem = item_id;
     if (isRnp) {
-      // this.showTicketsModal(true);
+      console.log(this.checklistId)
+      await this.ticketsService.show(this.taskId, this.userdata.staffid, this.projectId, this.currentTaskChecklistItem, this.checklistId)
     } else {
       this.modalTaskAnswerNo = open;
     }

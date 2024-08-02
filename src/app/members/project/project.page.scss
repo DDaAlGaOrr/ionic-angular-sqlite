@@ -93,12 +93,12 @@ ion-modal.modal-encuesta::part(backdrop) {
     color: white !important;
 }
 
-ion-modal.modal-encuesta ion-toolbar {
-    position: fixed;
-    z-index: 101;
-    --background: rgb(14 116 144);
-    --color: white;
-}
+// ion-modal.modal-encuesta ion-toolbar {
+//     position: fixed;
+//     z-index: 101;
+//     --background: rgb(14 116 144);
+//     --color: white;
+// }
 
 .modal-encuesta {
     backdrop-filter: brightness(0.5) !important;

@@ -37,7 +37,7 @@ export class SignatureModalComponent implements OnInit {
   openSignatureModal: boolean = false;
   activityId: number = 0
   activityType: string = ""
-  userdata: LoggedData = { email: '', firstname: '', lastname: '', staffid: 0 }
+  userdata: LoggedData = { email: '', firstname: '', lastname: '', staffid: 0, role: 0 }
   evidenceType: string = ""
 
 
@@ -121,7 +121,7 @@ export class SignatureModalComponent implements OnInit {
       this.nameSignatureValue = ''
       this.lastNameSignatureValue = ''
       this.emailSignatureValue = ''
-      this.toastService.presentToast('Plan de trabajo enviado','secondary')
+      this.toastService.presentToast('Plan de trabajo enviado', 'secondary')
     }
     this.loaderService.hide()
 

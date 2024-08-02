@@ -38,7 +38,7 @@ export class ProjectService {
   }
 
   private async init() {
-    // await this.ionicStorage.create();
+    await this.ionicStorage.create();
   }
 
   dataUrlToBlob(dataUrl: string) {

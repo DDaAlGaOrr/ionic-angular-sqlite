@@ -36,7 +36,7 @@ registerLocaleData(localeEsMX, 'es-MX');
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   provideFirebaseApp(() => initializeApp(firebaseConfig)),
   provideStorage(() => getStorage()),
-
+    AndroidPermissions
   ],
   bootstrap: [AppComponent],
 })

@@ -18,7 +18,7 @@ import { LoaderService } from 'src/app/services/loader.service';
   styleUrls: ['./projects.page.scss'],
 })
 export class ProjectsPage implements OnInit {
-  userdata: LoggedData = { email: '', firstname: '', lastname: '', staffid: 0 }
+  userdata: LoggedData = { email: '', firstname: '', lastname: '', staffid: 0, role: 0 }
   myEvents: Event[] = [];
   currentEvent: any[] = [];
 
@@ -79,6 +79,18 @@ export class ProjectsPage implements OnInit {
           text: 'Iniciar',
           cssClass: 'alert-button-confirm',
           role: 'confirm',
+          handler: () => {
+            // this.progressService.removeData('documentalProgress');
+            const storage: any = await this.storageProjectService.loadProgress();
+            this.router.navigate(['/tabs', 'tab3'], {
+              queryParams: {
+                task_id: storage.project_data.queyParams.task_id,
+                project_id: storage.project_data.queyParams.project_id,
+                type: storage.project_data.queyParams.type,
+                is_active: true,
+              },
+            });
+          },
         },
       ];
       const alert = await this.alertController.create({

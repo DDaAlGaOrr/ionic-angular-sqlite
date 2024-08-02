@@ -48,8 +48,7 @@ export class AuthenticationService {
 
   async login(postData: Auth) {
     if (this.networkService.getNetworkStatus()) {
-      (await this.httpService.post('login/auth', JSON.stringify(postData), false)).subscribe(
-        // (await this.httpService.post('login/auth', JSON.stringify(postData), true)).subscribe(
+      (await this.httpService.post('login/auth', JSON.stringify(postData), true)).subscribe(
         async (response: any) => {
           console.log(response)
           if (response.status) {

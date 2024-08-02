@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
+import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
 
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
@@ -29,6 +30,7 @@ import { LoaderModule } from '../loader/loader.module';
         NzSpaceModule,
         NzTagModule,
     ],
-    exports: [DocumentalModalComponent]
+    exports: [DocumentalModalComponent],
+    providers:[AndroidPermissions]
 })
 export class DocumentalModalModule { }

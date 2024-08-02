@@ -3,6 +3,7 @@ import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
 
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
@@ -14,6 +15,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 import { BottomTabsComponent } from './bottom-tabs.component';
+import { LoaderModule } from '../loader/loader.module';
 
 @NgModule({
     declarations: [BottomTabsComponent],
@@ -30,8 +32,10 @@ import { BottomTabsComponent } from './bottom-tabs.component';
         NzTagModule,
         DatePipe,
         NzSpinModule,
+        LoaderModule
     ],
-    exports: [BottomTabsComponent]
+    exports: [BottomTabsComponent],
+    providers: [AndroidPermissions]
 })
 
 export class BottomTabsModule { }

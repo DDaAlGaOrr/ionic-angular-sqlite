@@ -1,3 +1,4 @@
+<app-loader></app-loader> 
 <ion-footer>
   <ion-toolbar style="margin-left: 10%!important; ">
     <ion-row>
@@ -35,7 +36,6 @@
     <ion-content class="ion-padding" id="tickets_modal">
       <ion-title class="ion-text-center">Nueva Incidencia</ion-title>
       <textarea rows="1" nz-input [(ngModel)]="titleTicket" placeholder="Titulo de la incidencia"></textarea>
-      <!-- Selección de Cliente -->
       <ion-item class="ion-margin-top">
         <ion-select required aria-label="Cliente" interface="popover" [placeholder]="selectedCustomer"
           [(ngModel)]="selectedCustomerId" (ionChange)="handleClientSelect($event)">
@@ -44,32 +44,13 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
-
-      <!-- Selección de Planta -->
       <ion-item class="ion-margin-top">
-        <!-- <ion-select
-            required
-            aria-label="Planta"
-            interface="popover"
-            (ionChange)="handleSubsidiarySelect($event)"
-            placeholder="Seleccione Planta"
-            [interfaceOptions]="{ searchbarPlaceholder: 'Buscar planta...' }"
-          >
-            <ion-select-option
-              *ngFor="let subsidiary of subsidiaries"
-              [value]="subsidiary.id_subsidiary"
-              >{{subsidiary.id_subsidiary}} - {{ subsidiary.client_name }}
-            </ion-select-option>
-          </ion-select> -->
-
         <div class="mbsc-col-sm-12 mbsc-col-md-6">
           <mbsc-select [data]="subsidiaries" display="center" [filter]="true" [buttons]="undefined" label="Sucursal"
             labelStyle="stacked" inputStyle="box" placeholder="Selecciona una opción" [options]="selectSettings"
             (onChange)="handleSubsidiarySelect($event)"></mbsc-select>
         </div>
       </ion-item>
-
-      <!-- Condición de Áreas y Trampas -->
       <ion-list class="options-check">
         <ion-radio-group [(ngModel)]="selectedType" value="center" [allowEmptySelection]="true"
           (ionChange)="handleType($event)">
@@ -85,8 +66,6 @@
           </ion-item>
         </ion-radio-group>
       </ion-list>
-
-      <!-- Selección de Áreas -->
       <ion-item class="ion-margin-top" *ngIf="selectedType === 'areas'">
         <ion-select justify="space-between" required aria-label="Areas" interface="popover"
           placeholder="Seleccione el Área" (ionChange)="handleArea($event)">

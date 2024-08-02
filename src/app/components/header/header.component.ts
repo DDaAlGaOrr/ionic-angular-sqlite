@@ -23,7 +23,7 @@ import { ContractsTypeService } from '../../services/offline/contracts-type.serv
 })
 export class HeaderComponent implements OnInit {
 
-  userdata: LoggedData = { email: '', firstname: '', lastname: '', staffid: 0 }
+  userdata: LoggedData = { email: '', firstname: '', lastname: '', staffid: 0, role: 0 }
   fechaActual: Date = new Date();
 
   constructor(

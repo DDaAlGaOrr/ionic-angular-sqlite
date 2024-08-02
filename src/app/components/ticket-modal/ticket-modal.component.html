@@ -1,0 +1,144 @@
+<app-loader></app-loader>
+<ion-modal [isOpen]="isOpenTicketsModal">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="closeTicketsModal()">Cancelar</ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button (click)="createTicket()" [strong]="true">Confirmar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-title class="ion-text-center">Nueva Incidencia</ion-title>
+      <textarea rows="1" nz-input placeholder="Titulo de la incidencia" [(ngModel)]="titleTicket"></textarea>
+      <!-- [(ngModel)]="titleTicket" -->
+      <!-- Selección de Cliente -->
+      <ion-item class="ion-margin-top">
+        <ion-select required aria-label="Cliente" interface="popover" placeholder="Seleccione Cliente"
+          [(ngModel)]="ticketClientSelectId">
+          <ion-select-option value="{{ ticketClientSelectId }}">
+            {{ ticketClientSelect }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Selección de Planta -->
+      <ion-item class="ion-margin-top">
+        <ion-select required aria-label="Planta" interface="popover" placeholder="Seleccione Planta"
+          [(ngModel)]="ticketSubsidiarySelectid">
+          <ion-select-option value="{{ ticketSubsidiarySelectid }}">
+            {{ ticketSubsidiarySelect }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Selección de Áreas -->
+      <!-- *ngIf="selectedOption === 'areas'" -->
+      <ion-item class="ion-margin-top">
+        <ion-select justify="space-between" required aria-label="Areas" interface="popover"
+          placeholder="Seleccione el área" [(ngModel)]="ticketAreaSelectid">
+          <ion-select-option value="{{ ticketAreaSelectid }}">
+            {{ ticketAreaSelect }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Selección de fecha de inicio. Debe estar DESHABILITADA -->
+      <ion-grid>
+        <ion-col size="4">
+          <ion-label class="ion-margin-top">Fecha de inicio:</ion-label>
+        </ion-col>
+        <ion-col>
+          <br />
+          <ion-item>
+            <!-- disabled="true" -->
+            <ion-datetime-button datetime="datetime"></ion-datetime-button>
+            <ion-modal [keepContentsMounted]="true">
+              <ng-template>
+                <!-- [(ngModel)]="startDate" -->
+                <ion-datetime id="datetime" (ionChange)="onStartDateChange($event)"
+                  showDefaultButtons="tue"></ion-datetime>
+              </ng-template>
+            </ion-modal>
+          </ion-item>
+          <br />
+        </ion-col>
+        <ion-col>
+          <!-- Fecha de cierre -->
+          <ion-col>
+            <ion-label class="ion-margin-top">Fecha de cierre:</ion-label>
+          </ion-col>
+          <br />
+          <ion-item>
+            <ion-datetime-button type="light" class="datepicker md" color="primary"
+              datetime="datetimeEnd"></ion-datetime-button>
+            <ion-modal [keepContentsMounted]="true">
+              <ng-template>
+                <!-- [(ngModel)]="endDate" -->
+                <ion-datetime required id="datetimeEnd" (ionChange)="onEndDateChange($event)"
+                  showDefaultButtons="tue"></ion-datetime>
+              </ng-template>
+            </ion-modal>
+          </ion-item>
+        </ion-col>
+      </ion-grid>
+
+      <!-- Selección de Prioridad -->
+      <ion-item class="ion-margin-top">
+        <ion-select required aria-label="Prioridad" interface="popover" placeholder="Seleccione Prioridad"
+          [(ngModel)]="prioritySelect">
+          <!-- (ionChange)="handlePriority($event)" -->
+          <ion-select-option value="1">Prioridad(1) Bajo</ion-select-option>
+          <ion-select-option value="2">Prioridad(2) Medio</ion-select-option>
+          <ion-select-option value="3">Prioridad(3) Alto</ion-select-option>
+          <ion-select-option value="4">Prioridad(4) Urgente</ion-select-option>
+          <ion-select-option value="5">Prioridad(5) Requerido</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Selección de Responsable -->
+      <ion-item class="ion-margin-top">
+        <ion-select required aria-label="Responsable" interface="popover" placeholder="Seleccione Responsable"
+          [(ngModel)]="responsibleSelect">
+          <!-- (ionChange)="handleResponsible($event)" -->
+          <ion-select-option value="1">Secopla</ion-select-option>
+          <ion-select-option value="2">Cliente </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <br />
+
+      <!-- Comentarios -->
+      <ion-col size="12">
+        <ion-label>Comentarios:</ion-label>
+        <textarea required rows="4" col="30" nz-input [(ngModel)]="descriptionTicket"></textarea>
+      </ion-col>
+      <br />
+
+      <!-- Comentarios -->
+      <ion-col size="12">
+        <ion-label>Acción correctiva:</ion-label>
+        <textarea required rows="4" col="30" nz-input [(ngModel)]="correctiveAction"></textarea>
+      </ion-col>
+      <br />
+
+      <!-- Añadir archivos -->
+      <ion-item>
+        <ion-item>
+          <ion-grid>
+            <ion-label>Añadir archivos</ion-label>
+            <ion-col size="12" class="ion-justify-content-center">
+              <img *ngIf="evidenceImageTicket" [src]="evidenceImageTicket" />
+              <ion-button expand="block" (click)="takePictureTicket()">Agregar foto</ion-button>
+            </ion-col>
+          </ion-grid>
+        </ion-item>
+      </ion-item>
+
+      <!-- Mensaje para completar cada campo -->
+      <ion-item> </ion-item>
+    </ion-content>
+  </ng-template>
+</ion-modal>

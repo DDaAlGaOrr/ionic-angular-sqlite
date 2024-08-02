@@ -7,5 +7,6 @@ export interface LoggedData {
     email:string;
     firstname:string;
     lastname:string;
-    staffid:number
+    staffid:number,
+    role:number
 }
