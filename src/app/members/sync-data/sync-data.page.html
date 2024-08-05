@@ -1,0 +1,42 @@
+<app-header></app-header>
+<app-loader></app-loader>
+
+
+<ion-content>
+  <ng-container>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          Usuarios
+        </ion-col>
+        <ion-col>
+          <ion-button size="small" color="primary" shape="round" (click)="syncUsersData()">Sincronizar</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Datos de checklist
+        </ion-col>
+        <ion-col>
+          <ion-button size="small" color="primary" shape="round" (click)="syncChecklistsData()">Sincronizar</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Datos para el funcionamiento de la app
+        </ion-col>
+        <ion-col>
+          <ion-button size="small" color="primary" shape="round" (click)="syncAppData()">Sincronizar</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Actividades
+        </ion-col>
+        <ion-col>
+          <ion-button size="small" color="primary" shape="round" (click)="syncActivitiesData()">Sincronizar</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-container>
+  <app-bottom-tabs></app-bottom-tabs>

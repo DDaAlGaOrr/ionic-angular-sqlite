@@ -18,6 +18,10 @@ const routes: Routes = [
   {
     path: 'ticket',
     loadChildren: () => import('./ticket/ticket.module').then( m => m.TicketPageModule)
+  },
+  {
+    path: 'sync-data',
+    loadChildren: () => import('./sync-data/sync-data.module').then( m => m.SyncDataPageModule)
   }
 
 ];

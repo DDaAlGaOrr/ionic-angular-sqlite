@@ -115,7 +115,7 @@ export class ProjectPage implements OnInit {
       this.formattedTasks = planDetail.formattedTask.formattedTasks
       this.subsidiaryId = planDetail.subsidiaryId
       const haveIncidents = await this.haveIncidents(planDetail.subsidiaryId)
-      haveIncidents.length > 0 ? this.showIncidentsButton = true : this.showIncidentsButton = false
+      // haveIncidents.length > 0 ? this.showIncidentsButton = true : this.showIncidentsButton = false
       // this.showIncidentsButton = true
 
       const documental = await this.projectService.getProjectDocumentalChecklist(this.projectId, this.projectType)

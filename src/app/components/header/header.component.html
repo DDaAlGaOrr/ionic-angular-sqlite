@@ -13,7 +13,7 @@
         <ion-col size="auto">
           <div class="d-flex flex-row-reverse ion-align-items-center ion-justify-content-center" style="display: flex;">
             <div>
-              <a [routerLink]="['/tabs/tab1']">
+              <a [routerLink]="['/members/projects']">
                 <ion-thumbnail class="avatar-img">
                   <img alt="User icon profile" src="/assets/user-icon.png" />
                 </ion-thumbnail>
@@ -26,7 +26,7 @@
           </div>
         </ion-col>
         <ion-buttons>
-          <ion-button (click)="syncDataUser()">
+          <ion-button [routerLink]="['/members/sync-data']">
             <ion-icon style="--ion-color: #ff9f4b" name="sync-circle" size="large"></ion-icon>
           </ion-button>
         </ion-buttons>
