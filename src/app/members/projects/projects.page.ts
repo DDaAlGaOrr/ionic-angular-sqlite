@@ -71,11 +71,14 @@ export class ProjectsPage implements OnInit {
     if (await this.progressService.getByKey('documentalProgress')) {
       const alertButtons = [
         {
-          text: 'Cancelar',
+          text: 'Eliminar progreso',
           cssClass: 'alert-button-cancel',
           role: 'cancel',
           handler: () => {
             this.progressService.removeData('documentalProgress');
+            this.progressService.removeData('taskProgress');
+            this.progressService.removeData('currentProject');
+            this.progressService.removeData('evidenceType');
           },
         },
         {

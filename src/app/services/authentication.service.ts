@@ -9,6 +9,8 @@ import { ToastService } from './toast.service';
 import { Auth } from '../interfaces/Auth';
 import { NetworkService } from './../services/network.service';
 import { StorageService } from './../services/storage.service';
+import { DocumentalChecklistService } from './documental-checklist.service';
+import { TaskChecklistService } from './task-checklist.service';
 
 
 const TOKEN_KEY = 'userData';
@@ -27,6 +29,8 @@ export class AuthenticationService {
     private router: Router,
     private networkService: NetworkService,
     private storageService: StorageService,
+    private documentalChecklistService: DocumentalChecklistService,
+    private taskChecklistService: TaskChecklistService,
   ) {
     this.plt.ready().then(() => {
       this.checkToken();
@@ -86,6 +90,8 @@ export class AuthenticationService {
 
   async logout() {
     await this.storage.remove(TOKEN_KEY);
+    this.documentalChecklistService.setCurrentProgress({})
+    this.taskChecklistService.setcurrentGeneralProgress({})
     this.authenticationState.next(false);
     this.router.navigate(['login']);
   }

@@ -87,8 +87,6 @@ export class TicketModalComponent implements OnInit {
   }
 
   async createTicket() {
-    this.loaderService.show()
-
     let validate = true;
     if (this.titleTicket == '') {
       this.toastService.presentToast('Debes agregar un titulo', 'danger');
@@ -131,6 +129,9 @@ export class TicketModalComponent implements OnInit {
     }
 
     if (validate) {
+      this.ticketsService.hide()
+      this.taskModalService.hide()
+      this.loaderService.show()
       let urlImage = this.evidenceImageTicket.length > 0 ? await this.setUrlImage(this.evidenceImageTicket, 'ticketEvidence') || "" : ''
 
       const data = {
@@ -173,8 +174,6 @@ export class TicketModalComponent implements OnInit {
         this.correctiveAction = '';
         this.startDate = formatDate(new Date(), 'd/M/yyyy', 'en-US');
         this.endDate = formatDate(new Date(), 'd/M/yyyy', 'en-US');
-        this.ticketsService.hide()
-        this.taskModalService.hide()
         this.taskChecklistService.setSelectedItem(this.currentTaskChecklistItem, 'no', 'servicio con incidencia', urlImage, false, '');
         const items = this.taskChecklistService.getAllItems();
         this.taskChecklistService.setGeneralChecklist(this.taskId, 'task', this.checklistId, items);

@@ -3,7 +3,6 @@ import { BehaviorSubject } from 'rxjs';
 
 import { HttpService } from './http.service';
 import { ToastService } from './toast.service';
-import { LoaderService } from './loader.service';
 import { TaskChecklistService } from './task-checklist.service';
 
 interface modalData {
@@ -27,7 +26,6 @@ export class TaskModalService {
   constructor(
     private httpService: HttpService,
     private toastService: ToastService,
-    private loaderService: LoaderService,
     private taskChecklistService: TaskChecklistService,
   ) { }
 

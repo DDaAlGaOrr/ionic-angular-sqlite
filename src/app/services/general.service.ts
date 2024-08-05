@@ -6,7 +6,6 @@ import { AuthenticationService } from './authentication.service';
 
 import { ToastService } from './toast.service';
 import { ProjectProgressService } from './project-progress.service';
-import { LoaderService } from './loader.service';
 import { ChecklistSections, ChecklistTaskForm, ChecklistQuestions, ChecklistTasks } from '../interfaces/Checklist';
 import { Client, SubsidiaryClient, Project, Task, ContractsTypes, ProjectsItems, serviceAll } from '../interfaces/General';
 
@@ -22,7 +21,7 @@ export class GeneralService {
     private authenticationService: AuthenticationService,
     private toastService: ToastService,
     private projectProgressService: ProjectProgressService,
-    private loaderService: LoaderService) { }
+    ) { }
 
   async getUsersTable(staffid: number): Promise<LoggedData[]> {
     try {

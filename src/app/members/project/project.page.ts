@@ -90,10 +90,18 @@ export class ProjectPage implements OnInit {
 
   async ngOnInit() {
     this.loaderService.show();
-    this.activatedRoute.queryParams.subscribe((params) => {
+    this.activatedRoute.queryParams.subscribe(async (params) => {
       this.projectId = params['project_id'];
       this.projectType = params['type'];
-      this.isActive = params['type'];
+      this.isActive = params['is_active'];
+      const storage: any = await this.progressService.loadProgress();
+      if (params['is_active'] && Object.keys(storage).length > 0) {
+        this.documentalChecklistService.clearItems()
+        this.taskChecklistService.clearGeneralItems()
+        this.evidenceType = storage.evidenceType;
+        this.documentalChecklistService.setCurrentProgress(storage.documentalProgress);
+        this.taskChecklistService.setcurrentGeneralProgress(storage.savedProgress);
+      }
     })
     if (this.projectType == 'project') {
       const planDetail = await this.projectService.getProjectTasks(this.projectId, this.projectType)
@@ -106,9 +114,9 @@ export class ProjectPage implements OnInit {
       this.tasksBelts = planDetail.formattedTask.tasksBelts
       this.formattedTasks = planDetail.formattedTask.formattedTasks
       this.subsidiaryId = planDetail.subsidiaryId
-      // const haveIncidents = await this.haveIncidents(planDetail.subsidiaryId)
-      // haveIncidents.length > 0 ? this.showIncidentsButton = true : this.showIncidentsButton = false
-      this.showIncidentsButton = true
+      const haveIncidents = await this.haveIncidents(planDetail.subsidiaryId)
+      haveIncidents.length > 0 ? this.showIncidentsButton = true : this.showIncidentsButton = false
+      // this.showIncidentsButton = true
 
       const documental = await this.projectService.getProjectDocumentalChecklist(this.projectId, this.projectType)
       console.log(documental)
@@ -120,18 +128,23 @@ export class ProjectPage implements OnInit {
       this.productsDocumntalChecklist = documental.productsDocumntalChecklist
       this.techniciansDocumntalChecklist = documental.techniciansDocumntalChecklist
       this.totalDocumentalItems = documental.totalDocumentalItems
-      const storage: any = await this.progressService.loadProgress();
-      if (this.isActive || Object.keys(storage).length > 0) {
-        this.evidenceType = storage.evidenceType;
-        this.documentalChecklistService.setCurrentProgress(storage.documentalProgress);
-        this.taskChecklistService.setcurrentGeneralProgress(storage.savedProgress);
-      }
     } else {
       await this.projectService.getTaskItems(this.projectId, this.projectType)
       // await this.projectService.getTaskDocumentalChecklist(this.projectId,this.projectType)
     }
     this.loaderService.hide();
   }
+
+  // async validateIfExistPorgress(active: boolean) {
+  //   console.log(active)
+  //   if (active == true) {
+  //     console.log('si entra')
+  //     const storage: any = await this.progressService.loadProgress();
+  //     this.evidenceType = storage.evidenceType;
+  //     this.documentalChecklistService.setCurrentProgress(storage.documentalProgress);
+  //     this.taskChecklistService.setcurrentGeneralProgress(storage.savedProgress);
+  //   }
+  // }
 
   async handleChangeEvidence(event: any) {
     this.evidenceType = event.detail.value;

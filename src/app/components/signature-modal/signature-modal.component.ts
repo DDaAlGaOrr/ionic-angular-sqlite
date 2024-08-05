@@ -22,7 +22,7 @@ import { DocumentalChecklistService } from '../../services/documental-checklist.
 import { TaskChecklistService } from '../../services/task-checklist.service';
 import { LoaderService } from '../../services/loader.service';
 import { ToastService } from '../../services/toast.service';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signature-modal',
@@ -67,6 +67,7 @@ export class SignatureModalComponent implements OnInit {
     private taskChecklistService: TaskChecklistService,
     private loaderService: LoaderService,
     private toastService: ToastService,
+    private router: Router,
   ) { }
 
   async ngOnInit() {
@@ -93,6 +94,7 @@ export class SignatureModalComponent implements OnInit {
 
   async submitSignatureForm() {
     this.loaderService.show()
+    this.submitService.hide()
     let signaturebase64
     this.signatureService.currentSignature.subscribe(async (signature: any) => {
       signaturebase64 = signature
@@ -122,6 +124,7 @@ export class SignatureModalComponent implements OnInit {
       this.lastNameSignatureValue = ''
       this.emailSignatureValue = ''
       this.toastService.presentToast('Plan de trabajo enviado', 'secondary')
+      this.router.navigate(['members', 'projects']);
     }
     this.loaderService.hide()
 

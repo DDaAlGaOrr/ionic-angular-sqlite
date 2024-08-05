@@ -76,12 +76,9 @@ export class BottomTabsComponent implements OnInit {
   async get_subsidiary_tickets() {
     this.subsidiaries = await this.ticketsService.getSubsidiariesForStaff(this.userdata.staffid)
   }
-  loader(){
-    this.loaderService.show()
-  }
 
   async confirm() {
-    this.loaderService.show()
+
     let validate = true;
     if (this.titleTicket == '') {
       this.toastService.presentToast('Debes agregar un titulo', 'danger');
@@ -123,8 +120,9 @@ export class BottomTabsComponent implements OnInit {
     }
 
     if (validate) {
+      this.isOpenTicketsModal = false;
+      this.loaderService.show()
       let urlImage = this.evidenceImageTicket.length > 0 ? await this.setUrlImage(this.evidenceImageTicket, 'ticketEvidence') || "" : ''
-
       const data = {
         client_id: this.selectedCustomerId,
         subsidiary_id: this.subsidiarySelect,
@@ -146,7 +144,6 @@ export class BottomTabsComponent implements OnInit {
         correctiveAction: this.correctiveAction,
       };
       const response = await this.ticketsService.createTicket(data)
-      console.log(data)
       if (response.status) {
         this.toastService.presentToast('Incidencia creada', 'secondary');
         this.titleTicket = '';
@@ -161,9 +158,8 @@ export class BottomTabsComponent implements OnInit {
         this.startDate = formatDate(new Date(), 'd/M/yyyy', 'en-US');
         this.endDate = formatDate(new Date(), 'd/M/yyyy', 'en-US');
         this.correctiveAction = '';
-        this.isOpenTicketsModal = false;
       } else {
-        this.toastService.presentToast('Error al crear incidencia', 'danger');
+        this.toastService.presentToast('Error al crear incidencia vuelve a intentarlo', 'danger');
       }
       this.loaderService.hide()
 
