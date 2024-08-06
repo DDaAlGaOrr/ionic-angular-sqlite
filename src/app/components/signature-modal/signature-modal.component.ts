@@ -113,6 +113,7 @@ export class SignatureModalComponent implements OnInit {
       emailsignature: this.emailSignatureValue,
       staff_id: this.userdata.staffid,
     };
+    console.log(data)
     const isSubmit = await this.submitService.submitActivity(data)
     if (isSubmit) {
       this.activityId = 0
@@ -127,23 +128,6 @@ export class SignatureModalComponent implements OnInit {
       this.router.navigate(['members', 'projects']);
     }
     this.loaderService.hide()
-
-    // this.signatureService.currentSignature.subscribe(async (signature) => {
-    //   let type = '';
-    //   this.activatedRoute.queryParams.subscribe((params) => {
-    //     type = params['type'];
-    //   });
-    //   const blob = this.dataUrlToBlob(signature);
-    //   const url = await this.uploadImage(blob, 'singatureEvidence');
-    //   this.signaturePicture = url;
-    //   if (type == 'task_sup') {
-    //     this.saveMinuteTask(this.project_id);
-    //   } else {
-    //     this.validateTaskChecklists(this.project_id);
-    //   }
-
-    //   this.isSpinning = true;
-    // });
   }
 
   async getSignatureImage(signature: any, folder: string) {

@@ -21,6 +21,7 @@ import { DocumentalModalModule } from '../../components/documental-modal/documen
 import { TaskModalModule } from '../../components/task-modal/task-modal.module';
 import { SignatureModalModule } from '../../components/signature-modal/signature-modal.module';
 import { TicketModalComponent } from '../../components/ticket-modal/ticket-modal.component';
+import { UvLightModalComponent } from '../../components/uv-light-modal/uv-light-modal.component';
 
 @NgModule({
   imports: [
@@ -40,7 +41,7 @@ import { TicketModalComponent } from '../../components/ticket-modal/ticket-modal
     TaskModalModule,
     SignatureModalModule,
   ],
-  declarations: [ProjectPage,TicketModalComponent],
+  declarations: [ProjectPage, TicketModalComponent, UvLightModalComponent],
   providers: [AndroidPermissions]
 })
 export class ProjectPageModule { }

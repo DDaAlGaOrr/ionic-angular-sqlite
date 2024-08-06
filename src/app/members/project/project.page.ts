@@ -24,6 +24,7 @@ import { TaskModalService } from '../../services/task-modal.service';
 import { ToastService } from '../../services/toast.service';
 import { TicketsService } from '../../services/tickets.service';
 import { SubmitService } from '../../services/submit.service';
+import { UvLightModalService } from '../../services/uv-light-modal.service';
 
 
 @Component({
@@ -78,6 +79,7 @@ export class ProjectPage implements OnInit {
     private ticketsService: TicketsService,
     private router: Router,
     private submitService: SubmitService,
+    private uvLightModalService: UvLightModalService,
   ) { }
 
   validateForm: FormGroup<{
@@ -103,21 +105,20 @@ export class ProjectPage implements OnInit {
         this.taskChecklistService.setcurrentGeneralProgress(storage.savedProgress);
       }
     })
-    if (this.projectType == 'project') {
-      const planDetail = await this.projectService.getProjectTasks(this.projectId, this.projectType)
-      console.log(planDetail)
-      this.tasksData = planDetail.tasksData
-      this.clientName = planDetail.clientName
-      this.subsdiaryName = planDetail.subsdiaryName
-      this.planName = planDetail.planName
-      this.checklistItems = planDetail.checklistItems
-      this.tasksBelts = planDetail.formattedTask.tasksBelts
-      this.formattedTasks = planDetail.formattedTask.formattedTasks
-      this.subsidiaryId = planDetail.subsidiaryId
-      const haveIncidents = await this.haveIncidents(planDetail.subsidiaryId)
-      // haveIncidents.length > 0 ? this.showIncidentsButton = true : this.showIncidentsButton = false
-      // this.showIncidentsButton = true
 
+    // if (this.projectType == 'project') {
+    const planDetail = await this.projectService.getProjectTasks(this.projectId, this.projectType)
+    console.log(planDetail)
+    this.tasksData = planDetail.tasksData
+    this.clientName = planDetail.clientName
+    this.subsdiaryName = planDetail.subsdiaryName
+    this.planName = planDetail.planName
+    this.checklistItems = planDetail.checklistItems
+    this.tasksBelts = planDetail.formattedTask.tasksBelts
+    this.formattedTasks = planDetail.formattedTask.formattedTasks
+    this.subsidiaryId = planDetail.subsidiaryId
+    this.uvTotalTasks = planDetail.uvTotalTasks
+    if (this.projectType == 'project') {
       const documental = await this.projectService.getProjectDocumentalChecklist(this.projectId, this.projectType)
       console.log(documental)
       this.totalPages = documental.totalPages
@@ -128,10 +129,14 @@ export class ProjectPage implements OnInit {
       this.productsDocumntalChecklist = documental.productsDocumntalChecklist
       this.techniciansDocumntalChecklist = documental.techniciansDocumntalChecklist
       this.totalDocumentalItems = documental.totalDocumentalItems
-    } else {
-      await this.projectService.getTaskItems(this.projectId, this.projectType)
-      // await this.projectService.getTaskDocumentalChecklist(this.projectId,this.projectType)
+      const haveIncidents = await this.haveIncidents(planDetail.subsidiaryId)
+      // haveIncidents.length > 0 ? this.showIncidentsButton = true : this.showIncidentsButton = false
+      // this.showIncidentsButton = true
     }
+    // } else {
+    //   await this.projectService.getTaskItems(this.projectId, this.projectType)
+    //   // await this.projectService.getTaskDocumentalChecklist(this.projectId,this.projectType)
+    // }
     this.loaderService.hide();
   }
 
@@ -246,7 +251,7 @@ export class ProjectPage implements OnInit {
   }
 
   canBeSent() {
-    const isTheTaskChecklistComplete = this.taskChecklistService.getLength() == this.tasksData.length
+    const isTheTaskChecklistComplete = this.isTheTaskChecklistComplete(this.projectType)
     const isTheDocumentalChecklistComplete = this.documentalChecklistService.getLength() == this.totalDocumentalItems
     if (!isTheTaskChecklistComplete) {
       this.toastService.presentToast('Faltan tareas por completar', 'danger')
@@ -258,6 +263,14 @@ export class ProjectPage implements OnInit {
     }
     this.submitService.show(this.evidenceType)
 
+  }
+
+  isTheTaskChecklistComplete(projectType: string) {
+    if (projectType == 'project') {
+      return this.taskChecklistService.getLength() == this.tasksData.length
+    } else {
+      return this.taskChecklistService.getLength() == this.uvTotalTasks['N'].length
+    }
   }
 
   async haveIncidents(subsidiaryId: string) {
@@ -284,7 +297,11 @@ export class ProjectPage implements OnInit {
     });
   }
 
-  openSelectUvMeasure(isOpen: boolean, indexTask: number) { }
+  openSelectUvMeasure(isOpen: boolean, taskId: number) {
+    this.uvLightModalService.show(taskId)
+    // this.taskId = taskId;
+    // this.isSelectUvMeasure = isOpen;
+  }
 
   showModalAddMinuteItem(status: boolean) { }
 

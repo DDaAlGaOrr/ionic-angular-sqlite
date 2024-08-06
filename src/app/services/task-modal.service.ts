@@ -18,8 +18,10 @@ interface modalData {
 export class TaskModalService {
   private taskData = new BehaviorSubject<modalData>({ taskId: 0, taskControl: '', taskNumber: '' });
   modalData = this.taskData.asObservable();
+
   private _showModal = new BehaviorSubject<boolean>(false);
   showModal = this._showModal.asObservable();
+  
   private checklist = new BehaviorSubject<any>({});
   checklistItems = this.checklist.asObservable();
 

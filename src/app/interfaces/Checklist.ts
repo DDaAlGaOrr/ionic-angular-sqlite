@@ -32,7 +32,8 @@ export interface PlanDetail {
   formattedTask: FormattedTask;
   projectType: string,
   uvChecklistItems: {}
-  subsidiaryId: string
+  subsidiaryId: string,
+  uvTotalTasks: TasksGroup
 }
 
 export interface TaskData {
@@ -65,6 +66,11 @@ interface ProductsDocumntalChecklistAnswers {
 
 export interface TasksGroup {
   [key: string]: Task[];
+}
+interface Task {
+  id: number;
+  description: string;
+  cinturon: string;
 }
 
 export interface DocumentalData {

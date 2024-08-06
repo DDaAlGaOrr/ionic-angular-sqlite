@@ -17,6 +17,7 @@ import {
   ref,
   uploadBytes,
 } from '@angular/fire/storage';
+import { aW } from '@fullcalendar/core/internal-common';
 
 @Injectable({
   providedIn: 'root'
@@ -81,7 +82,15 @@ export class ProjectService {
     }
   }
 
-  async getOnlineProjectTasks(projectId: number, projectType: string): Promise<PlanDetail> {
+  async getOnlineProjectTasks(projectId: number, projectType: string) {
+    if (projectType == 'project') {
+      return await this.getProjectPlanTasks(projectId, projectType)
+    } else {
+      return await this.getUvLightTasks(projectId, projectType)
+    }
+  }
+
+  async getProjectPlanTasks(projectId: number, projectType: string): Promise<PlanDetail> {
     const data: PlanDetail = {
       tasksData: [],
       clientName: '',
@@ -91,7 +100,8 @@ export class ProjectService {
       formattedTask: { formattedTasks: [], tasksBelts: [] },
       projectType: projectType,
       uvChecklistItems: {},
-      subsidiaryId: ''
+      subsidiaryId: '',
+      uvTotalTasks: {}
     }
     const observableResult = await this.httpService.get(`staffs/${projectId}/tasks`, true)
     return new Promise((resolve, reject) => {
@@ -118,6 +128,48 @@ export class ProjectService {
     })
   }
 
+  async getUvLightTasks(projectId: number, projectType: string): Promise<PlanDetail> {
+    const data: PlanDetail = {
+      tasksData: [],
+      clientName: '',
+      subsdiaryName: '',
+      planName: '',
+      checklistItems: '',
+      formattedTask: { formattedTasks: [], tasksBelts: [] },
+      projectType: projectType,
+      uvChecklistItems: {},
+      subsidiaryId: '',
+      uvTotalTasks: {}
+    }
+
+    const observableResult = await this.httpService.get(`staffs/${projectId}/tasks_uv`, true)
+    return new Promise((resolve, reject) => {
+      observableResult.subscribe(
+        (response: any) => {
+          const groupedTasks = response.tasks.reduce(
+            (acc: any, task: any) => {
+              const { cinturon } = task;
+              if (!acc[cinturon]) {
+                acc[cinturon] = [];
+              }
+              acc[cinturon].push(task);
+              return acc;
+            },
+            {}
+          );
+          data.clientName = response.plan_detail[0].name_client;
+          data.subsdiaryName = response.plan_detail[0].client_name;
+          data.uvTotalTasks = groupedTasks;
+          resolve(data);
+        },
+        (error: any) => {
+          this.toastService.presentToast('Algo salio mal', 'danger')
+          console.error('Error al enviar datos:', error);
+        }
+      );
+    })
+  }
+
   async getOfflineProjectTasks(projectId: number, projectType: string) {
     const data: PlanDetail = {
       tasksData: [],
@@ -128,57 +180,25 @@ export class ProjectService {
       formattedTask: { formattedTasks: [], tasksBelts: [] },
       projectType: projectType,
       uvChecklistItems: {},
-      subsidiaryId: ''
+      subsidiaryId: '',
+      uvTotalTasks: {}
     }
-    const result = await this.offlineProjectsService.getPlanDetail(projectId, projectType)
-    data.tasksData = result.projectTasks
-    data.clientName = `${result.planDetail[0].client} - ${result.planDetail[0].id_subsidiary}`
-    data.subsdiaryName = result.planDetail[0].subsidiary
-    data.planName = result.planDetail[0].folio
-    data.formattedTask = this.formatTasksObject(
-      result.projectTasks,
-      result.serviceArea,
-      result.cinturones.split(', ')
-    );
-    data.subsidiaryId = result.planDetail[0].id_subsidiary
-    return data
-  }
-
-  async getTaskItems(projectId: number, projectType: string) {
-    const data = {
-      clientName: '',
-      subsdiaryName: '',
-      uvChecklistItems: ''
+    if (projectType == 'project') {
+      const result = await this.offlineProjectsService.getPlanDetail(projectId, projectType)
+      data.tasksData = result.projectTasks
+      data.clientName = `${result.planDetail[0].client} - ${result.planDetail[0].id_subsidiary}`
+      data.subsdiaryName = result.planDetail[0].subsidiary
+      data.planName = result.planDetail[0].folio
+      data.formattedTask = this.formatTasksObject(
+        result.projectTasks,
+        result.serviceArea,
+        result.cinturones.split(', ')
+      );
+      data.subsidiaryId = result.planDetail[0].id_subsidiary
+      return data
+    } else {
+      return data
     }
-    this.httpService
-      .get(`staffs/${projectId}/tasks_uv`, true)
-      .then((observableResult) => {
-        observableResult.subscribe(
-          (response: any) => {
-            console.log(response);
-            const groupedTasks = response.tasks.reduce(
-              (acc: any, task: any) => {
-                const { cinturon } = task;
-                if (!acc[cinturon]) {
-                  acc[cinturon] = [];
-                }
-                acc[cinturon].push(task);
-                return acc;
-              },
-              {}
-            );
-            data.clientName = response.plan_detail[0].name_client;
-            data.subsdiaryName = response.plan_detail[0].client_name;
-            data.uvChecklistItems = groupedTasks;
-          },
-          (error: any) => {
-            console.error('Error al enviar datos:', error);
-          }
-        );
-      })
-      .catch((error) => {
-        console.error('Error al realizar la solicitud de calendar:', error);
-      });
   }
 
   async getProjectDocumentalChecklist(projectId: number, projectType: string): Promise<DocumentalData> {
@@ -296,6 +316,7 @@ export class ProjectService {
       );
     })
   }
+
 
   async getOfflineProjectDocumentalChecklist(projectId: number, projectType: string): Promise<DocumentalData> {
     const data: DocumentalData = {

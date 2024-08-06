@@ -173,8 +173,8 @@
       <nz-tag [nzColor]="'red'">Por revisar</nz-tag>
     </ion-row>
 
-    <!-- <ion-grid *ngIf="projectType === 'project'; else uvTask"> -->
-    <ion-grid *ngIf="projectType === 'project'">
+    <!-- <ion-grid *ngIf="projectType === 'project'"> -->
+    <ion-grid *ngIf="projectType === 'project'; else uvTask">
       <ion-list>
         <div class="accordion accordion-flush">
           <div class="accordion-item">
@@ -422,9 +422,7 @@
         </div>
       </ion-list>
     </ion-grid>
-
-
-    <!-- <ng-template #uvTask>
+    <ng-template #uvTask>
       <ion-row>
         <ion-col size="auto">
           <div class="content-trampa">
@@ -436,8 +434,7 @@
                       <h2>Cinturon {{ group.key }}</h2>
                       <ion-item *ngFor="let task of group.value">
                         <nz-tag [nzColor]="getSelectedProjectItem(task.id) ? 'green':'purple'">
-                          <a id="open-modal-uv" fill="currentColor"
-                            (click)="!getSelectedProjectItem(task.id) ? openSelectUvMeasure(true,task.id) : null">
+                          <a id="open-modal-uv" fill="currentColor" (click)="openSelectUvMeasure(true,task.id)">
                             <svg id="trampa-svg" xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                               fill="currentColor" class="bi bi-mailbox" viewBox="0 0 16 8">
                               <path class="cls-1"
@@ -458,6 +455,7 @@
         </ion-col>
       </ion-row>
     </ng-template>
+    <!--
     <ion-grid *ngIf="projectType === 'task_sup'">
       <div>
         <ion-button (click)="showModalAddMinuteItem(true)" [strong]="true">Agregar elemento</ion-button>
@@ -547,5 +545,6 @@
   <app-task-modal></app-task-modal>
   <app-signature-modal></app-signature-modal>
   <app-ticket-modal></app-ticket-modal>
+  <app-uv-light-modal></app-uv-light-modal>
 </ion-content>
 <app-bottom-tabs></app-bottom-tabs>

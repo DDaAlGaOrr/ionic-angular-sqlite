@@ -1,0 +1,60 @@
+<ion-modal [isOpen]="openModal">
+  <ng-template>
+    <ion-content>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="openSelectUvMeasure(false,'')">Cancelar</ion-button>
+          </ion-buttons>
+          <ion-buttons slot="end">
+            <ion-button (click)="setUvChecklist()" [strong]="true">Confirmar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-list>
+        <div>
+          <ion-item class="ion-margin-top">
+            <ion-select required aria-label="Estado" interface="popover" placeholder="Estado de la trampa"
+              (ionChange)="handleTaskStatus($event)" [(ngModel)]="taskStatus">
+              <ion-select-option value="10">
+                Equipo Extraviado
+              </ion-select-option>
+              <ion-select-option value="11">
+                Equipo Dañado
+              </ion-select-option>
+              <ion-select-option value="12">
+                Cambio por tiempo de vida
+              </ion-select-option>
+              <ion-select-option value="13">
+                Equipo Oculto
+              </ion-select-option>
+              <ion-select-option value="14"> Funcional </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+        <ion-select placeholder="Selecciona un medidor" (ionChange)="getSelectedUvChecklist($event)">
+          <ion-select-option value="35">MEDICION DE LUZ UV</ion-select-option>
+          <ion-select-option value="36">MEDIDOR PEST WEST</ion-select-option>
+          <ion-select-option value="37">UV Tester 36 W-PL</ion-select-option>
+          <ion-select-option value="38">UV Tester 15W-T8_18W-T8_20 W</ion-select-option>
+          <ion-select-option value="39">UV Tester 15W-T5</ion-select-option>
+        </ion-select>
+      </ion-list>
+      <ion-list>
+        <ion-label> {{checklistMeasureSelected}} </ion-label>
+      </ion-list>
+      <ion-item>
+        <ion-col>
+          <ion-col *ngIf="currentUvChecklist.length > 0">
+            <ion-item>{{uv_checklist_name}}</ion-item>
+            <div *ngFor="let checklist of currentUvChecklist">
+              <ion-radio (click)="answerTaskUvChecklist(checklist.value,uv_question_id)" justify="start"
+                labelPlacement="end" value="checklist.value">{{checklist.question}}</ion-radio>
+            </div>
+            <textarea rows="1" nz-input placeholder="Comentario" [(ngModel)]="uvDescription"></textarea>
+          </ion-col>
+        </ion-col>
+      </ion-item>
+    </ion-content>
+  </ng-template>
+</ion-modal>
