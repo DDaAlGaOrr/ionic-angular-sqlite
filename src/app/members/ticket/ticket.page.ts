@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { HttpService } from '../../services/http.service';
 import { LoggedData } from '../../interfaces/Auth';
+import { TicketsService } from '../../services/tickets.service';
+import { ProjectService } from '../../services/project.service';
+import { NetworkService } from '../../services/network.service';
+import { LoaderService } from '../../services/loader.service';
+import { ToastService } from '../../services/toast.service';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-ticket',
@@ -12,7 +19,7 @@ export class TicketPage implements OnInit {
 
   commentForm: string = ''
   inputValue: string = '';
-  evidenceImageTicket: string = ''
+  evidenceImageTicket: any = ''
   userdata: LoggedData = { email: '', firstname: '', lastname: '', staffid: 0, role: 0 }
   tickets_responses: any[] = [];
   description: string = '';
@@ -23,81 +30,70 @@ export class TicketPage implements OnInit {
   subject: string = '';
   subsidiary_id: string = '';
   client_name: string = '';
+  ticketId: number = 0
 
   constructor(
-    private httpService: HttpService
+    private httpService: HttpService,
+    private activatedRoute: ActivatedRoute,
+    private ticketsService: TicketsService,
+    private projectService: ProjectService,
+    private networkService: NetworkService,
+    private loaderService: LoaderService,
+    private toastService: ToastService,
+    private authenticationService: AuthenticationService,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.userdata = await this.authenticationService.getLoggedData()
+    this.activatedRoute.queryParams.subscribe((params: any) => {
+      this.ticketId = params['ticketId'];
+    })
+    const response = await this.getTicketdata(this.ticketId)
+    this.client_name = response.tickets.client_name;
+    this.subsidiary_id = response.tickets.subsidiary_id;
+    this.responsible = response.tickets.responsible;
+    this.status = response.tickets.status;
+    this.priority = response.tickets.priority;
+    this.description = response.tickets.description;
+    this.start_date = response.tickets.start_date;
+    this.subject = response.tickets.subject;
+    this.tickets_responses = response.tickets_responses;
+  }
+
+  async getTicketdata(ticketId: number) {
+    return await this.ticketsService.getTicketdata(ticketId)
   }
 
   async onSubmit() {
-    //   const blob = this.dataUrlToBlob(this.evidenceImageTicket);
-    //   const url = await this.uploadImage(blob, 'ticketEvidenceResponse');
-    //   const data = {
-    //     description: this.inputValue,
-    //     image_url: url,
-    //     ticket_id: this.ticket_id,
-    //   };
-    //   this.httpService
-    //     .post(
-    //       `staffs/${this.userdata.staffid}/save_ticket_response`,
-    //       JSON.stringify(data),
-    //       true
-    //     )
-    //     .then((observableResult) => {
-    //       observableResult.subscribe(
-    //         (res: any) => {
-    //           this.evidenceImageTicket = '';
-    //           this.commentForm.patchValue({
-    //             comment: '',
-    //           });
-    //           console.log(res);
-    //           this.load_ticket_data();
-    //         },
-    //         (error: any) => {
-    //           this.toastService.presentToast(
-    //             'Error en la red, comuníquese con un administrador.'
-    //           );
-    //         }
-    //       );
-    //     })
-    //     .catch((error) => {
-    //       // Manejar errores relacionados con la promesa
-    //       console.error('Error al realizar la solicitud de login:', error);
-    //     });
+    this.loaderService.show()
+    const urlImage = await this.setUrlImage(this.evidenceImageTicket, 'ticketEvidenceResponse')
+    const data = {
+      description: this.inputValue,
+      image_url: urlImage,
+      ticket_id: this.ticketId,
+    };
+    const submit = await this.ticketsService.sendEvidenceTicket(data, this.userdata.staffid)
+    if (submit) {
+      this.toastService.presentToast('Evidencia guardada', 'secondary')
+      this.evidenceImageTicket = ''
+      this.inputValue = ''
+      this.ngOnInit()
+    } else {
+      this.toastService.presentToast('Algo salio mal', 'danger')
+    }
+    this.loaderService.hide()
   }
 
   async takePictureTicket() {
-    // try {
-    //   if (Capacitor.getPlatform() !== 'web') {
-    //     this.androidPermissions
-    //       .checkPermission(this.androidPermissions.PERMISSION.CAMERA)
-    //       .then(
-    //         (result: any) => {
-    //           if (result.hasPermission) {
-    //             // Acceder a la cámara
-    //           } else {
-    //             this.androidPermissions.requestPermission(
-    //               this.androidPermissions.PERMISSION.CAMERA
-    //             );
-    //           }
-    //         },
-    //         (err: any) =>
-    //           this.androidPermissions.requestPermission(
-    //             this.androidPermissions.PERMISSION.CAMERA
-    //           )
-    //       );
-    //   }
-    //   const evidenceImageTicket = await Camera.getPhoto({
-    //     quality: 90,
-    //     source: CameraSource.Prompt,
-    //     width: 600,
-    //     resultType: CameraResultType.DataUrl,
-    //   });
-    //   this.evidenceImageTicket = evidenceImageTicket.dataUrl;
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    this.evidenceImageTicket = await this.projectService.takePictureDocumental()
+  }
+
+  async setUrlImage(evidenceImage: string, folder: string) {
+    if (this.networkService.getNetworkStatus()) {
+      const blob = this.projectService.dataUrlToBlob(evidenceImage);
+      return await this.projectService.uploadImage(blob, folder);
+    } else {
+      return evidenceImage
+    }
   }
 }

@@ -17,6 +17,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { TicketPage } from './ticket.page';
 import { HeaderModule } from '../../components/header/header.module';
 import { BottomTabsModule } from '../../components/bottom-tabs/bottom-tabs.module';
+import { LoaderModule } from '../../components/loader/loader.module';
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import { BottomTabsModule } from '../../components/bottom-tabs/bottom-tabs.modul
     NzImageModule,
     NzCardModule,
     ReactiveFormsModule,
+    LoaderModule
   ],
   declarations: [TicketPage]
 })

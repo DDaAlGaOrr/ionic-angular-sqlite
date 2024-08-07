@@ -166,5 +166,74 @@ export class TicketsService {
       }
     }
   }
-}
 
+  async getTicketdata(ticketId: number): Promise<any> {
+    const observableResult = await this.httpService.get(`staffs/${ticketId}/getTickets`, true)
+    try {
+      return new Promise((resolve, reject) => {
+        observableResult.subscribe((response: any) => {
+          console.log(response)
+          resolve(response);
+        },
+          (error: any) => {
+            this.toastService.presentToast('No se pudieron obtener los datos', 'danger')
+            console.error('Error al enviar datos:', error);
+            reject(error);
+          }
+        )
+      })
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async sendEvidenceTicket(data: any, userId: number): Promise<any> {
+    if (this.networkService.getNetworkStatus()) {
+      const observableResult = await this.httpService.post(`staffs/${userId}/save_ticket_response`, JSON.stringify(data), true)
+      try {
+        return new Promise((resolve, reject) => {
+          observableResult.subscribe((response: any) => {
+            console.log(response)
+            resolve(response);
+          },
+            (error: any) => {
+              this.toastService.presentToast('Error al obtener los datos', 'danger')
+              console.error('Error al enviar datos:', error);
+              reject(error);
+            }
+          )
+        })
+      } catch (error) {
+        throw error;
+      }
+    }
+    //   this.httpService
+    //     .post(
+    //       `staffs/${this.userdata.staffid}/save_ticket_response`,
+    //       JSON.stringify(data),
+    //       true
+    //     )
+    //     .then((observableResult) => {
+    //       observableResult.subscribe(
+    //         (res: any) => {
+    //           this.evidenceImageTicket = '';
+    //           this.commentForm.patchValue({
+    //             comment: '',
+    //           });
+    //           console.log(res);
+    //           this.load_ticket_data();
+    //         },
+    //         (error: any) => {
+    //           this.toastService.presentToast(
+    //             'Error en la red, comuníquese con un administrador.'
+    //           );
+    //         }
+    //       );
+    //     })
+    //     .catch((error) => {
+    //       // Manejar errores relacionados con la promesa
+    //       console.error('Error al realizar la solicitud de login:', error);
+    //     });
+  }
+
+}

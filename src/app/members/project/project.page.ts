@@ -130,8 +130,8 @@ export class ProjectPage implements OnInit {
       this.techniciansDocumntalChecklist = documental.techniciansDocumntalChecklist
       this.totalDocumentalItems = documental.totalDocumentalItems
       const haveIncidents = await this.haveIncidents(planDetail.subsidiaryId)
-      // haveIncidents.length > 0 ? this.showIncidentsButton = true : this.showIncidentsButton = false
-      // this.showIncidentsButton = true
+      haveIncidents.length > 0 ? this.showIncidentsButton = true : this.showIncidentsButton = false
+      this.showIncidentsButton = true
     }
     // } else {
     //   await this.projectService.getTaskItems(this.projectId, this.projectType)

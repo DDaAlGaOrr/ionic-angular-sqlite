@@ -7,6 +7,7 @@ import listPlugin from '@fullcalendar/list'
 import { NetworkService } from '../../services/network.service';
 import { TicketsService } from '../../services/tickets.service';
 import { TicketEvent } from '../../interfaces/Projects';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tickets',
@@ -23,13 +24,15 @@ export class TicketsPage implements OnInit {
       center: 'title',
       right: 'listMonth'
     },
-    events: [] 
+    eventClick: this.getTicket.bind(this),
+    events: []
   };
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private networkService: NetworkService,
     private ticketsService: TicketsService,
+    private router: Router,
   ) { }
 
   async ngOnInit() {
@@ -38,7 +41,14 @@ export class TicketsPage implements OnInit {
     })
     const tickets = await this.getTickets(this.subsidiaryId)
     this.calendarOptions.events = tickets
-    console.log(this.subsidiaryId)
+  }
+
+  getTicket(event: any) {
+    this.router.navigate(['/members', 'ticket'], {
+      queryParams: {
+        ticketId: event.event.id,
+      },
+    });
   }
 
   async getTickets(subsidiaryId: string) {
@@ -59,7 +69,7 @@ export class TicketsPage implements OnInit {
         start: localDate,
         end: localDate,
         title: event.description,
-        id: event.userid,
+        id: event.ticketid,
       };
     });
     return ticketsEvents
