@@ -73,7 +73,7 @@
   </ion-grid> -->
   <ion-item>
     <ion-grid>
-      <ion-label>Comentarios</ion-label>
+      <ion-label>Respuestas</ion-label>
       <div *ngFor="let response of tickets_responses" style="margin-bottom: 20px">
         <nz-card nzHoverable style="width: 240px" [nzCover]="coverTemplate">
           <nz-card-meta nzTitle="{{response.firstname}} {{response.lastname}}"
@@ -87,38 +87,27 @@
   </ion-item>
 
   <div *ngIf="userdata.role  !== 4 && userdata.role !== 7; else noItems">
-    <ion-item>
+    <div>
+      <ion-item>
+        <ion-col size="12">
+          <ion-label>Comentario:</ion-label>
+          <textarea rows="4" col="30" nz-input [(ngModel)]="inputValue"></textarea>
+        </ion-col>
+      </ion-item>
       <ion-item>
         <ion-grid>
-          <ion-label>Añadir archivos</ion-label>
           <ion-col size="12" class="ion-justify-content-center">
             <img *ngIf="evidenceImageTicket" [src]="evidenceImageTicket" />
             <ion-button expand="block" (click)="takePictureTicket()">Agregar foto</ion-button>
           </ion-col>
         </ion-grid>
       </ion-item>
-    </ion-item>
-
-    <div>
-      <ion-item>
-        <ion-col size="12">
-          <ion-label>Comentarios:</ion-label>
-          <textarea rows="4" col="30" nz-input [(ngModel)]="inputValue"></textarea>
-        </ion-col>
-      </ion-item>
     </div>
     <ion-item>
       <ion-col class="ion-text-end" slot="end">
-        <ion-button shape="round" id="document-modal" (click)="onSubmit()">Agregar evidencia</ion-button>
-        <!-- [disabled]="!commentForm.valid" -->
+        <ion-button shape="round" id="document-modal" (click)="onSubmit()">Responder</ion-button>
       </ion-col>
     </ion-item>
-    <!-- <ion-item>
-        <ion-col>
-          <p>Form Value: {{ commentForm.value | json }}</p>
-          <p>Form Status: {{ commentForm.status }}</p>
-        </ion-col>
-      </ion-item> -->
   </div>
   <ng-template #noItems class="list-item">
     <ion-item>

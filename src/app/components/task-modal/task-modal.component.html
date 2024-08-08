@@ -121,37 +121,41 @@
         </ion-buttons>
       </ion-toolbar>
       <ion-list>
-          <ion-item class="mt-5">
-            <ion-col>
-              <ion-label>Comentario:</ion-label>
-              <textarea rows="4" nz-input [(ngModel)]="taskReason"></textarea>
-              <ion-item>
-                <ion-col size="12">
-                  <ion-label>Acción correctiva:</ion-label>
-                  <ion-select justify="space-between" required aria-label="Acción correctiva" interface="popover"
-                    placeholder="Seleccione acción correctiva" (ionChange)="handleCorrectiveAction($event)">
-                    <ion-select-option value="1">Requiere reemplazo</ion-select-option>
-                    <ion-select-option value="2">Se recomiendo atender para evitar
-                      plaga</ion-select-option>
-                    <ion-select-option value="3">Se recomienda atender para evitar ingreso de fauna
-                      nociva</ion-select-option>
-                  </ion-select>
-                </ion-col>
-              </ion-item>
-              <!-- <ion-checkbox (click)="setTaskResponsiveValue($event)">
+        <ion-item class="mt-5">
+          <ion-col>
+            <ion-label>Comentario:</ion-label>
+            <textarea rows="4" nz-input [(ngModel)]="taskReason"></textarea>
+            <ion-item>
+              <ion-col size="12">
+                <ion-label>Acción correctiva:</ion-label>
+                <ion-select justify="space-between" required aria-label="Acción correctiva" interface="popover"
+                  placeholder="Seleccione acción correctiva" (ionChange)="handleCorrectiveAction($event)">
+                  <ion-select-option value="1">Evitar golpear /bloquear equipos</ion-select-option>
+                  <ion-select-option value="2">Se debe verificar reubicación</ion-select-option>
+                  <ion-select-option value="3">Homologar ubicació en piso con el del lay out</ion-select-option>
+                  <ion-select-option value="4">Incluir equipo en lay out </ion-select-option>
+                  <ion-select-option value="5">Anclar para evitar extravío </ion-select-option>
+                  <ion-select-option value="6">Reforzar proceso de limpieza con el técnico</ion-select-option>
+                  <ion-select-option value="7">Verificar con técnico la revisión de todos los equipos durante el
+                    servicio</ion-select-option>
+                  <ion-select-option value="8">Verificar el llenado correctamente con el técnico</ion-select-option>
+                </ion-select>
+              </ion-col>
+            </ion-item>
+            <!-- <ion-checkbox (click)="setTaskResponsiveValue($event)">
                 No cumple por cuestion del cliente
               </ion-checkbox> -->
+          </ion-col>
+        </ion-item>
+        <ion-item class="ion-margin-bottom">
+          <ion-grid>
+            <ion-label>Añadir archivos</ion-label>
+            <ion-col size="12" class="ion-justify-content-center">
+              <img *ngIf="evidenceImageTask" [src]="evidenceImageTask" />
+              <ion-button expand="block" (click)="takePicture()">Agregar foto</ion-button>
             </ion-col>
-          </ion-item>
-          <ion-item class="ion-margin-bottom">
-            <ion-grid>
-              <ion-label>Añadir archivos</ion-label>
-              <ion-col size="12" class="ion-justify-content-center">
-                <img *ngIf="evidenceImageTask" [src]="evidenceImageTask" />
-                <ion-button expand="block" (click)="takePicture()">Agregar foto</ion-button>
-              </ion-col>
-            </ion-grid>
-          </ion-item>
+          </ion-grid>
+        </ion-item>
       </ion-list>
     </ion-content>
   </ng-template>
