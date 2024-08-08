@@ -48,16 +48,23 @@ export class DocumentalModalComponent implements OnInit {
   }
 
   closeDocumentalModal(isOpen: boolean) {
-    this.openNoAnswerDocumentModal = isOpen;
+    this.documentalModalService.hide()
   }
 
   async setDocumentalAnswerNo(isOpen: boolean) {
     this.loaderService.show()
+    let validate = true
+    if (this.documentalAnswerDescription == '') {
+      validate = false
+      this.toastService.presentToast('Debes agregar un comentario', 'danger')
+      this.loaderService.hide()
+      return
+    }
     let url = this.evidenceImageDocumental.length > 0 ? await this.setUrlImage(this.evidenceImageDocumental, 'documentalEvidence') || "" : ''
     this.documentalChecklistService.setSelectedItem(this.documentChecklistItemId, 'no', this.documentalAnswerDescription, url);
     this.documentalAnswerDescription = '';
     this.evidenceImageDocumental = '';
-    this.openNoAnswerDocumentModal = isOpen;
+    this.documentalModalService.hide()
     this.loaderService.hide()
     this.toastService.presentToast('Respuesta guardada', 'secondary')
     await this.progressService.setData('documentalProgress', this.documentalChecklistService.getAllItems());

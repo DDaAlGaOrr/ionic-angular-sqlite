@@ -110,6 +110,12 @@ export class BottomTabsComponent implements OnInit {
       return;
     }
 
+    if (this.evidenceImageTicket == '') {
+      this.toastService.presentToast('Debes agregar una imagen', 'danger');
+      validate = false;
+      return;
+    }
+
     if (this.startDate == '') {
       this.startDate = formatDate(new Date(), 'd/M/yyyy', 'en-US');
     }

@@ -118,6 +118,12 @@ export class TicketModalComponent implements OnInit {
       return;
     }
 
+    if (this.evidenceImageTicket == '') {
+      this.toastService.presentToast('Debes agregar una imagen', 'danger');
+      validate = false;
+      return;
+    }
+
     if (this.startDate == '') {
       this.startDate = formatDate(new Date(), 'd/M/yyyy', 'en-US');
     }
@@ -127,6 +133,8 @@ export class TicketModalComponent implements OnInit {
         this.endDate = formatDate(new Date(), 'd/M/yyyy', 'en-US');
       }
     }
+
+
 
     if (validate) {
       this.ticketsService.hide()

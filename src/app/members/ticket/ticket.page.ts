@@ -66,6 +66,19 @@ export class TicketPage implements OnInit {
 
   async onSubmit() {
     this.loaderService.show()
+    let validate = true
+    if (this.inputValue == '') {
+      validate = false
+      this.toastService.presentToast('Debes agregar un comentario', 'danger')
+      this.loaderService.hide()
+      return
+    }
+    if (this.evidenceImageTicket == '') {
+      validate = false
+      this.toastService.presentToast('Debes agregar una imagen', 'danger')
+      this.loaderService.hide()
+      return
+    }
     const urlImage = await this.setUrlImage(this.evidenceImageTicket, 'ticketEvidenceResponse')
     const data = {
       description: this.inputValue,
@@ -74,7 +87,7 @@ export class TicketPage implements OnInit {
     };
     const submit = await this.ticketsService.sendEvidenceTicket(data, this.userdata.staffid)
     if (submit) {
-      this.toastService.presentToast('Evidencia guardada', 'secondary')
+      this.toastService.presentToast('Respuesta Guardada', 'secondary')
       this.evidenceImageTicket = ''
       this.inputValue = ''
       this.ngOnInit()
