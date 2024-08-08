@@ -11,6 +11,7 @@ import { ContractsTypeService } from '../../services/offline/contracts-type.serv
 import { ProjectsService } from '../../services/offline/projects.service';
 import { TasksService } from '../../services/offline/tasks.service';
 import { Activities } from '../../interfaces/Projects';
+import { LoaderService } from '../../services/loader.service';
 
 @Component({
   selector: 'app-sync-data',
@@ -31,35 +32,44 @@ export class SyncDataPage implements OnInit {
     private projectService: ProjectsService,
     private tasksService: TasksService,
     private storage: Storage,
+    private loaderService: LoaderService,
   ) { }
 
   ngOnInit() {
   }
 
   async syncUsersData() {
+    this.loaderService.show()
     await this.syncUserTable()
+    this.loaderService.hide()
   }
 
   async syncChecklistsData() {
+    this.loaderService.show()
     await this.syncChecklistSectionTable()
     await this.syncChecklistSubSections()
     await this.syncChecklisQuestions()
+    this.loaderService.hide()
   }
 
   async syncAppData() {
+    this.loaderService.show()
     await this.syncSubsidiaryClient()
     await this.syncClient()
     await this.syncContractsType()
     await this.syncServiceAll()
+    this.loaderService.hide()
   }
 
   async syncActivitiesData() {
+    this.loaderService.show()
     await this.syncChecklisTaskForm()
     await this.syncProjects()
     await this.syncTasks()
     await this.syncProjectsItems()
     await this.syncActivities()
     await this.syncChecklistTasks()
+    this.loaderService.hide()
   }
 
   async syncUserTable() {

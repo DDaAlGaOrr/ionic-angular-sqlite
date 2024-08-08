@@ -83,11 +83,30 @@ export class ProjectService {
   }
 
   async getOnlineProjectTasks(projectId: number, projectType: string) {
-    if (projectType == 'project') {
-      return await this.getProjectPlanTasks(projectId, projectType)
-    } else {
-      return await this.getUvLightTasks(projectId, projectType)
+    let data: PlanDetail = {
+      tasksData: [],
+      clientName: '',
+      subsdiaryName: '',
+      planName: '',
+      checklistItems: '',
+      formattedTask: { formattedTasks: [], tasksBelts: [] },
+      projectType: projectType,
+      uvChecklistItems: {},
+      subsidiaryId: '',
+      uvTotalTasks: {}
     }
+
+    switch (projectType) {
+      case 'project':
+        data = await this.getProjectPlanTasks(projectId, projectType)
+        break;
+      case 'task_uv':
+        data = await this.getUvLightTasks(projectId, projectType)
+        break
+      default:
+        break;
+    }
+    return data
   }
 
   async getProjectPlanTasks(projectId: number, projectType: string): Promise<PlanDetail> {

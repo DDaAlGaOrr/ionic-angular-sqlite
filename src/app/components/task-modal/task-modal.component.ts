@@ -96,7 +96,8 @@ export class TaskModalComponent implements OnInit {
     this.taskChecklistService.setGeneralChecklist(this.taskId, 'task', this.currentTaskChecklistItem, items, this.taskStatus);
     this.taskId = 0;
     this.currentTaskChecklistItem = '';
-    this.openTaskModal = false;
+    // this.openTaskModal = false;
+    this.taskModalService.hide()
     this.taskStatus = '';
     this.toastService.presentToast('Tarea completada.', 'secondary');
     this.taskChecklistService.clearItems();
@@ -135,6 +136,13 @@ export class TaskModalComponent implements OnInit {
 
   async setNoTaskAnswer(open: boolean) {
     this.loaderService.show()
+    let validate = true
+    if (this.evidenceImageTask == '') {
+      validate = false
+      this.toastService.presentToast('Debes agregar un comentario', 'danger')
+      this.loaderService.hide()
+      return
+    }
     let urlImage = this.evidenceImageTask.length > 0 ? await this.setUrlImage(this.evidenceImageTask, 'taskEvidence') || "" : ''
     this.taskChecklistService.setSelectedItem(this.currentTaskChecklistItem, 'no', this.taskReason, urlImage, this.taskChecked, this.correctiveTaskAction);
     setTimeout(async () => {

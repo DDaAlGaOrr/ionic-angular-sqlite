@@ -120,7 +120,6 @@ export class ProjectPage implements OnInit {
     this.uvTotalTasks = planDetail.uvTotalTasks
     if (this.projectType == 'project') {
       const documental = await this.projectService.getProjectDocumentalChecklist(this.projectId, this.projectType)
-      console.log(documental)
       this.totalPages = documental.totalPages
       this.sectionList = documental.sectionList
       this.sectionListItems = documental.sectionListItems
